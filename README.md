@@ -1,2 +1,1 @@
-# zvyezda
- 
+# Zvyezda (Star)

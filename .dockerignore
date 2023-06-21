@@ -1,0 +1,9 @@
+.github
+docs
+node_modules
+resources
+zvyezda
+.env
+logs
+src/**/build
+src/**/node_modules

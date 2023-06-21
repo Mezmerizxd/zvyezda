@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#LogoText {
+  color: #ff0059;
+  background-image: -webkit-linear-gradient(0deg, #00fbff 30%, #00ffa6 70%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  /* font-size: 40px;
+  font-family: 'Mukta', sans-serif;
+  font-weight: 900; */
+}

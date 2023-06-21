@@ -125,3 +125,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Custon
+.idea
+resources
+src/**/node_modules
+src/**/build
+logs
