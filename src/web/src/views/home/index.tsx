@@ -13,12 +13,16 @@ import {
   HeroHeader,
   ProjectsList,
   Paragraph,
+  AccountForm,
   Footer,
   FooterColumn,
+  Form,
 } from './styled';
 
 import StandardButton from '../../components/buttons/StandardButton';
 import SubtleButton from '../../components/buttons/SubtleButton';
+import IconInput from '../../components/inputs/IconInput';
+import { FaUser, FaKey } from 'react-icons/fa';
 
 import Navigation from '../../models/navigation';
 import Project from '../../models/project';
@@ -28,12 +32,25 @@ export enum Pages {
   Projects,
   AboutMe,
   News,
+  Login,
 }
 
 export default () => {
   const [page, setPage] = useState(Pages.Home);
+  const [loginForm, setLoginForm] = useState<{ username: string; password: string; error: string }>(null);
 
   const prj = github_projects[Math.floor(Math.random() * github_projects.length)];
+
+  function Login() {
+    setLoginForm({ ...loginForm, error: null });
+
+    if (loginForm?.password === undefined || loginForm?.password === null || loginForm?.password === '') {
+      setLoginForm({ ...loginForm, error: 'Please enter a password' });
+    }
+    if (loginForm?.username === undefined || loginForm?.username === null || loginForm?.username === '') {
+      setLoginForm({ ...loginForm, error: 'Please enter a username' });
+    }
+  }
 
   return (
     <Home>
@@ -144,6 +161,41 @@ export default () => {
         {page === Pages.News && (
           <Body>
             <title>Zvyezda - News</title>
+          </Body>
+        )}
+
+        {page === Pages.Login && (
+          <Body>
+            <title>Zvyezda - Login</title>
+            <Hero style={{ height: '140px' }}>
+              <HeroContainer>
+                <HeroHeader>
+                  <h1>Login</h1>
+                </HeroHeader>
+              </HeroContainer>
+            </Hero>
+
+            <AccountForm>
+              <Form>
+                <IconInput
+                  icon={<FaUser />}
+                  placeholder="Username"
+                  type="email"
+                  onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
+                  value={loginForm?.username}
+                  margin="10px 0"
+                />
+                <IconInput
+                  icon={<FaKey />}
+                  placeholder="Password"
+                  type="password"
+                  onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                  value={loginForm?.password}
+                />
+                <StandardButton text="Login" margin="10px 0" onClick={Login} />
+                {loginForm?.error && <p>{loginForm.error}</p>}
+              </Form>
+            </AccountForm>
           </Body>
         )}
 

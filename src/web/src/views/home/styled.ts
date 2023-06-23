@@ -168,6 +168,34 @@ export const Paragraph = styled.div`
   }
 `;
 
+export const AccountForm = styled.div`
+  height: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+export const Form = styled.div`
+  max-width: 500px;
+  width: calc(100% - 20px);
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: ${theme.text.primary.hex};
+    user-select: none;
+    color: ${theme.text.error.hex};
+    background-color: ${theme.colors.error.hex};
+    border-radius: 6px;
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+`;
+
 export const Footer = styled.div`
   width: 100%;
   height: 90px;

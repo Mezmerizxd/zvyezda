@@ -34,7 +34,7 @@ export const IconButton = styled.button`
 
   border: none;
   outline: none;
-  border-radius: 2px;
+  border-radius: 6px;
   box-shadow: rgb(0 0 0 / 10%) 0px 0px 5px;
   background-color: ${theme.colors.accent.hex};
   color: ${theme.text.primary.hex};

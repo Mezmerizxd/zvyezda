@@ -142,7 +142,10 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
             </a>
           </Popover.Group>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green">
+            <a
+              onClick={() => setPage(Pages.Login)}
+              className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green"
+            >
               Log in
             </a>
           </div>
@@ -206,7 +209,7 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
                 </div>
                 <div className="py-6">
                   <a
-                    href="#"
+                    onClick={() => setPage(Pages.Login)}
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-50 hover:text-light-green"
                   >
                     Log in

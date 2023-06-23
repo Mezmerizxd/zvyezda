@@ -15,7 +15,7 @@ const theme: Zvyezda.Client.Styled.Theme = {
       hex: '#00DF91',
     },
     error: {
-      hex: '#FFBABA',
+      hex: '#3F2323',
     },
     background: {
       hex: '#262929',
@@ -35,7 +35,7 @@ const theme: Zvyezda.Client.Styled.Theme = {
       hex: '#00ffa6',
     },
     error: {
-      hex: '#D8000C',
+      hex: '#FE3B46',
     },
     hyperlink: {
       hex: '#3aa1ff',
