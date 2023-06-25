@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { logger } from './logger';
 import { inspect } from 'util';
+import { accessManager } from '../managers/access';
 
 function Endpoint<T extends keyof Zvyezda.Server.Apis>(
   version: express.Router,
@@ -28,6 +29,18 @@ function Endpoint<T extends keyof Zvyezda.Server.Apis>(
         });
         return;
       }
+
+      const expired = await accessManager.isAccessActive(authorization);
+      if (!expired) {
+        res.json({
+          server: {
+            success: false,
+            error: 'Authorization header is expired',
+          },
+        });
+        return;
+      }
+
       const result = await callback(req, authorization);
       if (!result.server || result.server.success !== false) {
         result.server = {

@@ -1,13 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {};
+export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {
+  session: {
+    connected: false,
+    token: null,
+  },
+};
 
 export const GlobalSlice = createSlice({
   name: 'global',
   initialState: GlobalState,
-  reducers: {},
+  reducers: {
+    setSession: (state, action) => {
+      state.session = action.payload;
+    },
+  },
 });
 
-export const {} = GlobalSlice.actions;
+export const { setSession } = GlobalSlice.actions;
 
 export default GlobalSlice.reducer;

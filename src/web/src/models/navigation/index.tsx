@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import { useAppSelector } from '../../hooks/reduxHooks';
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react';
 
 import { Navigation, Container } from './styled';
@@ -11,6 +12,7 @@ import { MdMore } from 'react-icons/md';
 import { Pages } from '../../views/home';
 
 export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
+  const state: Zvyezda.Client.Reducers.GlobalState = useAppSelector((state) => state.global);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const products: Zvyezda.Client.Models.NavigationProductsProps[] = [
@@ -142,12 +144,21 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
             </a>
           </Popover.Group>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a
-              onClick={() => setPage(Pages.Login)}
-              className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green"
-            >
-              Log in
-            </a>
+            {state.session.connected ? (
+              <a
+                onClick={() => setPage(Pages.Login)}
+                className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green"
+              >
+                Dashboard
+              </a>
+            ) : (
+              <a
+                onClick={() => setPage(Pages.Login)}
+                className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green"
+              >
+                Log in
+              </a>
+            )}
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -208,12 +219,21 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
                   </a>
                 </div>
                 <div className="py-6">
-                  <a
-                    onClick={() => setPage(Pages.Login)}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-50 hover:text-light-green"
-                  >
-                    Log in
-                  </a>
+                  {state.session.connected ? (
+                    <a
+                      onClick={() => setPage(Pages.Login)}
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-50 hover:text-light-green"
+                    >
+                      Dashboard
+                    </a>
+                  ) : (
+                    <a
+                      onClick={() => setPage(Pages.Login)}
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-50 hover:text-light-green"
+                    >
+                      Log in
+                    </a>
+                  )}
                 </div>
               </div>
             </div>

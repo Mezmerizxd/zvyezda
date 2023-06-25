@@ -6,7 +6,12 @@ declare namespace Zvyezda.Client {
 }
 
 declare namespace Zvyezda.Client.Reducers {
-  type GlobalState = {};
+  type GlobalState = {
+    session: {
+      connected: boolean;
+      token: string;
+    };
+  };
 }
 
 declare namespace Zvyezda.Client.Styled {

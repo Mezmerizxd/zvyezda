@@ -3,6 +3,8 @@ import Endpoint from '../helpers/endpoint';
 import { serverManager } from '../managers/server';
 import { logger } from '../helpers/logger';
 
+import AccountController from './account';
+
 export default (prisma: PrismaClient): void => {
   Endpoint(serverManager.v1, '/get-socket-details', false, async (req) => {
     return {
@@ -13,4 +15,5 @@ export default (prisma: PrismaClient): void => {
   });
 
   logger.loadedController('index');
+  AccountController(prisma);
 };
