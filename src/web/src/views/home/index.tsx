@@ -42,7 +42,11 @@ export default () => {
   const dispatch = useAppDispatch();
 
   const [page, setPage] = useState(Pages.Home);
-  const [loginForm, setLoginForm] = useState<{ username: string; password: string; error: string }>(null);
+  const [loginForm, setLoginForm] = useState<{ username: string; password: string; error: string }>({
+    username: '',
+    password: '',
+    error: null,
+  });
 
   const prj = github_projects[Math.floor(Math.random() * github_projects.length)];
 

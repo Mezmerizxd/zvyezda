@@ -9,10 +9,10 @@ services:
     container_name: zvyezda_prod
     restart: always
     ports:
-      - '4500:4500'
+      - '4005:4005'
     environment:
       MODE: production
-      PORT: 4000
+      PORT: 4005
       DB_HOST: postgresql://postgres:root@postgres:5432/zvyezda_prod?schema=public
       SOCKET_HOST: ws://zvyezda.com/socket
       SERVER_HOST: http://zvyezda.com

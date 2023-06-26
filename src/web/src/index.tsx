@@ -8,6 +8,7 @@ import './styled/styled.css';
 
 import PageNotFound from './views/pagenotfound';
 import Home from './views/home';
+import Dashboard from './views/dashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -19,6 +20,7 @@ async function main() {
       <Provider store={store}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Provider>

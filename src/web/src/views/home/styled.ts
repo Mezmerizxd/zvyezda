@@ -184,7 +184,7 @@ export const Form = styled.div`
   width: calc(100% - 20px);
 
   p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
     color: ${theme.text.primary.hex};
     user-select: none;
