@@ -17,11 +17,11 @@ services:
       SOCKET_HOST: ws://zvyezda.com/socket
       SERVER_HOST: http://zvyezda.com
     networks:
-      - net_production
+      - net_zvyezda_prod
     depends_on:
       - postgres
 
-  postgres:
+  zvyezda_postgres:
     image: 'postgres:13.2'
     container_name: zvyezda_postgres
     restart: always
@@ -34,8 +34,8 @@ services:
     volumes:
       - ../resources/postgres:/var/lib/postgresql/data
     networks:
-      - net_production
+      - net_zvyezda_prod
 
 networks:
-  net_production:
+  net_zvyezda_prod:
     driver: bridge
