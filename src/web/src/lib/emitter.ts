@@ -44,8 +44,12 @@ class Emitter {
 
   _getApiUrl(): string {
     const { protocol, host, port } = window.location;
-    const isNotDev = host === 'localhost' && port === '3000';
-    return isNotDev ? `${protocol}//${host}/api/v1` : 'http://localhost:3000/api/v1';
+
+    if (port === '8080') {
+      return 'http://localhost:3000/api/v1';
+    } else {
+      return `${protocol}//${host}/api/v1`;
+    }
   }
 
   async _getSocketUrl(): Promise<string> {
