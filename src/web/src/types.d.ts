@@ -11,6 +11,9 @@ declare namespace Zvyezda.Client.Reducers {
       connected: boolean;
       token: string;
     };
+    home: {
+      page: number;
+    };
   };
 }
 
@@ -58,9 +61,6 @@ declare namespace Zvyezda.Client.Inputs {
 }
 
 declare namespace Zvyezda.Client.Models {
-  interface NavigationProps {
-    setPage: (page: number) => void;
-  }
   interface NavigationProductsProps {
     name: string;
     description: string;

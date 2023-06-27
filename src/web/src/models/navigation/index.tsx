@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
-import { useAppSelector } from '../../hooks/reduxHooks';
+import { useAppSelector, useAppDispatch } from '../../hooks/reduxHooks';
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react';
+import { setHomePage } from '../../reducers/global';
 
 import { Navigation, Container } from './styled';
 
@@ -11,8 +12,10 @@ import { MdMore } from 'react-icons/md';
 
 import { Pages } from '../../views/home';
 
-export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
+export default () => {
   const state: Zvyezda.Client.Reducers.GlobalState = useAppSelector((state) => state.global);
+  const dispatch = useAppDispatch();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const products: Zvyezda.Client.Models.NavigationProductsProps[] = [
@@ -39,8 +42,8 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
   ];
 
   const callsToAction: Zvyezda.Client.Models.NavigationCallsToActionProps[] = [
-    { name: 'Announcements', href: () => setPage(Pages.News), icon: FiBell },
-    { name: 'More', href: () => setPage(Pages.Projects), icon: MdMore },
+    { name: 'Announcements', href: () => dispatch(setHomePage(Pages.News)), icon: FiBell },
+    { name: 'More', href: () => dispatch(setHomePage(Pages.Projects)), icon: MdMore },
   ];
 
   function classNames(...classes) {
@@ -52,7 +55,7 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
       <Container>
         <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
-            <a onClick={() => setPage(Pages.Home)} className="-m-1.5 p-1.5">
+            <a onClick={() => dispatch(setHomePage(Pages.Home))} className="-m-1.5 p-1.5">
               <h1 id="LogoText" className=" text-3xl font-bold">
                 Zvyezda
               </h1>
@@ -70,7 +73,7 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
           </div>
           <Popover.Group className="hidden lg:flex lg:gap-x-12">
             <a
-              onClick={() => setPage(Pages.Home)}
+              onClick={() => dispatch(setHomePage(Pages.Home))}
               className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green"
             >
               Home
@@ -131,13 +134,13 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
             </Popover>
 
             <a
-              onClick={() => setPage(Pages.AboutMe)}
+              onClick={() => dispatch(setHomePage(Pages.AboutMe))}
               className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green"
             >
               About Me
             </a>
             <a
-              onClick={() => setPage(Pages.News)}
+              onClick={() => dispatch(setHomePage(Pages.News))}
               className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green"
             >
               News
@@ -153,7 +156,7 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
               </a>
             ) : (
               <a
-                onClick={() => setPage(Pages.Login)}
+                onClick={() => dispatch(setHomePage(Pages.Login))}
                 className="text-sm font-semibold leading-6 text-gray-50 hover:text-light-green"
               >
                 Log in
@@ -206,13 +209,13 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
                     )}
                   </Disclosure>
                   <a
-                    onClick={() => setPage(Pages.AboutMe)}
+                    onClick={() => dispatch(setHomePage(Pages.AboutMe))}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-50 hover:text-light-green"
                   >
                     About Me
                   </a>
                   <a
-                    onClick={() => setPage(Pages.News)}
+                    onClick={() => dispatch(setHomePage(Pages.News))}
                     className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-50 hover:text-light-green"
                   >
                     News
@@ -228,7 +231,7 @@ export default ({ setPage }: Zvyezda.Client.Models.NavigationProps) => {
                     </a>
                   ) : (
                     <a
-                      onClick={() => setPage(Pages.Login)}
+                      onClick={() => dispatch(setHomePage(Pages.Login))}
                       className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-50 hover:text-light-green"
                     >
                       Log in
