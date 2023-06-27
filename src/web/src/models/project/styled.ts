@@ -70,6 +70,7 @@ export const WideHeader = styled.div`
   h1 {
     font-size: 30px;
     font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
     color: ${theme.colors.accent.hex};
   }
 `;
@@ -101,6 +102,7 @@ export const Body = styled.div`
   p {
     font-size: 16px;
     font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
     color: ${theme.text.primary.hex};
 
     text-align: justify;

@@ -13,6 +13,7 @@ export const StandardButton = styled.button`
   color: ${theme.text.secondary.hex};
   font-size: 14px;
   font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
   letter-spacing: 0.5px;
   cursor: pointer;
   padding: 0 15px;
@@ -39,6 +40,7 @@ export const IconButton = styled.button`
   background-color: ${theme.colors.accent.hex};
   color: ${theme.text.primary.hex};
   font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   letter-spacing: 0.5px;
   cursor: pointer;
@@ -67,6 +69,7 @@ export const SubtleButton = styled.button`
   color: ${theme.text.accent.hex};
   font-size: 14px;
   font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
   letter-spacing: 0.5px;
   cursor: pointer;
   padding: 0 15px;

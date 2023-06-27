@@ -72,6 +72,7 @@ export const HeroAnnouncement = styled.div`
   border: 1px solid rgba(230, 230, 230, 0.5);
   border-radius: 50px;
   font-size: 0.9rem;
+  font-family: 'Montserrat', sans-serif;
   user-select: none;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -98,6 +99,7 @@ export const HeroHeader = styled.div`
     max-width: 1000px;
     text-align: center;
     font-size: 3.6rem;
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     user-select: none;
     color: #ff0059;
@@ -111,6 +113,7 @@ export const HeroHeader = styled.div`
   p {
     font-size: 1.15rem;
     font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
     user-select: none;
     color: rgb(230, 230, 230);
   }
@@ -161,7 +164,7 @@ export const Paragraph = styled.div`
 
   p {
     max-width: 1000px;
-
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.2rem;
     font-weight: 500;
     color: ${theme.text.primary.hex};
@@ -186,6 +189,7 @@ export const Form = styled.div`
   p {
     font-size: 1rem;
     font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
     color: ${theme.text.primary.hex};
     user-select: none;
     color: ${theme.text.error.hex};
@@ -224,12 +228,14 @@ export const FooterColumn = styled.div`
   h1 {
     font-size: 1rem;
     font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
     color: ${theme.text.primary.hex};
     user-select: none;
   }
 
   p {
     font-size: 0.8rem;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     color: ${theme.text.primary.hex};
 

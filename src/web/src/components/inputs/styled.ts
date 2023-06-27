@@ -37,6 +37,7 @@ export const IconInput = styled.div`
       color: ${theme.text.accent.hex};
       font-size: 16px;
       font-weight: 500;
+      font-family: 'Montserrat', sans-serif;
 
       &::placeholder {
         color: ${theme.text.primary.hex};
