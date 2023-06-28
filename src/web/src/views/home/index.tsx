@@ -27,6 +27,7 @@ import Projects from './Projects';
 import AboutMe from './AboutMe';
 import News from './News';
 import Login from './Login';
+import { useEffect } from 'react';
 
 export enum Pages {
   Home,
@@ -42,22 +43,19 @@ export default () => {
 
   const prj = github_projects[Math.floor(Math.random() * github_projects.length)];
 
-  setTimeout(async () => {
-    const isTokenValid = await emitter.api('/account/check-token', false, {
-      token: localStorage.getItem('token'),
+  useEffect(() => {
+    setTimeout(async () => {
+      const isTokenValid = await emitter.validateToken();
+      if (isTokenValid) {
+        dispatch(
+          setSession({
+            connected: true,
+            token: localStorage.getItem('token'),
+          }),
+        );
+      }
     });
-
-    if (isTokenValid?.server?.error) {
-      localStorage.removeItem('token');
-    } else if (isTokenValid?.data?.valid === true) {
-      dispatch(
-        setSession({
-          connected: true,
-          token: localStorage.getItem('token'),
-        }),
-      );
-    }
-  });
+  }, []);
 
   return (
     <Home>

@@ -73,6 +73,20 @@ declare namespace Zvyezda.Client.Models {
     icon: any;
   }
 
+  interface SidebarItemActionProps {
+    id: string;
+    title: string;
+    icon: React.ReactNode;
+  }
+  interface SidebarItemProps {
+    id: string;
+    title: string;
+    actions: SidebarItemActionProps[];
+  }
+  interface SidebarProps {
+    items: SidebarItemProps[];
+  }
+
   type ProjectProps = Zvyezda.Client.Data.GithubProjects;
 }
 

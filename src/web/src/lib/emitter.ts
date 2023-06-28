@@ -42,6 +42,26 @@ class Emitter {
     return { server, data };
   }
 
+  async validateToken(): Promise<boolean> {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return false;
+    }
+
+    const r = await this.api('/account/check-token', false, {
+      token,
+    });
+
+    if (r?.data?.valid === true) {
+      return true;
+    } else {
+      localStorage.removeItem('token');
+    }
+
+    return false;
+  }
+
   _getApiUrl(): string {
     const { protocol, host, port } = window.location;
 

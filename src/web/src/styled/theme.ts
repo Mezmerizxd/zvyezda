@@ -23,6 +23,9 @@ const theme: Zvyezda.Client.Styled.Theme = {
     lightBackground: {
       hex: '#2B2F2F',
     },
+    darkBackground: {
+      hex: '#191919',
+    },
   },
   text: {
     primary: {

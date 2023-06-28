@@ -38,7 +38,7 @@ export default () => {
           setLoginForm({ ...loginForm, error: res.server.error });
         } else {
           localStorage.setItem('token', res.data.token);
-          dispatch(setHomePage(Pages.Home));
+          window.location.href = '/dashboard';
         }
       });
   }
