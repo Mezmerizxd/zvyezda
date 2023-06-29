@@ -1,49 +1,49 @@
-import { Sidebar, Container, Item, ItemTitle, ItemAction, ItemActionTitle } from './styled';
+import { Sidebar, Container, Item, ItemTitle, ItemAction, ItemSmallAction, ItemActionTitle } from './styled';
 
-import { MdYard } from 'react-icons/md';
-
-const items: Zvyezda.Client.Models.SidebarProps = {
-  items: [
-    {
-      id: 'section_1',
-      title: 'Section 1',
-      actions: [
-        {
-          id: 'action_1',
-          title: 'Action 1',
-          icon: <MdYard />,
-        },
-      ],
-    },
-    {
-      id: 'section_2',
-      title: 'Section 2',
-      actions: [
-        {
-          id: 'action_1',
-          title: 'Action 1',
-          icon: <MdYard />,
-        },
-      ],
-    },
-  ],
-};
-
-export default () => {
+export default ({
+  items,
+  sidebar,
+  selected,
+  onClick,
+}: {
+  items: Zvyezda.Client.Models.SidebarItemProps[];
+  sidebar: boolean;
+  selected: number;
+  onClick: (contextId: number) => void;
+}) => {
   return (
     <Sidebar>
       <Container>
-        {items.items.map((item) => (
-          <Item key={item.id}>
-            <ItemTitle>{item.title}</ItemTitle>
-            {item.actions.map((action) => (
-              <ItemAction key={action.id}>
-                {action.icon}
-                <ItemActionTitle>{action.title}</ItemActionTitle>
-              </ItemAction>
+        {sidebar
+          ? items.map((item) => (
+              <Item key={item.id}>
+                <ItemTitle>{item.title}</ItemTitle>
+                {item.actions.map((action) => (
+                  <ItemAction
+                    key={action.id}
+                    selected={action.id === selected ? true : false}
+                    onClick={() => onClick(action.id)}
+                  >
+                    {action.icon}
+                    <ItemActionTitle selected={action.id === selected ? true : false}>{action.title}</ItemActionTitle>
+                  </ItemAction>
+                ))}
+              </Item>
+            ))
+          : items.map((item) => (
+              <Item key={item.id}>
+                {item.actions.map((action) => (
+                  <ItemSmallAction
+                    key={action.id}
+                    selected={action.id === selected ? true : false}
+                    onClick={() => onClick(action.id)}
+                  >
+                    {action.icon}
+                  </ItemSmallAction>
+                ))}
+                <hr />
+              </Item>
             ))}
-          </Item>
-        ))}
       </Container>
     </Sidebar>
   );

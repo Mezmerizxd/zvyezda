@@ -14,6 +14,10 @@ declare namespace Zvyezda.Client.Reducers {
     home: {
       page: number;
     };
+    dashboard: {
+      sidebar: boolean;
+      context: number;
+    };
   };
 }
 
@@ -74,7 +78,7 @@ declare namespace Zvyezda.Client.Models {
   }
 
   interface SidebarItemActionProps {
-    id: string;
+    id: number;
     title: string;
     icon: React.ReactNode;
   }

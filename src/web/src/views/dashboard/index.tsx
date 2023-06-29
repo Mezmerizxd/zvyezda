@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { emitter } from '../../lib/emitter';
-import { useAppDispatch } from '../../hooks/reduxHooks';
-import { setSession } from '../../reducers/global';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { setSession, setDashboardSidebar, setDashboardContext } from '../../reducers/global';
+import { sidebar_items, Contexts } from '../../data/sidebar_items';
 
 import {
   Dashboard,
@@ -18,6 +19,7 @@ import { MdMenu } from 'react-icons/md';
 import Sidebar from '../../models/sidebar';
 
 export default () => {
+  const state: Zvyezda.Client.Reducers.GlobalState = useAppSelector((state) => state.global);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default () => {
     <Dashboard>
       <TitlebarContainer>
         <Titlebar>
-          <TitlebarHandle>
+          <TitlebarHandle onClick={() => dispatch(setDashboardSidebar(!state.dashboard.sidebar))}>
             <MdMenu />
           </TitlebarHandle>
           <TitlebarTitle>
@@ -51,10 +53,18 @@ export default () => {
       </TitlebarContainer>
 
       <Container>
-        <SidebarContainer>
-          <Sidebar />
+        <SidebarContainer sidebar={state.dashboard.sidebar}>
+          <Sidebar
+            items={sidebar_items}
+            sidebar={state.dashboard.sidebar}
+            selected={state.dashboard.context}
+            onClick={(contextId) => dispatch(setDashboardContext(contextId))}
+          />
         </SidebarContainer>
-        <ContextContainer>b</ContextContainer>
+        <ContextContainer>
+          {state.dashboard.context === Contexts.Default && <>DEFAULT</>}
+          {state.dashboard.context === Contexts.Xbox_Hacking && <>XBOX HACKING</>}
+        </ContextContainer>
       </Container>
     </Dashboard>
   );

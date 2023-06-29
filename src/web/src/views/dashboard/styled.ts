@@ -15,12 +15,6 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
 
-  // display: grid;
-  // grid-template-columns: 300px 1fr;
-  // grid-template-rows: 1fr;
-  // grid-column-gap: 0px;
-  // grid-row-gap: 0px;
-
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -74,6 +68,8 @@ export const TitlebarTitle = styled.div`
 `;
 
 export const SidebarContainer = styled.div`
+  width: ${(props: { sidebar: boolean }) => (props.sidebar ? 'fit-content' : '50px')};
+
   background-color: ${theme.colors.darkBackground.hex};
   border-right: 1px solid rgba(255, 255, 255, 0.15);
 `;
