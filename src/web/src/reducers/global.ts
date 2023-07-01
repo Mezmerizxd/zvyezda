@@ -10,7 +10,7 @@ export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {
   },
   dashboard: {
     sidebar: localStorage.getItem('sidebar') === 'true' ? true : false,
-    context: 0,
+    context: Number(localStorage.getItem('context')) || 0,
     serverVersion: null,
     clientVersion: null,
   },
@@ -35,6 +35,7 @@ export const GlobalSlice = createSlice({
     },
     setDashboardContext: (state, action) => {
       state.dashboard.context = action.payload;
+      localStorage.setItem('context', action.payload);
     },
     setDashboardVersions: (state, action) => {
       state.dashboard.serverVersion = action.payload.server;
