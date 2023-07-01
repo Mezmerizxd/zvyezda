@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { emitter } from '../../lib/emitter';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import { setSession, setDashboardSidebar, setDashboardContext } from '../../reducers/global';
+import { setSession, setDashboardSidebar, setDashboardContext, setDashboardVersions } from '../../reducers/global';
 import { sidebar_items, Contexts } from '../../data/sidebar_items';
 
 import {
@@ -13,10 +13,12 @@ import {
   Titlebar,
   TitlebarHandle,
   TitlebarTitle,
+  TitlebarVersions,
 } from './styled';
 import { MdMenu } from 'react-icons/md';
 
 import Sidebar from '../../models/sidebar';
+import XboxHacking from './XboxHacking';
 
 export default () => {
   const state: Zvyezda.Client.Reducers.GlobalState = useAppSelector((state) => state.global);
@@ -36,6 +38,11 @@ export default () => {
         alert('Unauthorized Access!');
         window.location.href = '/';
       }
+
+      const versions = await emitter.api('/get-version', false, null);
+      if (versions.server.success !== false) {
+        dispatch(setDashboardVersions(versions.data));
+      }
     });
   }, []);
 
@@ -49,6 +56,10 @@ export default () => {
           <TitlebarTitle>
             <h1 id="LogoText">Zvyezda Dashboard</h1>
           </TitlebarTitle>
+          <TitlebarVersions>
+            <p id="LogoText">server: v{state.dashboard.serverVersion}</p>
+            <p id="LogoText">client: v{state.dashboard.clientVersion}</p>
+          </TitlebarVersions>
         </Titlebar>
       </TitlebarContainer>
 
@@ -63,7 +74,7 @@ export default () => {
         </SidebarContainer>
         <ContextContainer>
           {state.dashboard.context === Contexts.Default && <>DEFAULT</>}
-          {state.dashboard.context === Contexts.Xbox_Hacking && <>XBOX HACKING</>}
+          {state.dashboard.context === Contexts.Xbox_Hacking && <XboxHacking />}
         </ContextContainer>
       </Container>
     </Dashboard>

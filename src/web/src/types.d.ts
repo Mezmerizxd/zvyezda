@@ -17,6 +17,8 @@ declare namespace Zvyezda.Client.Reducers {
     dashboard: {
       sidebar: boolean;
       context: number;
+      serverVersion: string;
+      clientVersion: string;
     };
   };
 }

@@ -55,7 +55,7 @@ export const TitlebarHandle = styled.div`
   }
 `;
 export const TitlebarTitle = styled.div`
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
   margin: 0 10px;
 
@@ -66,6 +66,21 @@ export const TitlebarTitle = styled.div`
 
   user-select: none;
 `;
+export const TitlebarVersions = styled.div`
+  margin: 0 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  user-select: none;
+
+  p {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+  }
+`;
 
 export const SidebarContainer = styled.div`
   width: ${(props: { sidebar: boolean }) => (props.sidebar ? 'fit-content' : '50px')};
@@ -75,3 +90,5 @@ export const SidebarContainer = styled.div`
 `;
 
 export const ContextContainer = styled.div``;
+
+export const Context = styled.div``;

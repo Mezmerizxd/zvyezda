@@ -9,8 +9,10 @@ export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {
     page: 0,
   },
   dashboard: {
-    sidebar: true,
+    sidebar: localStorage.getItem('sidebar') === 'true' ? true : false,
     context: 0,
+    serverVersion: null,
+    clientVersion: null,
   },
 };
 
@@ -24,15 +26,24 @@ export const GlobalSlice = createSlice({
     setHomePage: (state, action) => {
       state.home.page = action.payload;
     },
+    setDashboard: (state, action) => {
+      state.dashboard = action.payload;
+    },
     setDashboardSidebar: (state, action) => {
       state.dashboard.sidebar = action.payload;
+      localStorage.setItem('sidebar', action.payload ? 'true' : 'false');
     },
     setDashboardContext: (state, action) => {
       state.dashboard.context = action.payload;
     },
+    setDashboardVersions: (state, action) => {
+      state.dashboard.serverVersion = action.payload.server;
+      state.dashboard.clientVersion = action.payload.client;
+    },
   },
 });
 
-export const { setSession, setHomePage, setDashboardSidebar, setDashboardContext } = GlobalSlice.actions;
+export const { setSession, setHomePage, setDashboard, setDashboardSidebar, setDashboardContext, setDashboardVersions } =
+  GlobalSlice.actions;
 
 export default GlobalSlice.reducer;
