@@ -1,4 +1,4 @@
-import { IconInput } from './styled';
+import { Input } from './styled';
 
 export default ({
   type,
@@ -9,13 +9,13 @@ export default ({
   onChange,
   value,
   disabled,
-}: Zvyezda.Client.Inputs.IconInputProps) => {
+}: Zvyezda.Client.Inputs.InputProps) => {
   return (
-    <IconInput style={{ margin: margin, padding: padding }}>
-      <div className="Icon">{icon}</div>
+    <Input icon={icon} style={{ margin: margin, padding: padding }}>
+      {icon && <div className="Icon">{icon}</div>}
       <div className="InputField">
         <input type={type} placeholder={placeholder} onChange={onChange} value={value} disabled={disabled} />
       </div>
-    </IconInput>
+    </Input>
   );
 };

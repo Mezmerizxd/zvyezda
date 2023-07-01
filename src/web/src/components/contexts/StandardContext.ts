@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import theme from '../../styled/theme';
 
 export const StandardContext = styled.div`
-  width: fit-content;
+  width: ${(props: { wide?: boolean }) => (props.wide ? 'calc(100% - 20px)' : 'fit-content')};
   height: fit-content;
 
   display: flex;
@@ -42,4 +42,11 @@ export const StandardContextBody = styled.div`
   padding: 10px;
 
   color: ${theme.text.primary.hex};
+`;
+
+export const StandardContextDivider = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;

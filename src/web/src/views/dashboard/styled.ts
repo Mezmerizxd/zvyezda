@@ -9,6 +9,8 @@ export const Dashboard = styled.div`
   flex-direction: column;
 
   background-color: ${theme.colors.background.hex};
+
+  overflow: hidden;
 `;
 
 export const Container = styled.div`
@@ -89,6 +91,12 @@ export const SidebarContainer = styled.div`
   border-right: 1px solid rgba(255, 255, 255, 0.15);
 `;
 
-export const ContextContainer = styled.div``;
+export const ContextContainer = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
-export const Context = styled.div``;
+export const Context = styled.div`
+  width: 100%;
+  height: 100%;
+`;

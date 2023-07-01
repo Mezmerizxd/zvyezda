@@ -6,7 +6,7 @@ import { Pages } from './index';
 
 import { Body, Hero, HeroContainer, HeroHeader, AccountForm, Form } from './styled';
 import { FaKey, FaUser } from 'react-icons/fa';
-import IconInput from '../../components/inputs/IconInput';
+import IconInput from '../../components/inputs/StandardInput';
 import StandardButton from '../../components/buttons/StandardButton';
 
 export default () => {

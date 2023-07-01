@@ -31,6 +31,9 @@ const theme: Zvyezda.Client.Styled.Theme = {
     primary: {
       hex: '#E6E6E6',
     },
+    lightPrimary: {
+      hex: '#9ca3af',
+    },
     secondary: {
       hex: '#131313',
     },

@@ -25,3 +25,20 @@ model Accounts {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
+
+model HackedXboxs {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  xboxType        String
+  xboxColour      String
+  motherboardType String
+  serialNumber    String
+  mfrDate         DateTime
+  model           String
+  rghVersion      String
+  rghType         String
+  images          String[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

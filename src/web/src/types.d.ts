@@ -54,10 +54,10 @@ declare namespace Zvyezda.Client.Buttons {
 }
 
 declare namespace Zvyezda.Client.Inputs {
-  type IconInputProps = {
+  type InputProps = {
     type: string;
     placeholder?: string;
-    icon: any;
+    icon?: any;
     margin?: string;
     padding?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
