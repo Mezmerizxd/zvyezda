@@ -20,6 +20,10 @@ declare namespace Zvyezda.Server {
     ['/test']: () => {
       name: string;
     };
+    ['/get-version']: () => {
+      server: string;
+      client: string;
+    };
     ['/get-socket-details']: () => {
       socketUrl: string;
     };
