@@ -33,6 +33,7 @@ export const StandardContextHeader = styled.div`
     font-weight: 500;
     color: ${theme.text.primary.hex};
     margin: 0 10px;
+    user-select: none;
   }
 `;
 

@@ -35,6 +35,9 @@ declare namespace Zvyezda.Server {
     ['/account/check-token']: () => {
       valid: boolean;
     };
+
+    /* XBOX HACKING */
+    ['/xbox-hacking/create']: () => {};
   };
 }
 

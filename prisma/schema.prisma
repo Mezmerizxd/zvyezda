@@ -36,8 +36,9 @@ model HackedXboxs {
   serialNumber    String
   mfrDate         DateTime
   model           String
+  nandSize        String
   rghVersion      String
-  rghType         String
+  rghGlitchType   String
   images          String[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

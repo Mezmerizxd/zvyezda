@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { emitter } from '../../lib/emitter';
 import { xbox_types, motherboard_types, nand_types, rgh_versions, glitch_chip_types } from '../../data/xbox_hacking';
 
 import { Context } from './styled';
@@ -29,7 +30,7 @@ export default () => {
     rghGlitchType: '',
   });
 
-  function create() {
+  async function create() {
     setError(null);
 
     if (!xbox.title) {
@@ -76,6 +77,20 @@ export default () => {
       setError('RGH Glitch Type is required');
       return;
     }
+
+    const r = await emitter.api('/xbox-hacking/create', true, {
+      title: xbox.title,
+      description: xbox.description,
+      serialNumber: xbox.serialNumber,
+      xboxType: xbox.xboxType,
+      xboxColour: xbox.xboxColour,
+      motherboardType: xbox.motherboardType,
+      nandSize: xbox.nandSize,
+      mfrDate: xbox.mfrDate,
+      model: xbox.model,
+      rghVersion: xbox.rghVersion,
+      rghGlitchType: xbox.rghGlitchType,
+    });
   }
 
   return (
@@ -159,6 +174,13 @@ export default () => {
           <StandardButton text="Create" margin="5px 0" onClick={create} />
           {error && <p id="error">{error}</p>}
         </StandardContextBody>
+      </StandardContext>
+
+      <StandardContext max="800px" wide>
+        <StandardContextHeader>
+          <h1>Consoles</h1>
+        </StandardContextHeader>
+        <StandardContextBody></StandardContextBody>
       </StandardContext>
     </Context>
   );
