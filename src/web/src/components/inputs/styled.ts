@@ -48,6 +48,16 @@ export const Input = styled.div`
       }
     }
 
+    input[type="date"]::-webkit-inner-spin-button,
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      display: none;
+      -webkit-appearance: none;
+    }
+    input[type="date"] {
+      color: ${(props: { icon?: boolean; dateEmpty?: boolean }) =>
+        props.dateEmpty ? theme.text.lightPrimary.hex : theme.text.accent.hex};
+    }
+
     select {
       display: flex;
       justify-content: center;

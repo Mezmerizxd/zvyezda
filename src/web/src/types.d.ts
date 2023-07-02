@@ -3,6 +3,20 @@ declare namespace Zvyezda {}
 declare namespace Zvyezda.Client {
   type RootState = ReturnType<typeof store.getState>;
   type AppDispatch = typeof store.dispatch;
+
+  type CreateHackedXbox = {
+    title: string;
+    description: string;
+    serialNumber: string;
+    xboxType: string;
+    xboxColour: string;
+    motherboardType: string;
+    nandSize: string;
+    mfrDate: string;
+    model: string;
+    rghVersion: string;
+    rghGlitchType: string;
+  };
 }
 
 declare namespace Zvyezda.Client.Reducers {

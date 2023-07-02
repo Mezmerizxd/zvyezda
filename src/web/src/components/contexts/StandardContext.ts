@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import theme from '../../styled/theme';
 
 export const StandardContext = styled.div`
+  max-width: ${(props: { wide?: boolean; max: string }) => (props.max ? props.max : 'fit-content')};
   width: ${(props: { wide?: boolean }) => (props.wide ? 'calc(100% - 20px)' : 'fit-content')};
   height: fit-content;
 
@@ -42,6 +43,19 @@ export const StandardContextBody = styled.div`
   padding: 10px;
 
   color: ${theme.text.primary.hex};
+
+  #error {
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+    color: ${theme.text.primary.hex};
+    user-select: none;
+    color: ${theme.text.error.hex};
+    background-color: ${theme.colors.error.hex};
+    border-radius: 6px;
+    padding: 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 `;
 
 export const StandardContextDivider = styled.div`
