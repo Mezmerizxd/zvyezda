@@ -1,146 +1,146 @@
 export const xbox_types = [
   {
-    value: 'phat',
+    value: 'Phat',
     text: 'Phat',
   },
   {
-    value: 'slim',
+    value: 'Slim',
     text: 'Slim',
   },
   {
-    value: 'elite',
+    value: 'Elite (E)',
     text: 'Elite (E)',
   },
 ];
 
 export const motherboard_types = [
   {
-    value: 'xenon',
+    value: 'Xenon',
     text: 'Xenon',
   },
   {
-    value: 'zephyr',
+    value: 'Zephyr',
     text: 'Zephyr',
   },
   {
-    value: 'falcon',
+    value: 'Falcon',
     text: 'Falcon',
   },
   {
-    value: 'jasper',
+    value: 'Jasper',
     text: 'Jasper',
   },
   {
-    value: 'trinity',
+    value: 'Trinity',
     text: 'Trinity',
   },
   {
-    value: 'corona',
+    value: 'Corona',
     text: 'Corona',
   },
   {
-    value: 'winchester',
+    value: 'Winchester',
     text: 'Winchester',
   },
 ];
 
 export const nand_types = [
   {
-    value: '16mb',
+    value: '16MB',
     text: '16MB',
   },
   {
-    value: '4gb',
+    value: '4GB',
     text: '4GB',
   },
 ];
 
 export const rgh_versions = [
   {
-    value: '1',
+    value: 'RGH 1',
     text: 'RGH 1',
   },
   {
-    value: '1.2',
+    value: 'RGH 1.2',
     text: 'RGH 1.2',
   },
   {
-    value: '2',
+    value: 'RGH 2',
     text: 'RGH 2',
   },
   {
-    value: 'ext_clk',
+    value: 'EXT_CLK',
     text: 'EXT_CLK',
   },
   {
-    value: '3',
+    value: 'RGH 3',
     text: 'RGH 3',
   },
   {
-    value: 'srgh',
+    value: 'S-RGH',
     text: 'S-RGH',
   },
 ];
 
 export const glitch_chip_types = [
   {
-    value: 'coolrunner1',
+    value: 'Coolrunner Rev A',
     text: 'Coolrunner Rev A',
   },
   {
-    value: 'coolrunner2',
+    value: 'Coolrunner Rev B',
     text: 'Coolrunner Rev B',
   },
   {
-    value: 'coolrunner3',
+    value: 'Coolrunner Rev C',
     text: 'Coolrunner Rev C',
   },
   {
-    value: 'coolrunner4',
+    value: 'Coolrunner Rev D',
     text: 'Coolrunner Rev D',
   },
   {
-    value: 'coolrunnerLite',
+    value: 'Coolrunner Lite',
     text: 'Coolrunner Lite',
   },
   {
-    value: 'acev1',
+    value: 'Ace V1',
     text: 'Ace V1',
   },
   {
-    value: 'acev2',
+    value: 'Ace V2',
     text: 'Ace V2',
   },
   {
-    value: 'acev3',
+    value: 'Ace V3',
     text: 'Ace V3',
   },
   {
-    value: 'acev4',
+    value: 'Ace V4',
     text: 'Ace V4',
   },
   {
-    value: 'acev5',
+    value: 'Ace V5',
     text: 'Ace V5',
   },
   {
-    value: 'squirt',
+    value: 'Squirt',
     text: 'Squirt',
   },
   {
-    value: 'matrixv1',
+    value: 'Matrix V1',
     text: 'Matrix V1',
   },
   {
-    value: 'matrixv1O',
+    value: 'Matrix V1 (Oscillator)',
     text: 'Matrix V1 (Oscillator)',
   },
   {
-    value: 'matrixv2',
+    value: 'Matrix V2',
     text: 'Matrix V2',
   },
   {
-    value: 'x360run',
+    value: 'X360Run',
     text: 'X360Run',
   },
 ];

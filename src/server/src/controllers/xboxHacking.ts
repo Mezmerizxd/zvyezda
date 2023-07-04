@@ -18,7 +18,7 @@ export default (prisma: PrismaClient): void => {
       model,
       rghVersion,
       rghGlitchType,
-    }: Zvyezda.Client.CreateHackedXbox = req.body;
+    }: Zvyezda.Client.HackedConsole = req.body;
 
     if (
       !title ||
@@ -59,6 +59,16 @@ export default (prisma: PrismaClient): void => {
 
     return {
       data: {},
+    };
+  });
+
+  Endpoint(serverManager.v1, '/xbox-hacking/get-consoles', true, async (req) => {
+    const consoles = await prisma.hackedXboxs.findMany();
+
+    return {
+      data: {
+        consoles,
+      },
     };
   });
 

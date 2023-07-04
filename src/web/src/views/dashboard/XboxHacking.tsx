@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { emitter } from '../../lib/emitter';
 import { xbox_types, motherboard_types, nand_types, rgh_versions, glitch_chip_types } from '../../data/xbox_hacking';
 
@@ -8,15 +8,18 @@ import {
   StandardContextHeader,
   StandardContextBody,
   StandardContextDivider,
+  StandardContextNotice,
 } from '../../components/contexts/StandardContext';
 
 import IconInput from '../../components/inputs/StandardInput';
 import StandardButton from '../../components/buttons/StandardButton';
 import ComboInput from '../../components/inputs/ComboInput';
+import ConsoleEditor from '../../models/consoleEditor';
 
 export default () => {
+  const [update, setUpdate] = useState<boolean>(false);
   const [error, setError] = useState<string>(null);
-  const [xbox, setXbox] = useState<Zvyezda.Client.CreateHackedXbox>({
+  const [xbox, setXbox] = useState<Zvyezda.Client.HackedConsole>({
     title: '',
     description: '',
     serialNumber: '',
@@ -24,11 +27,22 @@ export default () => {
     xboxColour: '',
     motherboardType: '',
     nandSize: '',
-    mfrDate: '',
+    mfrDate: new Date(''),
     model: '',
     rghVersion: '',
     rghGlitchType: '',
   });
+  const [consoles, setConsoles] = useState<Zvyezda.Client.HackedConsole[]>(null);
+
+  useEffect(() => {
+    setUpdate(false);
+    setTimeout(async () => {
+      const r = await emitter.api('/xbox-hacking/get-consoles', true, null);
+      if (r.server.success === true) {
+        setConsoles(r.data.consoles);
+      }
+    });
+  }, [update === true]);
 
   async function create() {
     setError(null);
@@ -91,6 +105,11 @@ export default () => {
       rghVersion: xbox.rghVersion,
       rghGlitchType: xbox.rghGlitchType,
     });
+
+    if (r.server.success === true) {
+      setXbox(null);
+      setUpdate(true);
+    }
   }
 
   return (
@@ -148,7 +167,7 @@ export default () => {
               placeholder="MFR Date"
               type="date"
               margin="0 5px"
-              onChange={(e) => setXbox({ ...xbox, mfrDate: e.target.value })}
+              onChange={(e) => setXbox({ ...xbox, mfrDate: new Date(e.target.value) })}
             />
             <IconInput
               placeholder="Model"
@@ -180,7 +199,33 @@ export default () => {
         <StandardContextHeader>
           <h1>Consoles</h1>
         </StandardContextHeader>
-        <StandardContextBody></StandardContextBody>
+        {consoles && consoles?.length > 0 ? (
+          <StandardContextBody>
+            {consoles &&
+              consoles.map((xbox) => {
+                return (
+                  <ConsoleEditor
+                    xbox={{
+                      title: xbox.title,
+                      description: xbox.description,
+                      serialNumber: xbox.serialNumber,
+                      xboxType: xbox.xboxType,
+                      xboxColour: xbox.xboxColour,
+                      motherboardType: xbox.motherboardType,
+                      nandSize: xbox.nandSize,
+                      mfrDate: new Date(xbox.mfrDate),
+                      model: xbox.model,
+                      rghVersion: xbox.rghVersion,
+                      rghGlitchType: xbox.rghGlitchType,
+                    }}
+                    uuid={xbox.id}
+                  />
+                );
+              })}
+          </StandardContextBody>
+        ) : (
+          <StandardContextNotice>No Consoles Found.</StandardContextNotice>
+        )}
       </StandardContext>
     </Context>
   );

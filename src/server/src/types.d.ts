@@ -38,6 +38,9 @@ declare namespace Zvyezda.Server {
 
     /* XBOX HACKING */
     ['/xbox-hacking/create']: () => {};
+    ['/xbox-hacking/get-consoles']: () => {
+      consoles: Zvyezda.Client.HackedConsole[];
+    };
   };
 }
 

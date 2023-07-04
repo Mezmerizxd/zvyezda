@@ -11,12 +11,15 @@ export default ({
   value,
   disabled,
 }: Zvyezda.Client.Inputs.InputProps) => {
-  const [inputValue, setValue] = useState(null);
+  const [inputValue, setValue] = useState(value);
 
   return (
     <Input
+      id={placeholder}
       icon={icon}
-      dateEmpty={type === 'date' && inputValue === null ? true : false}
+      dateEmpty={
+        type === 'date' && (inputValue === null || inputValue === '' || inputValue === undefined ? true : false)
+      }
       style={{ margin: margin, padding: padding }}
     >
       {icon && <div className="Icon">{icon}</div>}
@@ -28,7 +31,7 @@ export default ({
             setValue(e.target.value);
             onChange && onChange(e);
           }}
-          value={value}
+          value={type === 'date' ? inputValue : value}
           disabled={disabled}
         />
       </div>

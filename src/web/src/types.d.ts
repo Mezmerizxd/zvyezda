@@ -4,7 +4,8 @@ declare namespace Zvyezda.Client {
   type RootState = ReturnType<typeof store.getState>;
   type AppDispatch = typeof store.dispatch;
 
-  type CreateHackedXbox = {
+  type HackedConsole = {
+    id?: string;
     title: string;
     description: string;
     serialNumber: string;
@@ -12,7 +13,7 @@ declare namespace Zvyezda.Client {
     xboxColour: string;
     motherboardType: string;
     nandSize: string;
-    mfrDate: string;
+    mfrDate: Date;
     model: string;
     rghVersion: string;
     rghGlitchType: string;

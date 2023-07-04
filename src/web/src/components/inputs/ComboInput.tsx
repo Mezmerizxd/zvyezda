@@ -5,6 +5,7 @@ export default ({
   icon,
   options,
   onChange,
+  value,
   margin,
   padding,
 }: {
@@ -12,6 +13,7 @@ export default ({
   icon?: any;
   options: { value: string; text: string }[];
   onChange?: (e: any) => void;
+  value?: any;
   margin?: string;
   padding?: string;
 }) => {
@@ -27,9 +29,15 @@ export default ({
             onChange && onChange(e);
           }}
         >
-          <option id="placeholder" value="" disabled selected hidden>
-            {placeholder}
-          </option>
+          {value ? (
+            <option value={value} selected>
+              {value}
+            </option>
+          ) : (
+            <option id="placeholder" value="" disabled selected hidden>
+              {placeholder}
+            </option>
+          )}
           {options.map((option) => {
             return <option value={option.value}>{option.text}</option>;
           })}

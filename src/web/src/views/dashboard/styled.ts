@@ -11,6 +11,21 @@ export const Dashboard = styled.div`
   background-color: ${theme.colors.background.hex};
 
   overflow: hidden;
+
+  * {
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: ${theme.colors.accent.hex};
+      border-radius: 5px;
+    }
+  }
 `;
 
 export const Container = styled.div`
@@ -98,5 +113,7 @@ export const ContextContainer = styled.div`
 
 export const Context = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100% - 45px);
+
+  overflow: auto;
 `;
