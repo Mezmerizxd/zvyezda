@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Input } from './styled';
 
 export default ({
+  id,
   type,
   placeholder,
   icon,
@@ -15,7 +16,7 @@ export default ({
 
   return (
     <Input
-      id={placeholder}
+      id={id}
       icon={icon}
       dateEmpty={
         type === 'date' && (inputValue === null || inputValue === '' || inputValue === undefined ? true : false)

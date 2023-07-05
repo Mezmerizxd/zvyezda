@@ -17,6 +17,7 @@ declare namespace Zvyezda.Client {
     model: string;
     rghVersion: string;
     rghGlitchType: string;
+    images?: string[];
   };
 }
 
@@ -34,6 +35,9 @@ declare namespace Zvyezda.Client.Reducers {
       context: number;
       serverVersion: string;
       clientVersion: string;
+      xboxHacking: {
+        refresh: boolean;
+      };
     };
   };
 }
@@ -70,6 +74,7 @@ declare namespace Zvyezda.Client.Buttons {
 
 declare namespace Zvyezda.Client.Inputs {
   type InputProps = {
+    id?: string;
     type: string;
     placeholder?: string;
     icon?: any;

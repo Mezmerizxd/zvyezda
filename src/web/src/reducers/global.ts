@@ -13,6 +13,9 @@ export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {
     context: Number(localStorage.getItem('context')) || 0,
     serverVersion: null,
     clientVersion: null,
+    xboxHacking: {
+      refresh: false,
+    },
   },
 };
 
@@ -41,10 +44,20 @@ export const GlobalSlice = createSlice({
       state.dashboard.serverVersion = action.payload.server;
       state.dashboard.clientVersion = action.payload.client;
     },
+    setDashboardXboxHackingRefresh: (state, action) => {
+      state.dashboard.xboxHacking.refresh = action.payload;
+    },
   },
 });
 
-export const { setSession, setHomePage, setDashboard, setDashboardSidebar, setDashboardContext, setDashboardVersions } =
-  GlobalSlice.actions;
+export const {
+  setSession,
+  setHomePage,
+  setDashboard,
+  setDashboardSidebar,
+  setDashboardContext,
+  setDashboardVersions,
+  setDashboardXboxHackingRefresh,
+} = GlobalSlice.actions;
 
 export default GlobalSlice.reducer;

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { emitter } from '../../lib/emitter';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { xbox_types, motherboard_types, nand_types, rgh_versions, glitch_chip_types } from '../../data/xbox_hacking';
+import { setDashboardXboxHackingRefresh } from '../../reducers/global';
 
 import { Context } from './styled';
 import {
@@ -10,14 +12,19 @@ import {
   StandardContextDivider,
   StandardContextNotice,
 } from '../../components/contexts/StandardContext';
+import { FaImage, FaTrash } from 'react-icons/fa';
 
 import IconInput from '../../components/inputs/StandardInput';
 import StandardButton from '../../components/buttons/StandardButton';
+import SubtleButton from '../../components/buttons/SubtleButton';
 import ComboInput from '../../components/inputs/ComboInput';
+import ButtonInput from '../../components/inputs/ButtonInput';
 import ConsoleEditor from '../../models/consoleEditor';
 
 export default () => {
-  const [update, setUpdate] = useState<boolean>(false);
+  const state: Zvyezda.Client.Reducers.GlobalState = useAppSelector((state) => state.global);
+  const dispatch = useAppDispatch();
+
   const [error, setError] = useState<string>(null);
   const [xbox, setXbox] = useState<Zvyezda.Client.HackedConsole>({
     title: '',
@@ -27,22 +34,24 @@ export default () => {
     xboxColour: '',
     motherboardType: '',
     nandSize: '',
-    mfrDate: new Date(''),
+    mfrDate: null,
     model: '',
     rghVersion: '',
     rghGlitchType: '',
   });
+  const [isAddingImages, setIsAddingImages] = useState<boolean>(false);
+  const [images, setImages] = useState<{ id: number; link: string }[]>(null);
   const [consoles, setConsoles] = useState<Zvyezda.Client.HackedConsole[]>(null);
 
   useEffect(() => {
-    setUpdate(false);
+    dispatch(setDashboardXboxHackingRefresh(false));
     setTimeout(async () => {
       const r = await emitter.api('/xbox-hacking/get-consoles', true, null);
       if (r.server.success === true) {
         setConsoles(r.data.consoles);
       }
     });
-  }, [update === true]);
+  }, [state.dashboard.xboxHacking.refresh === true]);
 
   async function create() {
     setError(null);
@@ -92,6 +101,21 @@ export default () => {
       return;
     }
 
+    const imagesArray: string[] = [];
+
+    if (isAddingImages) {
+      for (const image of images) {
+        if (!image.link) {
+          setError('All images must have a link');
+          return;
+        }
+      }
+
+      for (const image of images) {
+        imagesArray.push(image.link);
+      }
+    }
+
     const r = await emitter.api('/xbox-hacking/create', true, {
       title: xbox.title,
       description: xbox.description,
@@ -104,11 +128,11 @@ export default () => {
       model: xbox.model,
       rghVersion: xbox.rghVersion,
       rghGlitchType: xbox.rghGlitchType,
+      images: imagesArray,
     });
 
     if (r.server.success === true) {
-      setXbox(null);
-      setUpdate(true);
+      window.location.href = '/dashboard';
     }
   }
 
@@ -124,17 +148,20 @@ export default () => {
             type="text"
             margin="5px 0"
             onChange={(e) => setXbox({ ...xbox, title: e.target.value })}
+            value={xbox.title}
           />
           <IconInput
             placeholder="Description"
             type="text"
             margin="5px 0"
             onChange={(e) => setXbox({ ...xbox, description: e.target.value })}
+            value={xbox.description}
           />
           <IconInput
             placeholder="Serial Number"
             type="text"
             onChange={(e) => setXbox({ ...xbox, serialNumber: e.target.value })}
+            value={xbox.serialNumber}
           />
           <StandardContextDivider>
             <ComboInput
@@ -142,18 +169,21 @@ export default () => {
               options={xbox_types}
               margin="5px 0"
               onChange={(e) => setXbox({ ...xbox, xboxType: e.target.value })}
+              value={xbox.xboxType}
             />
             <IconInput
               placeholder="Xbox Colour"
               type="text"
               margin="0 5px"
               onChange={(e) => setXbox({ ...xbox, xboxColour: e.target.value })}
+              value={xbox.xboxColour}
             />
             <ComboInput
               placeholder="Motherboard Type"
               options={motherboard_types}
               margin="0 0"
               onChange={(e) => setXbox({ ...xbox, motherboardType: e.target.value })}
+              value={xbox.motherboardType}
             />
           </StandardContextDivider>
           <StandardContextDivider>
@@ -162,18 +192,22 @@ export default () => {
               options={nand_types}
               margin="0 0"
               onChange={(e) => setXbox({ ...xbox, nandSize: e.target.value })}
+              value={xbox.nandSize}
             />
             <IconInput
               placeholder="MFR Date"
               type="date"
               margin="0 5px"
+              icon={<p>MFR</p>}
               onChange={(e) => setXbox({ ...xbox, mfrDate: new Date(e.target.value) })}
+              value={xbox.mfrDate !== null ? xbox?.mfrDate.toISOString().split('T')[0] : null}
             />
             <IconInput
               placeholder="Model"
               type="text"
               margin="0 0"
               onChange={(e) => setXbox({ ...xbox, model: e.target.value })}
+              value={xbox.model}
             />
           </StandardContextDivider>
           <StandardContextDivider>
@@ -182,14 +216,68 @@ export default () => {
               options={rgh_versions}
               margin="5px 0"
               onChange={(e) => setXbox({ ...xbox, rghVersion: e.target.value })}
+              value={xbox.rghVersion}
             />
             <ComboInput
               placeholder="RGH Glitch Type"
               options={glitch_chip_types}
               margin="5px 0 5px 5px"
               onChange={(e) => setXbox({ ...xbox, rghGlitchType: e.target.value })}
+              value={xbox.rghGlitchType}
             />
           </StandardContextDivider>
+          {!isAddingImages ? (
+            <SubtleButton
+              text="Add Images"
+              margin="5px 0"
+              onClick={() => {
+                setIsAddingImages(true);
+                setImages([{ id: 0, link: '' }]);
+              }}
+            />
+          ) : (
+            <>
+              {images?.length > 0 &&
+                images?.map((image) => (
+                  <ButtonInput
+                    placeholder="Link"
+                    type="text"
+                    margin="5px 0"
+                    icon={<FaImage />}
+                    onChange={(e) => {
+                      setImages(
+                        images.map((x) => {
+                          if (x.id === image.id) {
+                            return { ...x, link: e.target.value };
+                          }
+                          return x;
+                        }),
+                      );
+                    }}
+                    value={image.link}
+                    buttons={[
+                      {
+                        icon: <FaTrash />,
+                        onClick: () => {
+                          setImages(images.filter((x) => x.id !== image.id));
+                          if (images?.length === 1) {
+                            setIsAddingImages(false);
+                            setImages(null);
+                          }
+                        },
+                      },
+                    ]}
+                  />
+                ))}
+              <SubtleButton
+                text="Add"
+                margin="5px 0"
+                onClick={() => {
+                  setImages([...images, { id: images.length, link: '' }]);
+                }}
+              />
+            </>
+          )}
           <StandardButton text="Create" margin="5px 0" onClick={create} />
           {error && <p id="error">{error}</p>}
         </StandardContextBody>
@@ -217,6 +305,7 @@ export default () => {
                       model: xbox.model,
                       rghVersion: xbox.rghVersion,
                       rghGlitchType: xbox.rghGlitchType,
+                      images: xbox.images ? xbox.images : null,
                     }}
                     uuid={xbox.id}
                   />
