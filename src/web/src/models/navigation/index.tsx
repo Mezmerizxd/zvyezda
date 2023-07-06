@@ -20,7 +20,7 @@ export default () => {
 
   const products: Zvyezda.Client.Models.NavigationProductsProps[] = [
     {
-      name: 'Xbox Hacking (Unfinished)',
+      name: 'Xbox Hacking',
       description: "Modifying Xbox 360's with Glitch Chips",
       href: () => dispatch(setHomePage(Pages.XboxHacking)),
       icon: FaXbox,
