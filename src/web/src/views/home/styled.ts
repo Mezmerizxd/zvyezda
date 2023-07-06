@@ -87,7 +87,7 @@ export const HeroAnnouncement = styled.div`
   }
 `;
 export const HeroHeader = styled.div`
-  width: 100%;
+  width: calc(100% - 20px);
   height: fit-content;
 
   display: flex;
@@ -103,11 +103,17 @@ export const HeroHeader = styled.div`
     font-weight: bold;
     user-select: none;
     color: #ff0059;
+    margin-left: 10px;
+    margin-right: 10px;
     background-image: -webkit-linear-gradient(0deg, #00fbff 30%, #00ffa6 70%);
     background-clip: text;
     -webkit-background-clip: text;
     text-fill-color: transparent;
     -webkit-text-fill-color: transparent;
+
+    @media (max-width: 600px) {
+      font-size: 2.5rem;
+    }
   }
 
   p {
@@ -115,7 +121,13 @@ export const HeroHeader = styled.div`
     font-weight: 500;
     font-family: 'Montserrat', sans-serif;
     user-select: none;
+    margin-left: 10px;
+    margin-right: 10px;
     color: rgb(230, 230, 230);
+
+    @media (max-width: 600px) {
+      font-size: 1rem;
+    }
   }
 
   div {
