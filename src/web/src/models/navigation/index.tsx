@@ -22,7 +22,7 @@ export default () => {
     {
       name: 'Xbox Hacking (Unfinished)',
       description: "Modifying Xbox 360's with Glitch Chips",
-      href: () => {},
+      href: () => dispatch(setHomePage(Pages.XboxHacking)),
       icon: FaXbox,
     },
     {

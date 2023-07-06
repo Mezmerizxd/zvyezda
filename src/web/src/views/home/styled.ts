@@ -212,6 +212,21 @@ export const Form = styled.div`
   }
 `;
 
+export const ConsoleList = styled.div`
+  width: calc(100% - 20px);
+  height: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
 export const Footer = styled.div`
   width: 100%;
   height: 90px;

@@ -15,6 +15,22 @@ declare namespace Zvyezda.Server {
     error?: string;
   };
 
+  type PublicHackedConsole = {
+    id?: string;
+    title: string;
+    description: string;
+    serialNumber: string;
+    xboxType: string;
+    xboxColour: string;
+    motherboardType: string;
+    nandSize: string;
+    mfrDate: Date;
+    model: string;
+    rghVersion: string;
+    rghGlitchType: string;
+    images?: string[];
+  };
+
   type Apis = {
     /* INDEX */
     ['/test']: () => {
@@ -43,6 +59,9 @@ declare namespace Zvyezda.Server {
     ['/xbox-hacking/get-consoles']: () => {
       consoles: Zvyezda.Client.HackedConsole[];
     };
+    ['/xbox-hacking/get-public-consoles']: () => {
+      consoles: Zvyezda.Server.PublicHackedConsole[];
+    };
   };
 }
 
@@ -57,13 +76,6 @@ declare namespace Zvyezda.Server.Helpers {
 declare namespace Zvyezda.Server.Managers {}
 
 declare namespace Zvyezda.Server.Managers.Access {
-  // type Active = {
-  //   id: string;
-  //   username: string;
-  //   token: string;
-  //   expires: Date;
-  // };
-
   type Active = {
     id: string;
     username: string;

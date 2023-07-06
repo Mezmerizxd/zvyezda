@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { emitter } from '../../lib/emitter';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { setSession, setHomePage } from '../../reducers/global';
@@ -26,14 +27,15 @@ import Project from '../../models/project';
 import Projects from './Projects';
 import AboutMe from './AboutMe';
 import News from './News';
+import XboxHacking from './XboxHacking';
 import Login from './Login';
-import { useEffect } from 'react';
 
 export enum Pages {
   Home,
   Projects,
   AboutMe,
   News,
+  XboxHacking,
   Login,
 }
 
@@ -103,6 +105,8 @@ export default () => {
         {state.home.page === Pages.AboutMe && <AboutMe />}
 
         {state.home.page === Pages.News && <News />}
+
+        {state.home.page === Pages.XboxHacking && <XboxHacking />}
 
         {state.home.page === Pages.Login && <Login />}
 

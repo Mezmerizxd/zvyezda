@@ -48,6 +48,7 @@ export default () => {
 
   return (
     <Dashboard>
+      <title>Zvyezda - Dashboard</title>
       <TitlebarContainer>
         <Titlebar>
           <TitlebarHandle onClick={() => dispatch(setDashboardSidebar(!state.dashboard.sidebar))}>

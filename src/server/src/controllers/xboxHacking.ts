@@ -154,5 +154,15 @@ export default (prisma: PrismaClient): void => {
     };
   });
 
+  Endpoint(serverManager.v1, '/xbox-hacking/get-public-consoles', false, async (req) => {
+    const consoles = await prisma.hackedXboxs.findMany();
+
+    return {
+      data: {
+        consoles,
+      },
+    };
+  });
+
   logger.loadedController('xboxHacking');
 };
