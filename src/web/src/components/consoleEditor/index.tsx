@@ -8,14 +8,14 @@ import { ConsoleEditor } from './styled';
 import { AiFillEdit } from 'react-icons/ai';
 import { FaImage, FaTrash } from 'react-icons/fa';
 
-import { StandardContextDivider } from '../../components/contexts/StandardContext';
+import { StandardContextDivider } from '../contexts/StandardContext';
 
-import IconInput from '../../components/inputs/StandardInput';
-import StandardButton from '../../components/buttons/StandardButton';
-import SubtleButton from '../../components/buttons/SubtleButton';
-import ComboInput from '../../components/inputs/ComboInput';
-import AdvancedAccordion from '../../components/accordion/AdvancedAccordion';
-import ButtonInput from '../../components/inputs/ButtonInput';
+import IconInput from '../inputs/StandardInput';
+import StandardButton from '../buttons/StandardButton';
+import SubtleButton from '../buttons/SubtleButton';
+import ComboInput from '../inputs/ComboInput';
+import AdvancedAccordion from '../accordion/AdvancedAccordion';
+import ButtonInput from '../inputs/ButtonInput';
 
 export default ({ xbox, uuid }: { xbox: Zvyezda.Client.HackedConsole; uuid: string }) => {
   const dispatch = useAppDispatch();

@@ -1,7 +1,7 @@
 import github_projects from '../../data/github_projects';
 
 import { Body, Hero, HeroContainer, HeroHeader, ProjectsList } from './styled';
-import Project from '../../models/project';
+import Project from '../../components/project';
 
 export default () => {
   return (

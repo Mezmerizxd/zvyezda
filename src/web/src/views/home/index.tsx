@@ -22,7 +22,7 @@ import StandardButton from '../../components/buttons/StandardButton';
 import SubtleButton from '../../components/buttons/SubtleButton';
 
 import Navigation from '../../models/navigation';
-import Project from '../../models/project';
+import Project from '../../components/project';
 
 import Projects from './Projects';
 import AboutMe from './AboutMe';

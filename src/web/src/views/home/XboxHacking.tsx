@@ -3,7 +3,7 @@ import { ConsoleList, Hero, HeroContainer, HeroHeader } from './styled';
 import { Body } from './styled';
 import { emitter } from '../../lib/emitter';
 
-import Console from '../../models/console';
+import Console from '../../components/console';
 
 export default () => {
   const [consoles, setConsoles] = useState<Zvyezda.Client.HackedConsole[]>([]);

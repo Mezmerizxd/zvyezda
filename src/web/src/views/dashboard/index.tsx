@@ -17,7 +17,8 @@ import {
 } from './styled';
 import { MdMenu } from 'react-icons/md';
 
-import Sidebar from '../../models/sidebar';
+import Sidebar from '../../components/sidebar';
+import Consoles from '../../models/dashboard/consoles';
 import XboxHacking from './XboxHacking';
 
 export default () => {
@@ -74,7 +75,11 @@ export default () => {
           />
         </SidebarContainer>
         <ContextContainer>
-          {state.dashboard.context === Contexts.Default && <>DEFAULT</>}
+          {state.dashboard.context === Contexts.Default && (
+            <>
+              <Consoles />
+            </>
+          )}
           {state.dashboard.context === Contexts.Xbox_Hacking && <XboxHacking />}
         </ContextContainer>
       </Container>
