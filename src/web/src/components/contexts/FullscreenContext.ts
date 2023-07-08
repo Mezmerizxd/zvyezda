@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import theme from '../../styled/theme';
 
-export const StandardContext = styled.div`
-  max-width: ${(props: { wide?: boolean; max: string }) => (props.max ? props.max : 'fit-content')};
-  width: ${(props: { wide?: boolean }) => (props.wide ? 'calc(100% - 20px)' : 'fit-content')};
-  height: min-content;
+export const FullscreenContext = styled.div`
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
 
   display: flex;
   flex-direction: column;
@@ -18,7 +17,7 @@ export const StandardContext = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.15);
 `;
 
-export const StandardContextHeader = styled.div`
+export const FullscreenContextHeader = styled.div`
   width: 100%;
   height: 40px;
 
@@ -26,6 +25,7 @@ export const StandardContextHeader = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  padding: 10px 0;
 
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 
@@ -38,13 +38,13 @@ export const StandardContextHeader = styled.div`
   }
 `;
 
-export const StandardContextBody = styled.div`
+export const FullscreenContextBody = styled.div`
   width: 100%;
-  height: 100%;
-
-  padding: 10px;
+  max-height: 100%;
 
   color: ${theme.text.primary.hex};
+  overflow-y: auto;
+  padding: 10px;
 
   #error {
     font-size: 1rem;
@@ -60,22 +60,9 @@ export const StandardContextBody = styled.div`
   }
 `;
 
-export const StandardContextDivider = styled.div`
+export const FullscreenContextBodyDivider = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-`;
-
-export const StandardContextNotice = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 10px;
-
-  color: ${theme.text.primary.hex};
 `;

@@ -9,17 +9,18 @@ import {
   Container,
   TitlebarContainer,
   SidebarContainer,
-  ContextContainer,
   Titlebar,
   TitlebarHandle,
   TitlebarTitle,
   TitlebarVersions,
+  Context,
 } from './styled';
 import { MdMenu } from 'react-icons/md';
 
 import Sidebar from '../../components/sidebar';
 import Consoles from '../../models/dashboard/consoles';
 import XboxHacking from './XboxHacking';
+import Discussion from './Discussion';
 
 export default () => {
   const state: Zvyezda.Client.Reducers.GlobalState = useAppSelector((state) => state.global);
@@ -29,10 +30,20 @@ export default () => {
     setTimeout(async () => {
       const isTokenValid = await emitter.validateToken();
       if (isTokenValid) {
+        const profile = await emitter.api('/account/get-profile', true, null);
+        if (profile.server.success === false) {
+          alert('Unauthorized Access!');
+          window.location.href = '/';
+        }
+
         dispatch(
           setSession({
             connected: true,
             token: localStorage.getItem('token'),
+            id: profile.data.id,
+            username: profile.data.username,
+            email: profile.data.email,
+            avatar: profile.data.avatar,
           }),
         );
       } else {
@@ -74,14 +85,13 @@ export default () => {
             onClick={(contextId) => dispatch(setDashboardContext(contextId))}
           />
         </SidebarContainer>
-        <ContextContainer>
-          {state.dashboard.context === Contexts.Default && (
-            <>
-              <Consoles />
-            </>
-          )}
-          {state.dashboard.context === Contexts.Xbox_Hacking && <XboxHacking />}
-        </ContextContainer>
+        {state.dashboard.context === Contexts.Default && (
+          <Context>
+            <Consoles />
+          </Context>
+        )}
+        {state.dashboard.context === Contexts.Discussion && <Discussion />}
+        {state.dashboard.context === Contexts.Xbox_Hacking && <XboxHacking />}
       </Container>
     </Dashboard>
   );

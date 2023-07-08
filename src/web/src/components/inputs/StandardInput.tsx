@@ -9,6 +9,7 @@ export default ({
   margin,
   padding,
   onChange,
+  onKeyDown,
   value,
   disabled,
 }: Zvyezda.Client.Inputs.InputProps) => {
@@ -31,6 +32,9 @@ export default ({
           onChange={(e) => {
             setValue(e.target.value);
             onChange && onChange(e);
+          }}
+          onKeyDown={(e) => {
+            onKeyDown && onKeyDown(e);
           }}
           value={type === 'date' ? inputValue : value}
           disabled={disabled}

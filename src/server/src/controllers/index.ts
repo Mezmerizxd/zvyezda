@@ -6,6 +6,7 @@ import { logger } from '../helpers/logger';
 
 import AccountController from './account';
 import XboxHackingController from './xboxHacking';
+import Discussion from './discussion';
 
 export default (prisma: PrismaClient): void => {
   Endpoint(serverManager.v1, '/get-version', false, async (req) => {
@@ -28,4 +29,5 @@ export default (prisma: PrismaClient): void => {
   logger.loadedController('index');
   AccountController(prisma);
   XboxHackingController(prisma);
+  Discussion(prisma);
 };

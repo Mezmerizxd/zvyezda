@@ -10,6 +10,7 @@ class Emitter {
 
   apiUrl: string;
   socketUrl: string;
+  token: string;
 
   constructor() {
     this.apiUrl = this._getApiUrl();
@@ -54,6 +55,7 @@ class Emitter {
     });
 
     if (r?.data?.valid === true) {
+      this.token = token;
       return true;
     } else {
       localStorage.removeItem('token');

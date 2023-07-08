@@ -1,9 +1,9 @@
-import { MdYard } from 'react-icons/md';
 import { FaXbox } from 'react-icons/fa';
-import { MdSpaceDashboard } from 'react-icons/md';
+import { MdSpaceDashboard, MdChat } from 'react-icons/md';
 
 export enum Contexts {
   Default,
+  Discussion,
   Xbox_Hacking,
 }
 
@@ -16,6 +16,11 @@ export const sidebar_items: Zvyezda.Client.Models.SidebarItemProps[] = [
         id: Contexts.Default,
         title: 'Dashboard',
         icon: <MdSpaceDashboard />,
+      },
+      {
+        id: Contexts.Discussion,
+        title: 'Discussion',
+        icon: <MdChat />,
       },
     ],
   },

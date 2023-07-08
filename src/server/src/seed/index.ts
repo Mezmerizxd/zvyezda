@@ -25,6 +25,8 @@ class Seed {
   stop() {}
 
   async populate() {
+    if (process.env.MODE === 'production') return;
+
     for (const account of accounts) {
       const { id, username, email, password, role } = account;
 

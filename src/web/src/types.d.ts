@@ -19,6 +19,15 @@ declare namespace Zvyezda.Client {
     rghGlitchType: string;
     images?: string[];
   };
+
+  type DiscussionMessage = {
+    id?: string;
+    message: string;
+    createdAt: Date;
+    replyTo?: DiscussionMessage;
+    username: string;
+    avatar?: string;
+  };
 }
 
 declare namespace Zvyezda.Client.Reducers {
@@ -26,6 +35,10 @@ declare namespace Zvyezda.Client.Reducers {
     session: {
       connected: boolean;
       token: string;
+      id: string;
+      username: string;
+      email: string;
+      avatar?: string;
     };
     home: {
       page: number;
@@ -81,6 +94,7 @@ declare namespace Zvyezda.Client.Inputs {
     margin?: string;
     padding?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     value?: string;
     disabled?: boolean;
   };
