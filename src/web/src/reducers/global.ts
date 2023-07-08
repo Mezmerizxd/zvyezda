@@ -4,6 +4,10 @@ export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {
   session: {
     connected: false,
     token: null,
+    id: null,
+    username: null,
+    email: null,
+    avatar: null,
   },
   home: {
     page: 0,

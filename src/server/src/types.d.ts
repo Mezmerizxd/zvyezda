@@ -3,9 +3,13 @@ declare namespace Zvyezda {}
 declare namespace Zvyezda.Socket {
   type ClientToServer = {
     sendMessage: (data: {}) => void;
+    joinDiscussion: (data: { authorization: string }) => void;
+    leaveDiscussion: () => void;
+    sendDiscussionMessage: (data: { message: string; authorization: string; replyTo?: string }) => void;
   };
   type ServerToClient = {
-    message: (data: {}) => void;
+    socketError: (data: { error: string }) => void;
+    discussionMessage: (data: Zvyezda.Client.DiscussionMessage) => void;
   };
 }
 
@@ -51,6 +55,12 @@ declare namespace Zvyezda.Server {
     ['/account/check-token']: () => {
       valid: boolean;
     };
+    ['/account/get-profile']: () => {
+      id: string;
+      username: string;
+      email: string;
+      avatar?: string | null;
+    };
 
     /* XBOX HACKING */
     ['/xbox-hacking/create']: () => {};
@@ -61,6 +71,11 @@ declare namespace Zvyezda.Server {
     };
     ['/xbox-hacking/get-public-consoles']: () => {
       consoles: Zvyezda.Server.PublicHackedConsole[];
+    };
+
+    /* DISCUSSION */
+    ['/discussion/get-messages']: () => {
+      messages: Zvyezda.Client.DiscussionMessage[];
     };
   };
 }

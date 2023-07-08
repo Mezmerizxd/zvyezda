@@ -90,5 +90,31 @@ export default (prisma: PrismaClient): void => {
     };
   });
 
+  Endpoint(serverManager.v1, '/account/get-profile', true, async (req, authorization) => {
+    const account = await prisma.accounts.findFirst({
+      where: {
+        token: authorization,
+      },
+    });
+
+    if (account === null) {
+      return {
+        server: {
+          success: false,
+          error: 'Account not found',
+        },
+      };
+    }
+
+    return {
+      data: {
+        id: account.id,
+        username: account.username,
+        email: account.email,
+        avatar: null,
+      },
+    };
+  });
+
   logger.loadedController('account');
 };

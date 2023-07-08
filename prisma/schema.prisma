@@ -43,3 +43,13 @@ model HackedXboxs {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+model Discussion {
+  id        String   @id @default(uuid())
+  message   String
+  username  String
+  avatar    String?
+  replyTo   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
