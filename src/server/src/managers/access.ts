@@ -1,4 +1,4 @@
-import { Accounts, PrismaClient } from '@prisma/client';
+import { Accounts, PrismaClient, Roles } from '@prisma/client';
 import * as crypto from 'crypto';
 
 class AccessManager {
@@ -55,7 +55,7 @@ class AccessManager {
     return token;
   }
 
-  async isAccessActive(token: string): Promise<boolean> {
+  async isAccessActive(token: string, level?: Roles): Promise<boolean> {
     const account = await this.prisma.accounts.findFirst({
       where: {
         token,
@@ -72,6 +72,28 @@ class AccessManager {
 
     if (account.tokenExp < new Date()) {
       return false;
+    }
+
+    if (level !== undefined) {
+      if (level === 'USER') {
+        if (account.role === 'USER' || account.role === 'DEVELOPER' || account.role === 'ADMIN') {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (level === 'DEVELOPER') {
+        if (account.role === 'DEVELOPER' || account.role === 'ADMIN') {
+          return true;
+        } else {
+          return false;
+        }
+      } else if (level === 'ADMIN') {
+        if (account.role === 'ADMIN') {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
 
     return true;

@@ -2,20 +2,15 @@ import { PrismaClient } from '@prisma/client';
 import { serverManager } from '../managers/server';
 import { logger } from '../helpers/logger';
 import Endpoint from '../helpers/endpoint';
+import { accessManager } from '../managers/access';
 
 export default (prisma: PrismaClient): void => {
   serverManager.socket.on('connection', (s) => {
     s.on('joinDiscussion', async (data) => {
-      const account = await prisma.accounts.findFirst({
-        where: {
-          token: data.authorization,
-        },
-      });
-
-      if (account === null) {
-        logger.debug('Invalid token');
+      const expired = await accessManager.isAccessActive(data.authorization, 'DEVELOPER');
+      if (!expired) {
         s.emit('socketError', {
-          error: 'Invalid token',
+          error: 'Access is expired',
         });
         return;
       }
@@ -109,24 +104,30 @@ export default (prisma: PrismaClient): void => {
     });
   });
 
-  Endpoint(serverManager.v1, '/discussion/get-messages', true, async (req) => {
-    const rawMessages = await prisma.discussion.findMany({
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
+  Endpoint(
+    serverManager.v1,
+    '/discussion/get-messages',
+    true,
+    async (req) => {
+      const rawMessages = await prisma.discussion.findMany({
+        orderBy: {
+          createdAt: 'asc',
+        },
+      });
 
-    return {
-      data: {
-        messages: rawMessages.map((m) => ({
-          id: m.id,
-          message: m.message,
-          username: m.username,
-          createdAt: m.createdAt,
-        })),
-      },
-    };
-  });
+      return {
+        data: {
+          messages: rawMessages.map((m) => ({
+            id: m.id,
+            message: m.message,
+            username: m.username,
+            createdAt: m.createdAt,
+          })),
+        },
+      };
+    },
+    'DEVELOPER',
+  );
 
   logger.loadedController('discussion');
 };
