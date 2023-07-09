@@ -2,6 +2,7 @@ import * as express from 'express';
 import { logger } from './logger';
 import { inspect } from 'util';
 import { accessManager } from '../managers/access';
+import { Roles } from '@prisma/client';
 
 function Endpoint<T extends keyof Zvyezda.Server.Apis>(
   version: express.Router,
@@ -14,6 +15,7 @@ function Endpoint<T extends keyof Zvyezda.Server.Apis>(
     server?: Zvyezda.Server.BaseResponse;
     data?: ReturnType<Zvyezda.Server.Apis[T]>;
   }>,
+  accessLevel?: Roles,
 ): void {
   version.post(url, async (req, res) => {
     logger.debug(`Endpoint | Incoming: ${url} | ${inspect(req.body, { depth: 4, colors: true })}`);
@@ -30,12 +32,12 @@ function Endpoint<T extends keyof Zvyezda.Server.Apis>(
         return;
       }
 
-      const expired = await accessManager.isAccessActive(authorization);
+      const expired = await accessManager.isAccessActive(authorization, accessLevel);
       if (!expired) {
         res.json({
           server: {
             success: false,
-            error: 'Authorization header is expired',
+            error: 'Access is expired',
           },
         });
         return;
