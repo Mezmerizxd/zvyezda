@@ -1,4 +1,4 @@
-import { PrismaClient, Roles } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import Endpoint from '../helpers/endpoint';
 import { serverManager } from '../managers/server';
 import { accessManager } from '../managers/access';
@@ -121,7 +121,7 @@ export default (prisma: PrismaClient): void => {
     serverManager.v1,
     '/account/get-accounts',
     true,
-    async (req) => {
+    async () => {
       const accounts = await prisma.accounts.findMany();
 
       if (accounts === null) {

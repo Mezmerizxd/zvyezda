@@ -14,7 +14,7 @@ export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {
     page: 0,
   },
   dashboard: {
-    sidebar: localStorage.getItem('sidebar') === 'true' ? true : false,
+    sidebar: localStorage.getItem('sidebar') === 'true',
     context: Number(localStorage.getItem('context')) || 0,
     serverVersion: null,
     clientVersion: null,
