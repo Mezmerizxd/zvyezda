@@ -60,6 +60,16 @@ declare namespace Zvyezda.Server {
       username: string;
       email: string;
       avatar?: string | null;
+      role: string;
+    };
+    ['/account/get-accounts']: () => {
+      accounts: {
+        id: string;
+        username: string;
+        email: string;
+        role: string;
+        createdAt: string;
+      }[];
     };
 
     /* XBOX HACKING */

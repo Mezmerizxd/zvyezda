@@ -39,6 +39,7 @@ declare namespace Zvyezda.Client.Reducers {
       username: string;
       email: string;
       avatar?: string;
+      role: string;
     };
     home: {
       page: number;
@@ -128,6 +129,24 @@ declare namespace Zvyezda.Client.Models {
   }
 
   type ProjectProps = Zvyezda.Client.Data.GithubProjects;
+}
+
+declare namespace Zvyezda.Client.Models.Tables {
+  interface TableHeaders {
+    name: string;
+    id: string;
+  }
+
+  interface TableActions {
+    name: string;
+    func: (data: any) => void;
+  }
+
+  interface TableProps {
+    headers: TableHeaders[];
+    data: any[];
+    actions?: TableActions[];
+  }
 }
 
 declare namespace Zvyezda.Client.Data {

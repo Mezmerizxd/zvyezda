@@ -8,6 +8,7 @@ export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {
     username: null,
     email: null,
     avatar: null,
+    role: null,
   },
   home: {
     page: 0,

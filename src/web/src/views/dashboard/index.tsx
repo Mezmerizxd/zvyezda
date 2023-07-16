@@ -21,6 +21,7 @@ import Sidebar from '../../components/sidebar';
 import Consoles from '../../models/dashboard/consoles';
 import XboxHacking from './XboxHacking';
 import Discussion from './Discussion';
+import Users from './Users';
 
 export default () => {
   const state: Zvyezda.Client.Reducers.GlobalState = useAppSelector((state) => state.global);
@@ -44,6 +45,7 @@ export default () => {
             username: profile.data.username,
             email: profile.data.email,
             avatar: profile.data.avatar,
+            role: profile.data.role,
           }),
         );
       } else {
@@ -92,6 +94,7 @@ export default () => {
         )}
         {state.dashboard.context === Contexts.Discussion && <Discussion />}
         {state.dashboard.context === Contexts.Xbox_Hacking && <XboxHacking />}
+        {state.dashboard.context === Contexts.Users && <Users />}
       </Container>
     </Dashboard>
   );

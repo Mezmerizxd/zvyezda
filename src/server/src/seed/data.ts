@@ -9,6 +9,8 @@ export const accounts: Accounts[] = [
     token: null,
     tokenExp: null,
     role: 'DEVELOPER',
+    avatar: null,
+    biography: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   },

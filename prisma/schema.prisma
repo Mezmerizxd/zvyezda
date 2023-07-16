@@ -22,6 +22,8 @@ model Accounts {
   token     String?   @unique
   tokenExp  DateTime?
   role      Roles     @default(USER)
+  avatar    String?
+  biography String?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }

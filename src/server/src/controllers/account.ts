@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Roles } from '@prisma/client';
 import Endpoint from '../helpers/endpoint';
 import { serverManager } from '../managers/server';
 import { accessManager } from '../managers/access';
@@ -112,9 +112,41 @@ export default (prisma: PrismaClient): void => {
         username: account.username,
         email: account.email,
         avatar: null,
+        role: account.role,
       },
     };
   });
+
+  Endpoint(
+    serverManager.v1,
+    '/account/get-accounts',
+    true,
+    async (req) => {
+      const accounts = await prisma.accounts.findMany();
+
+      if (accounts === null) {
+        return {
+          server: {
+            success: false,
+            error: 'Account not found',
+          },
+        };
+      }
+
+      return {
+        data: {
+          accounts: accounts.map((account) => ({
+            id: account.id,
+            username: account.username,
+            email: account.email,
+            role: account.role,
+            createdAt: account.createdAt.toDateString(),
+          })),
+        },
+      };
+    },
+    'ADMIN',
+  );
 
   logger.loadedController('account');
 };
