@@ -21,6 +21,14 @@ export const GlobalState: Zvyezda.Client.Reducers.GlobalState = {
     xboxHacking: {
       refresh: false,
     },
+    users: {
+      refresh: false,
+    },
+  },
+  dialogs: {
+    deleteUser: {
+      show: false,
+    },
   },
 };
 
@@ -52,6 +60,15 @@ export const GlobalSlice = createSlice({
     setDashboardXboxHackingRefresh: (state, action) => {
       state.dashboard.xboxHacking.refresh = action.payload;
     },
+    setDashboardUsersRefresh: (state, action) => {
+      state.dashboard.users.refresh = action.payload;
+    },
+    setDialogDeleteUser: (state, action) => {
+      state.dialogs.deleteUser = {
+        ...state.dialogs.deleteUser,
+        ...action.payload,
+      };
+    },
   },
 });
 
@@ -63,6 +80,8 @@ export const {
   setDashboardContext,
   setDashboardVersions,
   setDashboardXboxHackingRefresh,
+  setDashboardUsersRefresh,
+  setDialogDeleteUser,
 } = GlobalSlice.actions;
 
 export default GlobalSlice.reducer;

@@ -40,12 +40,7 @@ export default ({
                   <TableRowActions>
                     {actions.map((action, index) => {
                       return (
-                        <SubtleButton
-                          key={index}
-                          text={action.name}
-                          margin="5px 5px"
-                          onClick={() => action.func(data)}
-                        />
+                        <SubtleButton key={index} text={action.name} margin="5px 5px" onClick={() => action.func(d)} />
                       );
                     })}
                   </TableRowActions>

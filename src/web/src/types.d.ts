@@ -52,6 +52,19 @@ declare namespace Zvyezda.Client.Reducers {
       xboxHacking: {
         refresh: boolean;
       };
+      users: {
+        refresh: boolean;
+      };
+    };
+    dialogs: {
+      deleteUser: {
+        show: boolean;
+        id?: string;
+        email?: string;
+        username?: string;
+        role?: string;
+        createdAt?: string;
+      };
     };
   };
 }

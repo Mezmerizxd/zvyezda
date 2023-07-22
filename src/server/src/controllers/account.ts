@@ -148,5 +148,77 @@ export default (prisma: PrismaClient): void => {
     'ADMIN',
   );
 
+  Endpoint(
+    serverManager.v1,
+    '/account/delete-account',
+    true,
+    async (req, auth) => {
+      const { userId }: { userId: string } = req.body;
+
+      const tbdAccount = await prisma.accounts.findFirst({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!tbdAccount) {
+        return {
+          server: {
+            success: false,
+            error: 'Failed to find account',
+          },
+        };
+      }
+
+      if (tbdAccount?.token === auth) {
+        await prisma.accounts.delete({
+          where: {
+            id: userId,
+          },
+        });
+      } else {
+        const account = await prisma.accounts.findFirst({
+          where: {
+            token: auth,
+          },
+        });
+
+        if (!account) {
+          return {
+            server: {
+              success: false,
+              error: 'Failed to find deleter',
+            },
+          };
+        }
+
+        if (account.role === 'ADMIN') {
+          await prisma.accounts.delete({
+            where: {
+              id: userId,
+            },
+          });
+
+          return {};
+        } else {
+          return {
+            server: {
+              success: false,
+              error: 'You do not have permission to do this',
+            },
+          };
+        }
+      }
+
+      return {
+        server: {
+          success: false,
+          error: 'Failed',
+        },
+      };
+    },
+    'USER',
+  );
+
   logger.loadedController('account');
 };

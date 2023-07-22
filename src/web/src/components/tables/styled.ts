@@ -14,7 +14,6 @@ export const Table = styled.table`
   table {
     width: 100%;
     height: 100%;
-
     border-collapse: collapse;
     border-spacing: 0;
 
