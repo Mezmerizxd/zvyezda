@@ -68,10 +68,10 @@ export default () => {
               },
             ]}
             actions={[
-              {
-                name: 'Edit',
-                func: (data) => console.log(data),
-              },
+              // {
+              //   name: 'Edit',
+              //   func: (data) => console.log(data),
+              // },
               {
                 name: 'Delete',
                 func: (data) => {

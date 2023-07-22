@@ -72,6 +72,7 @@ declare namespace Zvyezda.Server {
       }[];
     };
     ['/account/delete-account']: () => {};
+    ['/account/edit-account']: () => {};
 
     /* XBOX HACKING */
     ['/xbox-hacking/create']: () => {};
