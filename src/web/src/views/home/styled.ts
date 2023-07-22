@@ -273,3 +273,53 @@ export const FooterColumn = styled.div`
     }
   }
 `;
+
+export const AboutMe = styled.div`
+  width: 100%;
+  height: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 30px;
+  margin-bottom: 30px;
+`;
+export const AboutMeSection = styled.div`
+  width: 100%;
+  max-width: 80%;
+  height: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h1 {
+    max-width: 1000px;
+    text-align: center;
+    font-size: 3.6rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    user-select: none;
+    color: #ff0059;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-image: -webkit-linear-gradient(0deg, #00fbff 30%, #00ffa6 70%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+
+    @media (max-width: 600px) {
+      font-size: 2.5rem;
+    }
+  }
+
+  p {
+    max-width: 1000px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: ${theme.text.primary.hex};
+  }
+`;
