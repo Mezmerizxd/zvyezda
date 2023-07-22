@@ -1,5 +1,6 @@
 import { Accounts, PrismaClient, Roles } from '@prisma/client';
 import * as crypto from 'crypto';
+import { logger } from '../helpers/logger';
 
 class AccessManager {
   protected static instance: AccessManager;
@@ -51,6 +52,8 @@ class AccessManager {
         tokenExp: expires,
       },
     });
+
+    logger.info(`Access created for ${username} (${id})`);
 
     return token;
   }

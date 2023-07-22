@@ -16,6 +16,8 @@ export const StandardContext = styled.div`
   border-radius: 2px;
   background-color: ${theme.colors.darkBackground.hex};
   border: 1px solid rgba(255, 255, 255, 0.15);
+
+  overflow: hidden;
 `;
 
 export const StandardContextHeader = styled.div`

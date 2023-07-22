@@ -6,6 +6,7 @@ import { accessManager } from './managers/access';
 import { versionManager } from './managers/version';
 import { seed } from './seed';
 import Controllers from './controllers';
+import * as console from 'console';
 
 dotenv.config({ path: `${__dirname}/../../../../.env` });
 

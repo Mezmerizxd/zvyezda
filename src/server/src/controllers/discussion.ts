@@ -7,7 +7,7 @@ import { accessManager } from '../managers/access';
 export default (prisma: PrismaClient): void => {
   serverManager.socket.on('connection', (s) => {
     s.on('joinDiscussion', async (data) => {
-      const expired = await accessManager.isAccessActive(data.authorization, 'DEVELOPER');
+      const expired = await accessManager.isAccessActive(data.authorization, 'USER');
       if (!expired) {
         s.emit('socketError', {
           error: 'Access is expired',
@@ -126,7 +126,7 @@ export default (prisma: PrismaClient): void => {
         },
       };
     },
-    'DEVELOPER',
+    'USER',
   );
 
   logger.loadedController('discussion');

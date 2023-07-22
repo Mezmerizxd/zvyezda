@@ -25,22 +25,27 @@ class Emitter {
     authorization: boolean,
     body: any,
   ): Promise<{ server: Zvyezda.Server.BaseResponse; data?: ReturnType<Zvyezda.Server.Apis[T]> }> {
-    const response = await fetch(`${this.apiUrl}${event}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(authorization ? { Authorization: `${localStorage.getItem('token')}` } : {}),
-      },
-      body: JSON.stringify(body || {}),
-    });
-    const json = await response.json();
-    const server = json.server;
-    const data = json.data;
-    if (!server) {
-      server.success = false;
-      server.error = 'Api response is null';
+    try {
+      const response = await fetch(`${this.apiUrl}${event}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(authorization ? { Authorization: `${localStorage.getItem('token')}` } : {}),
+        },
+        body: JSON.stringify(body || {}),
+      });
+      const json = await response.json();
+      const server = json.server;
+      const data = json.data;
+      if (!server) {
+        server.success = false;
+        server.error = 'Api response is null';
+      }
+      return { server, data };
+    } catch (e) {
+      alert('Something went wrong, try again later.');
+      return { server: { success: false, error: 'Something went wrong, try again later.' } };
     }
-    return { server, data };
   }
 
   async validateToken(): Promise<boolean> {
