@@ -13,7 +13,7 @@ export default () => {
         <YesNo
           title={`Are you sure you want to delete ${state.dialogs.deleteUser?.username}?`}
           onYes={async () => {
-            const r = await emitter.api('/account/delete-account', true, {
+            const r = await emitter.api('/account/delete', true, {
               userId: state.dialogs.deleteUser?.id,
             });
 

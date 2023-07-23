@@ -150,7 +150,76 @@ export default (prisma: PrismaClient): void => {
 
   Endpoint(
     serverManager.v1,
-    '/account/delete-account',
+    '/account/create',
+    true,
+    async (req) => {
+      const { email, username, password, avatar, biography, role }: Zvyezda.Client.User = req.body;
+
+      if (!email) {
+        return {
+          server: {
+            success: false,
+            error: 'Email is required',
+          },
+        };
+      }
+      if (!username) {
+        return {
+          server: {
+            success: false,
+            error: 'Username is required',
+          },
+        };
+      }
+      if (!password) {
+        return {
+          server: {
+            success: false,
+            error: 'Password is required',
+          },
+        };
+      }
+
+      if (await prisma.accounts.findFirst({ where: { email } })) {
+        return {
+          server: {
+            success: false,
+            error: 'Email is in use',
+          },
+        };
+      }
+      if (await prisma.accounts.findFirst({ where: { username } })) {
+        return {
+          server: {
+            success: false,
+            error: 'Username is in use',
+          },
+        };
+      }
+
+      const hash = hashPassword(password);
+
+      await prisma.accounts.create({
+        data: {
+          email,
+          username,
+          password: hash,
+          avatar,
+          biography,
+          role: (role as Roles) || Roles.USER,
+        },
+      });
+
+      return {
+        data: {},
+      };
+    },
+    'ADMIN',
+  );
+
+  Endpoint(
+    serverManager.v1,
+    '/account/delete',
     true,
     async (req, auth) => {
       const { userId }: { userId: string } = req.body;
@@ -231,7 +300,7 @@ export default (prisma: PrismaClient): void => {
 
   Endpoint(
     serverManager.v1,
-    '/account/edit-account',
+    '/account/edit',
     true,
     async (req, auth) => {
       const {

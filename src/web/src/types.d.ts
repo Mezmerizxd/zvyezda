@@ -28,6 +28,16 @@ declare namespace Zvyezda.Client {
     username: string;
     avatar?: string;
   };
+
+  type User = {
+    id?: string;
+    email: string;
+    username: string;
+    password: string;
+    role?: string;
+    avatar?: string;
+    biography?: string;
+  };
 }
 
 declare namespace Zvyezda.Client.Reducers {

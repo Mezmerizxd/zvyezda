@@ -71,8 +71,9 @@ declare namespace Zvyezda.Server {
         createdAt: string;
       }[];
     };
-    ['/account/delete-account']: () => {};
-    ['/account/edit-account']: () => {};
+    ['/account/create'];
+    ['/account/delete']: () => {};
+    ['/account/edit']: () => {};
 
     /* XBOX HACKING */
     ['/xbox-hacking/create']: () => {};

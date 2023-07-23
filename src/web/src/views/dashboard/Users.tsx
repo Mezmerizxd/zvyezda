@@ -3,9 +3,15 @@ import { useAppSelector } from '../../hooks/reduxHooks';
 import Roles from '../../data/roles';
 
 import Users from '../../models/dashboard/users';
+import CreateUser from '../../models/dashboard/createUser';
 
 export default () => {
   const state: Zvyezda.Client.Reducers.GlobalState = useAppSelector((state) => state.global);
 
-  return <Context>{state.session.role === Roles.Admin && <Users />}</Context>;
+  return (
+    <Context>
+      {state.session.role === Roles.Admin && <CreateUser />}
+      {state.session.role === Roles.Admin && <Users />}
+    </Context>
+  );
 };
