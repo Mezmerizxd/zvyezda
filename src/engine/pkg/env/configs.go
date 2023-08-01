@@ -19,7 +19,7 @@ type envConfigs struct {
 }
 
 func loadEnvVariables() (config *envConfigs) {
-	viper.AddConfigPath(".")
+	viper.AddConfigPath("../../")
 
 	viper.SetConfigName(".env")
 

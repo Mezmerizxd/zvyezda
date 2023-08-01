@@ -10,7 +10,9 @@ import (
 
 	v1 "zvyezda/src/engine/api/v1"
 	"zvyezda/src/engine/features"
+	"zvyezda/src/engine/features/test"
 	env "zvyezda/src/engine/pkg/env"
+	"zvyezda/src/engine/pkg/rtsp"
 	"zvyezda/src/engine/pkg/server"
 )
 
@@ -22,7 +24,10 @@ func main() {
 	fmt.Println("Configs: ready")
 
 	/* Features */
-	f := features.New(&features.Config{})
+	featTest := test.New(&test.Config{})
+	f := features.New(&features.Config{
+		Test: featTest,
+	})
 	fmt.Println("Features: ready")
 
 	srv := server.New(env.EnvConfigs.Port, &v1.Config{
@@ -39,6 +44,14 @@ func main() {
 				return
 			default:
 				fmt.Println("Server: failed to start server: " + err.Error())
+			}
+		}
+	}()
+
+	go func() {
+		for k, v := range rtsp.Streams {
+			if !v.OnDemand {
+				go rtsp.RTSPWorkerLoop(k, v.URL, v.OnDemand)
 			}
 		}
 	}()

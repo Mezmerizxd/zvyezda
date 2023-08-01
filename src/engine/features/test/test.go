@@ -47,7 +47,7 @@ func (t *test) Login(account configs.LoginData) (*configs.AccountData, error) {
 	}
 
 	if account.Password != data.Password {
-		return nil, configs.PasswordsDoNotMatch
+		return nil, configs.ErrorPasswordsDoNotMatch
 	} 
 
 	return data, nil
@@ -59,7 +59,7 @@ func (t *test) GetAccountById(accountId int) (*configs.AccountData, error) {
 			return &account, nil
 		}
 	}
-	return nil, configs.AccountNotFound
+	return nil, configs.ErrorAccountNotFound
 }
 
 func (t *test) GetAccountByEmail(email string) (*configs.AccountData, error) {
@@ -68,5 +68,5 @@ func (t *test) GetAccountByEmail(email string) (*configs.AccountData, error) {
 			return &account, nil
 		}
 	}
-	return nil, configs.AccountNotFound
+	return nil, configs.ErrorAccountNotFound
 }

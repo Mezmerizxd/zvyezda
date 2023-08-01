@@ -5,8 +5,10 @@ import (
 )
 
 /* Erros */
-var AccountNotFound = errors.New("account not found.")
-var PasswordsDoNotMatch = errors.New("passwords do not match.")
+var (
+	ErrorAccountNotFound = errors.New("account not found.")
+	ErrorPasswordsDoNotMatch = errors.New("passwords do not match.")
+)
 /*********/
 
 type JWT struct {
