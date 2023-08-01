@@ -1,0 +1,9 @@
+{
+  "name": "engine",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "watch": "nodemon --watch \"./**\" --ext \"go,json\" --exec \"go run main.go\""
+  }
+}
