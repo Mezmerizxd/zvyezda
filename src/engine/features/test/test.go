@@ -1,7 +1,7 @@
 package test
 
 import (
-	"zvyezda/src/engine/configs"
+	configs "zvyezda/src/engine/configs/test"
 )
 
 type Config struct {}

@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	cfg "zvyezda/src/engine/configs"
+	cfg "zvyezda/src/engine/configs/test"
 	"zvyezda/src/engine/features"
 )
 
