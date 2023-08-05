@@ -7,6 +7,7 @@ import { versionManager } from './managers/version';
 import { seed } from './seed';
 import Controllers from './controllers';
 import * as console from 'console';
+import { accountsManager } from './managers/accounts';
 
 dotenv.config({ path: `${__dirname}/../../../../.env` });
 
@@ -20,5 +21,6 @@ versionManager.start();
 
 serverManager.start(prisma);
 accessManager.start(prisma);
+accountsManager.start(prisma);
 
 seed.start(prisma);

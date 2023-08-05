@@ -74,6 +74,10 @@ declare namespace Zvyezda.Server {
     ['/account/create'];
     ['/account/delete']: () => {};
     ['/account/edit']: () => {};
+    ['/account/create-account-portal']: () => {};
+    ['/account/create-portal-token']: () => {
+      token: string;
+    };
 
     /* XBOX HACKING */
     ['/xbox-hacking/create']: () => {};

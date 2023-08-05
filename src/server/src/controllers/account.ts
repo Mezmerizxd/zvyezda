@@ -4,6 +4,7 @@ import { serverManager } from '../managers/server';
 import { accessManager } from '../managers/access';
 import { logger } from '../helpers/logger';
 import { hashPassword } from '../helpers/utils';
+import { accountsManager } from '../managers/accounts';
 
 export default (prisma: PrismaClient): void => {
   Endpoint(serverManager.v1, '/account/login', false, async (req) => {
@@ -27,44 +28,27 @@ export default (prisma: PrismaClient): void => {
       };
     }
 
-    const account = await prisma.accounts.findFirst({
-      where: {
-        username,
-      },
-    });
-
-    if (account === null) {
+    const account = await accountsManager.login(username, password);
+    if (account.account === undefined) {
       return {
         server: {
           success: false,
-          error: 'Account not found',
+          error: account.error,
         },
       };
     }
-
-    const hash = hashPassword(password);
-    if (account.password !== hash) {
+    if (account.account.token === null) {
       return {
         server: {
           success: false,
-          error: 'Invalid password',
-        },
-      };
-    }
-
-    const token = await accessManager.createAccess(account);
-    if (token === null) {
-      return {
-        server: {
-          success: false,
-          error: 'Something went wrong',
+          error: 'Failed to get token',
         },
       };
     }
 
     return {
       data: {
-        token,
+        token: account.account.token,
       },
     };
   });
@@ -180,35 +164,14 @@ export default (prisma: PrismaClient): void => {
         };
       }
 
-      if (await prisma.accounts.findFirst({ where: { email } })) {
-        return {
-          server: {
-            success: false,
-            error: 'Email is in use',
-          },
-        };
-      }
-      if (await prisma.accounts.findFirst({ where: { username } })) {
-        return {
-          server: {
-            success: false,
-            error: 'Username is in use',
-          },
-        };
-      }
-
-      const hash = hashPassword(password);
-
-      await prisma.accounts.create({
-        data: {
-          email,
-          username,
-          password: hash,
-          avatar,
-          biography,
-          role: (role as Roles) || Roles.USER,
-        },
-      });
+      await accountsManager.create(
+        email,
+        username,
+        password,
+        role as Roles,
+        avatar ? avatar : null,
+        biography ? biography : null,
+      );
 
       return {
         data: {},
@@ -438,6 +401,107 @@ export default (prisma: PrismaClient): void => {
       return {};
     },
     'USER',
+  );
+
+  Endpoint(serverManager.v1, '/account/create-account-portal', false, async (req) => {
+    const {
+      token,
+      email,
+      username,
+      password,
+      role,
+      avatar,
+      biography,
+    }: {
+      token: string;
+      email: string;
+      username: string;
+      password: string;
+      role?: string;
+      avatar?: string;
+      biography?: string;
+    } = req.body;
+
+    if (!token || token === '') {
+      return {
+        server: {
+          success: false,
+          error: 'You do not have access',
+        },
+      };
+    }
+
+    if (email === null || email === undefined || email === '') {
+      return {
+        server: {
+          success: false,
+          error: 'Email is required',
+        },
+      };
+    }
+    if (username === null || username === undefined || username === '') {
+      return {
+        server: {
+          success: false,
+          error: 'Username is required',
+        },
+      };
+    }
+    if (password === null || password === undefined || password === '') {
+      return {
+        server: {
+          success: false,
+          error: 'Password is required',
+        },
+      };
+    }
+
+    const account = await accountsManager.createWithPortal(
+      token,
+      email,
+      username,
+      password,
+      role as Roles,
+      avatar ?? null,
+      biography ?? null,
+    );
+
+    if (account.error) {
+      return {
+        server: {
+          success: false,
+          error: account.error,
+        },
+      };
+    }
+
+    return {
+      data: {},
+    };
+  });
+
+  Endpoint(
+    serverManager.v1,
+    '/account/create-portal-token',
+    true,
+    async (req, auth) => {
+      const token = accountsManager.createPortalToken();
+      if (token === null) {
+        return {
+          server: {
+            success: false,
+            error: 'Failed to create portal token',
+          },
+        };
+      }
+
+      return {
+        data: {
+          token,
+        },
+      };
+    },
+    'ADMIN',
   );
 
   logger.loadedController('account');
