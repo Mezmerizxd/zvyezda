@@ -82,4 +82,12 @@ function TimeAgo(dateParam) {
   return getFormattedDate(date); // 10. January 2017. at 10:20
 }
 
-export { colorH2A, getFormattedDate, TimeAgo };
+async function copyTextToClipboard(text) {
+  if ('clipboard' in navigator) {
+    return await navigator.clipboard.writeText(text);
+  } else {
+    return document.execCommand('copy', true, text);
+  }
+}
+
+export { colorH2A, getFormattedDate, TimeAgo, copyTextToClipboard };

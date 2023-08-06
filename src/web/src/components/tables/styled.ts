@@ -42,6 +42,9 @@ export const Table = styled.table`
       tr {
         border-bottom: 1px solid ${theme.colors.lightBackground.hex};
         td {
+          max-width: 600px;
+          overflow: hidden;
+          text-overflow: ellipsis;
           padding: 5px;
         }
       }
