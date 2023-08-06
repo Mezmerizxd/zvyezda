@@ -475,8 +475,30 @@ export default (prisma: PrismaClient): void => {
       };
     }
 
+    if (!account.account) {
+      return {
+        server: {
+          success: false,
+          error: 'Failed to get account',
+        },
+      };
+    }
+
+    const access = await accessManager.createAccess(account.account);
+
+    if (!access) {
+      return {
+        server: {
+          success: false,
+          error: 'Failed to get token',
+        },
+      };
+    }
+
     return {
-      data: {},
+      data: {
+        token: access,
+      },
     };
   });
 
@@ -500,6 +522,28 @@ export default (prisma: PrismaClient): void => {
           token,
         },
       };
+    },
+    'ADMIN',
+  );
+
+  Endpoint(
+    serverManager.v1,
+    '/account/get-portal-tokens',
+    true,
+    async (req) => {
+      return { data: { tokens: accountsManager.createAccountPortals } };
+    },
+    'ADMIN',
+  );
+
+  Endpoint(
+    serverManager.v1,
+    '/account/delete-portal-token',
+    true,
+    async (req) => {
+      const { token }: { token: string } = req.body;
+      accountsManager.deletePortalToken(token);
+      return { data: {} };
     },
     'ADMIN',
   );

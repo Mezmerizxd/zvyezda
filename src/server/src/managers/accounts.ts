@@ -17,7 +17,7 @@ class AccountsManager {
   prisma: PrismaClient;
 
   activeAccounts: Accounts[];
-  createAccountPortals: string[];
+  createAccountPortals: string[] = [];
 
   constructor() {}
 
@@ -84,7 +84,7 @@ class AccountsManager {
       data: {
         email,
         username,
-        password,
+        password: hashPassword(password),
         role: role ? role : 'USER',
         avatar,
         biography,
@@ -107,7 +107,7 @@ class AccountsManager {
     avatar: string | null,
     biography: string | null,
   ): Promise<{ account?: Accounts; error?: string }> {
-    if (!this.createAccountPortals.includes(token)) {
+    if (!this.createAccountPortals?.includes(token)) {
       return { error: 'Invalid token' };
     }
 
@@ -117,7 +117,7 @@ class AccountsManager {
       return { error: account.error };
     }
 
-    this.createAccountPortals.filter((obj) => obj !== token);
+    this.deletePortalToken(token);
 
     return {
       account: account.account,
@@ -130,7 +130,7 @@ class AccountsManager {
     let attempts: number = 0;
     while (!created) {
       let tokenExists = false;
-      this.createAccountPortals.forEach((t) => {
+      this.createAccountPortals?.forEach((t) => {
         if (t === token) tokenExists = true;
       });
       if (!tokenExists) created = true;
@@ -138,8 +138,13 @@ class AccountsManager {
       attempts++;
       if (attempts > 10) return null;
     }
-    this.createAccountPortals.push(token);
+    this.createAccountPortals?.push(token);
     return token;
+  }
+
+  deletePortalToken(token: string) {
+    let newTokens = this.createAccountPortals.filter((t) => t !== token);
+    this.createAccountPortals = newTokens;
   }
 }
 
