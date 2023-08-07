@@ -21,6 +21,7 @@ import Sidebar from '../../components/sidebar';
 import Consoles from '../../models/dashboard/consoles';
 import XboxHacking from './XboxHacking';
 import Discussion from './Discussion';
+import Surveillance from './Surveillance';
 import Users from './Users';
 
 import Dialogs from '../../models/dashboard/dialogs';
@@ -97,6 +98,7 @@ export default () => {
             </Context>
           )}
           {state.dashboard.context === Contexts.Discussion && <Discussion />}
+          {state.dashboard.context === Contexts.Surveillance && <Surveillance />}
           {state.dashboard.context === Contexts.Xbox_Hacking && <XboxHacking />}
           {state.dashboard.context === Contexts.Users && <Users />}
         </Container>

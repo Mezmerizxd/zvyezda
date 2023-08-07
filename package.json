@@ -34,6 +34,7 @@
     "webpack-cli": "^5.0.2"
   },
   "dependencies": {
+    "@cycjimmy/jsmpeg-player": "^6.0.5",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
     "@headlessui/react": "^1.7.14",
