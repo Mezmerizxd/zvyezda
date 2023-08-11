@@ -10,6 +10,7 @@ class Emitter {
 
   apiUrl: string;
   socketUrl: string;
+  streamUrl: string;
   token: string;
 
   constructor() {
@@ -84,6 +85,8 @@ class Emitter {
     if (r.server.success === false) {
       return;
     }
+    this.streamUrl = r.data.streamUrl;
+    this.socketUrl = r.data.socketUrl;
     return r.data.socketUrl;
   }
 }
