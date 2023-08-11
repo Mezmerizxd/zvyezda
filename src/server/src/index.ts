@@ -8,7 +8,6 @@ import { surveillanceManager } from './managers/surveillance';
 import { seed } from './seed';
 import Controllers from './controllers';
 import { accountsManager } from './managers/accounts';
-import Stream from './rtsp/videostream';
 
 dotenv.config({ path: `${__dirname}/../../../../.env` });
 
