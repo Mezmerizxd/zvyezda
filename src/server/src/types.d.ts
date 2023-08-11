@@ -10,6 +10,7 @@ declare namespace Zvyezda.Socket {
   type ServerToClient = {
     socketError: (data: { error: string }) => void;
     discussionMessage: (data: Zvyezda.Client.DiscussionMessage) => void;
+    receiveMpegData: (data: any) => void;
   };
 }
 
@@ -46,6 +47,7 @@ declare namespace Zvyezda.Server {
     };
     ['/get-socket-details']: () => {
       socketUrl: string;
+      streamUrl: string;
     };
 
     /* ACCOUNT */
@@ -119,5 +121,21 @@ declare namespace Zvyezda.Server.Managers.Access {
     username: string;
     token: string;
     expires: Date;
+  };
+}
+
+declare namespace Zvyezda.Server.Managers.Surveillance {
+  type Stream = {
+    id: number;
+    name: string;
+    args: string[];
+    clients: Client[] | null;
+    running: boolean;
+    stream: ChildProcessWithoutNullStreams | null;
+  };
+
+  type Client = {
+    streamId: number;
+    socketId: any;
   };
 }

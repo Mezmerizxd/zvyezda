@@ -21,10 +21,12 @@ export default class Mpeg1Muxer extends EventEmitter {
 
   constructor(options: Mpeg1MuxerOptions) {
     super();
+
     this.url = options.url;
     this.ffmpegOptions = options.ffmpegOptions;
     this.exitCode = undefined;
     this.additionalFlags = [];
+
     if (this.ffmpegOptions) {
       for (const key in this.ffmpegOptions) {
         this.additionalFlags.push(key);
@@ -33,6 +35,7 @@ export default class Mpeg1Muxer extends EventEmitter {
         }
       }
     }
+
     this.spawnOptions = [
       '-rtsp_transport',
       'tcp',
@@ -42,24 +45,30 @@ export default class Mpeg1Muxer extends EventEmitter {
       'mpegts',
       '-codec:v',
       'mpeg1video',
-      // additional ffmpeg options go here
       ...this.additionalFlags,
       '-',
     ];
+
     this.stream = spawn(options.ffmpegPath, this.spawnOptions, {
       detached: false,
     });
-    this.inputStreamStarted = true;
-    this.stream?.stdout?.on('data', (data) => {
-      return this.emit('mpeg1data', data);
-    });
-    this.stream.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
-      if (code === 1) {
-        console.error('RTSP stream exited with error');
-        this.exitCode = 1;
-        return this.emit('exitWithError');
-      }
-    });
+
+    if (this.stream.stdout) {
+      this.inputStreamStarted = true;
+
+      this.stream.stdout?.on('data', (data) => {
+        return this.emit('mpeg1data', data);
+      });
+
+      this.stream.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
+        if (code === 1) {
+          console.error('RTSP stream exited with error');
+          this.exitCode = 1;
+          return this.emit('exitWithError');
+        }
+      });
+    }
+
     return this;
   }
 }
