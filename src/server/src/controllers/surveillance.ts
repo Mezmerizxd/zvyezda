@@ -16,6 +16,14 @@ export default (prisma: PrismaClient): void => {
   });
 
   serverManager.socket.on('connection', (s) => {
+    function updateClient() {
+      s.emit('receiveStreamData', {
+        streams: surveillanceManager.streams || null,
+        currentStream: surveillanceManager.currentStream || null,
+        running: surveillanceManager.running,
+      });
+    }
+
     s.on('joinStream', async (data) => {
       const expired = await accessManager.isAccessActive(data.authorization, 'USER');
       if (!expired) {
@@ -25,16 +33,41 @@ export default (prisma: PrismaClient): void => {
         return;
       }
 
-      surveillanceManager.clientConnect({ socketId: s.id, streamId: 0 });
+      const account = await prisma.accounts.findFirst({
+        where: {
+          token: data.authorization,
+        },
+      });
+      if (!account) {
+        s.emit('socketError', {
+          error: 'Failed to get account',
+        });
+        return;
+      }
+
+      s.join('stream');
+
+      surveillanceManager.onClientConnect(s.id, account);
+      updateClient();
 
       logger.debug('Surveillance: Successful connection to socket');
-      s.join('stream');
     });
 
     s.on('leaveStream', () => {
-      surveillanceManager.clientDisconnect(s.id);
-      logger.debug('Surveillance: Successful disconnection to socket');
+      surveillanceManager.onClientDisconnect(s.id);
+      updateClient();
       s.leave('stream');
+
+      logger.debug('Surveillance: Successful disconnection to socket');
+    });
+
+    s.on('getStreamData', () => {
+      updateClient();
+    });
+
+    s.on('startStream', (data) => {
+      surveillanceManager.startStream(data);
+      updateClient();
     });
   });
 

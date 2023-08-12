@@ -303,7 +303,17 @@ export const SurveillancePlayerControls = styled.div`
 `;
 export const SurveillancePlayer = styled.div`
   width: 100%;
-  height: calc(100vh - 180px);
+  height: 100%;
 
-  border: 1px red solid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+export const SurveillanceSource = styled.div`
+  display: flex;
+
+  svg {
+    cursor: pointer;
+  }
 `;

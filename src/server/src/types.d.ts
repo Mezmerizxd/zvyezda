@@ -9,11 +9,18 @@ declare namespace Zvyezda.Socket {
 
     joinStream: (data: { authorization: string }) => void;
     leaveStream: () => void;
+    getStreamData: () => void;
+    startStream: (data: Zvyezda.Server.Managers.Surveillance.Stream) => void;
   };
   type ServerToClient = {
     socketError: (data: { error: string }) => void;
     discussionMessage: (data: Zvyezda.Client.DiscussionMessage) => void;
-    receiveMpegData: (data: any) => void;
+
+    receiveStreamData: (data: {
+      streams: Zvyezda.Server.Managers.Surveillance.Stream[] | null;
+      currentStream: Zvyezda.Server.Managers.Surveillance.Stream | null;
+      running: boolean;
+    }) => void;
   };
 }
 
@@ -135,7 +142,7 @@ declare namespace Zvyezda.Server.Managers.Surveillance {
   };
 
   type Client = {
-    streamId: number;
+    account: Zvyezda.Client.User;
     socketId: any;
   };
 }
