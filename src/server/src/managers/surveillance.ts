@@ -1,5 +1,5 @@
 import { logger } from '../helpers/logger';
-import { spawn } from 'child_process';
+import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 import { serverManager } from './server';
 
 class SurveillanceManager {
@@ -14,6 +14,11 @@ class SurveillanceManager {
 
   streams: Zvyezda.Server.Managers.Surveillance.Stream[];
 
+  stream: ChildProcessWithoutNullStreams | null;
+  running: boolean;
+  clients: Zvyezda.Server.Managers.Surveillance.Client[];
+  currentStream: Zvyezda.Server.Managers.Surveillance.Stream | null;
+
   ffmpegPath: string;
 
   streamProcessRuntime: NodeJS.Timeout;
@@ -22,6 +27,10 @@ class SurveillanceManager {
   constructor() {
     this.streams = [];
     this.ffmpegPath = 'ffmpeg';
+    this.stream = null;
+    this.running = false;
+    this.clients = [];
+    this.currentStream = null;
   }
 
   start() {
@@ -79,109 +88,111 @@ class SurveillanceManager {
       id: this.streams.length || 0,
       name: name,
       args: spawnOptions,
-      clients: null,
-      running: false,
-      stream: null,
     });
   }
 
   handler() {
     this.streamProcessRuntime = setInterval(async () => {
-      if (this.streams) {
-        this.streams.forEach((stream) => {
-          // If Clients are Connected
-          if (stream.clients && stream.clients.length > 0) {
-            // Make sure stream is running
-            if (!stream.running && !stream.stream) {
-              // Start the stream
-              this.startStream(stream);
-            }
-          }
-
-          // If there are No Clients
-          if (!stream?.clients || stream?.clients?.length < 0) {
-            // Make sure stream is not running
-            if (stream.running || stream.stream) {
-              // Kill the stream
-              this.killStream(stream);
-            }
-          }
-
-          logger.debug(
-            `Surveillance: Stream: ${stream.stream ? 'true' : 'false'}, Running: ${stream.running ? 'true' : 'false'}`,
-          );
-        });
+      if (this.clients && this.clients.length > 0) {
+        // Make sure stream is running
+        if (!this.running && !this.stream && this.currentStream) {
+          // Start the stream
+          this.startStream(this.currentStream);
+        }
       }
+
+      // If there are No Clients
+      if (!this.clients || this.clients?.length === 0) {
+        // Make sure stream is not running
+        if (this.running && this.stream && this.currentStream) {
+          // Kill the stream
+          this.killStream(this.currentStream);
+        }
+      }
+
+      logger.debug(
+        `Surveillance: Stream: ${this.stream ? 'true' : 'false'}, Running: ${this.running ? 'true' : 'false'}`,
+      );
     }, 5000);
 
     this.streamRuntime = setInterval(async () => {
-      if (this.streams) {
-        this.streams.forEach((stream) => {
-          if (this.streams[stream.id].running) {
-            if (this.streams[stream.id].stream?.stdout) {
-              this.streams[stream.id].stream?.stdout?.on('data', (data: any) => {
-                // @ts-ignore
-                for (let client of serverManager.stream.clients) {
-                  if (client.readyState === 1) {
-                    client.send(data);
-                  }
-                }
-                return;
-              });
-              this.streams[stream.id].stream?.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
-                if (code === 1) {
-                  logger.warn(`Surveillance: ${stream.name} exited with error`);
-                  return;
-                }
-              });
+      if (this.running && this.stream && this.currentStream) {
+        if (this.stream?.stdout) {
+          this.stream?.stdout?.on('data', (data: any) => {
+            // @ts-ignore
+            for (let client of serverManager.stream.clients) {
+              if (client.readyState === 1) {
+                client.send(data);
+              }
             }
-          }
+            return;
+          });
+          this.stream?.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
+            if (code === 1) {
+              logger.warn(`Surveillance: ${this.currentStream?.name} exited with error`);
+              return;
+            }
+          });
+        }
+      }
 
-          if (this.streams[stream.id].stream) {
-            clearTimeout(this.streamRuntime);
-          }
-        });
+      if (this.stream) {
+        clearTimeout(this.streamRuntime);
       }
     }, 1000);
   }
 
   startStream(stream: Zvyezda.Server.Managers.Surveillance.Stream): void {
     logger.debug(`Surveillance: startStream ${stream.name}`);
-    if (!this.streams[stream.id].running && !this.streams[stream.id].stream) {
+    if (!this.running && !this.stream) {
+      this.currentStream = stream;
+
       const instance = spawn(this.ffmpegPath, stream.args, {
         detached: false,
       });
 
       if (instance) {
-        this.streams[stream.id].running = true;
-        this.streams[stream.id].stream = instance;
+        this.running = true;
+        this.stream = instance;
       }
     } else {
-      logger.warn(`Surveillance: Stream ${stream.name} is already running`);
+      if (this.currentStream) {
+        this.killStream(this.currentStream);
+      }
+      this.currentStream = stream;
+
+      const instance = spawn(this.ffmpegPath, stream.args, {
+        detached: false,
+      });
+
+      if (instance) {
+        this.running = true;
+        this.stream = instance;
+      }
     }
   }
 
   killStream(stream: Zvyezda.Server.Managers.Surveillance.Stream): void {
     logger.debug(`Surveillance: killStream ${stream.name}`);
-    if (this.streams[stream.id].running && this.streams[stream.id].stream) {
-      this.streams[stream.id].stream.kill();
+    if (this.running && this.stream) {
+      this.stream.kill();
 
-      this.streams[stream.id].running = false;
-      this.streams[stream.id].stream = null;
+      this.running = false;
+      this.stream = null;
     }
   }
 
   clientConnect({ socketId, streamId }: Zvyezda.Server.Managers.Surveillance.Client): void {
-    if (this.streams[streamId] && !this.streams[streamId].running && !this.streams[streamId].stream) {
+    if (this.streams[streamId] && !this.running && !this.stream) {
       this.startStream(this.streams[streamId]);
     }
-    if (this.streams[streamId].clients) {
-      this.streams[streamId].clients?.push({
+    if (this.clients) {
+      this.clients?.push({
         socketId,
         streamId,
       });
     } else {
-      this.streams[streamId].clients = [
+      this.clients = [
         {
           socketId,
           streamId,
@@ -191,39 +202,88 @@ class SurveillanceManager {
   }
 
   clientDisconnect(socketId: string): void {
-    if (this.streams) {
-      this.streams.forEach((stream) => {
-        if (stream.clients) {
-          let newClients: Zvyezda.Server.Managers.Surveillance.Client[] = [];
-          stream.clients.forEach((client) => {
-            if (client.socketId !== socketId) {
-              newClients.push(client);
-            }
-          });
-          if (newClients.length > 0) {
-            this.streams[stream.id].clients = newClients;
-          } else {
-            this.streams[stream.id].clients = null;
-          }
+    if (this.clients) {
+      let newClients: Zvyezda.Server.Managers.Surveillance.Client[] = [];
+      this.clients.forEach((client) => {
+        if (client.socketId !== socketId) {
+          newClients.push(client);
         }
       });
+      if (newClients.length > 0) {
+        this.clients = newClients;
+      } else {
+        this.clients = [];
+      }
     }
-  }
-
-  getStreamById(id: number): Zvyezda.Server.Managers.Surveillance.Stream | null {
-    if (this.streams?.length > 0) {
-      this.streams.forEach((stream) => {
-        if (stream.id === id) {
-          return stream;
-        }
-      });
-    }
-    return null;
-  }
-
-  getClientBySocketId(): Zvyezda.Server.Managers.Surveillance.Client | null {
-    return null;
   }
 }
 
 export const surveillanceManager = SurveillanceManager.getInstance();
+
+/*
+This handler function allows multiple streams to run at the same time,
+but it's useless for now as WebSocket does not have Namespaces,
+so you can't have multiple streams without having to use multiple
+ports and that's complicated
+
+handler() {
+  this.streamProcessRuntime = setInterval(async () => {
+    if (this.streams) {
+      this.streams.forEach((stream) => {
+        // If Clients are Connected
+        if (stream.clients && stream.clients.length > 0) {
+          // Make sure stream is running
+          if (!stream.running && !stream.stream) {
+            // Start the stream
+            this.startStream(stream);
+          }
+        }
+
+        // If there are No Clients
+        if (!stream?.clients || stream?.clients?.length < 0) {
+          // Make sure stream is not running
+          if (stream.running || stream.stream) {
+            // Kill the stream
+            this.killStream(stream);
+          }
+        }
+
+        logger.debug(
+          `Surveillance: Stream: ${stream.stream ? 'true' : 'false'}, Running: ${stream.running ? 'true' : 'false'}`,
+        );
+      });
+    }
+  }, 5000);
+
+  this.streamRuntime = setInterval(async () => {
+    if (this.streams) {
+      this.streams.forEach((stream) => {
+        if (this.streams[stream.id].running) {
+          if (this.streams[stream.id].stream?.stdout) {
+            this.streams[stream.id].stream?.stdout?.on('data', (data: any) => {
+              // @ts-ignore
+              for (let client of serverManager.stream.clients) {
+                if (client.readyState === 1) {
+                  client.send(data);
+                }
+              }
+              return;
+            });
+            this.streams[stream.id].stream?.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
+              if (code === 1) {
+                logger.warn(`Surveillance: ${stream.name} exited with error`);
+                return;
+              }
+            });
+          }
+        }
+
+        if (this.streams[stream.id].stream) {
+          clearTimeout(this.streamRuntime);
+        }
+      });
+    }
+  }, 1000);
+}
+
+*/

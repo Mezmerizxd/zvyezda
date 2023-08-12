@@ -129,9 +129,6 @@ declare namespace Zvyezda.Server.Managers.Surveillance {
     id: number;
     name: string;
     args: string[];
-    clients: Client[] | null;
-    running: boolean;
-    stream: ChildProcessWithoutNullStreams | null;
   };
 
   type Client = {
