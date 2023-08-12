@@ -6,6 +6,9 @@ declare namespace Zvyezda.Socket {
     joinDiscussion: (data: { authorization: string }) => void;
     leaveDiscussion: () => void;
     sendDiscussionMessage: (data: { message: string; authorization: string; replyTo?: string }) => void;
+
+    joinStream: (data: { authorization: string }) => void;
+    leaveStream: () => void;
   };
   type ServerToClient = {
     socketError: (data: { error: string }) => void;

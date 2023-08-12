@@ -264,3 +264,46 @@ export const DiscussionMessageContent = styled.div`
     color: ${theme.text.primary.hex};
   }
 `;
+
+export const SurveillancePlayerControls = styled.div`
+  width: 100%;
+  height: 40px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  h1 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 30px;
+      height: 30px;
+
+      margin: 0 10px;
+      background: ${theme.colors.background.hex};
+      border-radius: 3px;
+      color: ${theme.colors.accent.hex};
+      cursor: pointer;
+    }
+  }
+`;
+export const SurveillancePlayer = styled.div`
+  width: 100%;
+  height: calc(100vh - 180px);
+
+  border: 1px red solid;
+`;

@@ -33,33 +33,34 @@ export default () => {
       if (r.server.success === true) {
         setMessages(r.data.messages);
       }
-
-      const s: socketIo.Socket<Zvyezda.Socket.ServerToClient & Zvyezda.Socket.ClientToServer> = socketIo.io(
-        emitter.socketUrl,
-        {
-          secure: false,
-          rejectUnauthorized: false,
-          reconnectionAttempts: 0,
-          autoConnect: false,
-        },
-      );
-
-      s.connect();
-
-      s.emit('joinDiscussion', {
-        authorization: localStorage.getItem('token'),
-      });
-
-      s.on('discussionMessage', (data) => {
-        setMessages((messages) => [...messages, data]);
-      });
-
-      setSocket(s);
-
-      return () => {
-        socket.disconnect();
-      };
     });
+
+    const s: socketIo.Socket<Zvyezda.Socket.ServerToClient & Zvyezda.Socket.ClientToServer> = socketIo.io(
+      emitter.socketUrl,
+      {
+        secure: false,
+        rejectUnauthorized: false,
+        reconnectionAttempts: 0,
+        autoConnect: false,
+      },
+    );
+
+    s.connect();
+
+    s.emit('joinDiscussion', {
+      authorization: localStorage.getItem('token'),
+    });
+
+    s.on('discussionMessage', (data) => {
+      setMessages((messages) => [...messages, data]);
+    });
+
+    setSocket(s);
+
+    return () => {
+      s.emit('leaveDiscussion');
+      s.disconnect();
+    };
   }, []);
 
   useEffect(() => {
