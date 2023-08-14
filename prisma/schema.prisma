@@ -55,3 +55,9 @@ model Discussion {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Surveillance {
+  id        String   @id @default(uuid())
+  url       String
+  name      String
+}

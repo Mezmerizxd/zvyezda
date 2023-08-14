@@ -2,13 +2,20 @@ import JSMpeg from '@cycjimmy/jsmpeg-player';
 import { useEffect, useState } from 'react';
 import { emitter } from '../../lib/emitter';
 import * as socketIo from 'socket.io-client';
-import { BsFillPlayFill, BsFillStopFill } from 'react-icons/bs';
+import { BsFillPauseFill, BsFillPlayFill, BsFillStopFill } from 'react-icons/bs';
 
-import { Context, SurveillancePlayer, SurveillancePlayerControls, SurveillanceSource } from './styled';
+import {
+  Context,
+  SurveillanceAddSource,
+  SurveillancePlayer,
+  SurveillancePlayerControls,
+  SurveillanceSource,
+} from './styled';
 
 import StandardButton from '../../components/buttons/StandardButton';
 import IconButton from '../../components/buttons/IconButton';
 import { StandardContext, StandardContextBody, StandardContextHeader } from '../../components/contexts/StandardContext';
+import IconInput from '../../components/inputs/StandardInput';
 
 export default () => {
   const [socket, setSocket] =
@@ -22,6 +29,13 @@ export default () => {
     streams: null,
     currentStream: null,
     running: false,
+  });
+  const [newSource, setNewSource] = useState<{
+    url: string;
+    name: string;
+  }>({
+    url: '',
+    name: '',
   });
 
   useEffect(() => {
@@ -56,7 +70,9 @@ export default () => {
     setPlayer(player);
 
     return () => {
-      s.emit('leaveStream');
+      s.emit('leaveStream', {
+        authorization: localStorage.getItem('token'),
+      });
       s.disconnect();
     };
   }, []);
@@ -73,42 +89,78 @@ export default () => {
     }
   }
 
+  function addSource() {
+    if (newSource.name && newSource.url) {
+      socket.emit('addSource', newSource);
+    }
+    setNewSource({
+      url: '',
+      name: '',
+    });
+  }
+
   return (
     <Context>
-      <StandardContext max="800px" wide>
+      <StandardContext max="fit-content" wide>
         <StandardContextHeader>
           <h1>Live Feed</h1>
         </StandardContextHeader>
         <StandardContextBody>
-          <SurveillancePlayerControls>
-            <h1>
-              Current Stream: {streamData?.currentStream?.name || 'N/A'} | Running:
-              {streamData.running ? 'True' : 'False'}
-            </h1>
-            <div>
-              <BsFillPlayFill onClick={() => start()} />
-              <BsFillStopFill onClick={() => stop()} />
-            </div>
-          </SurveillancePlayerControls>
           <SurveillancePlayer>
             <div id="video-canvas" style={{ height: '480px', width: '640px' }}></div>
           </SurveillancePlayer>
+          <SurveillancePlayerControls>
+            <div>
+              <BsFillPlayFill onClick={() => start()} />
+              <BsFillPauseFill onClick={() => stop()} />
+            </div>
+            <h1>Current Stream: {streamData?.currentStream?.name || 'N/A'}</h1>
+            <h1>Running: {streamData.running ? 'True' : 'False'}</h1>
+          </SurveillancePlayerControls>
         </StandardContextBody>
       </StandardContext>
 
-      <StandardContext max="800px" wide>
+      <StandardContext max="fit-content" wide>
         <StandardContextHeader>
           <h1>Sources</h1>
         </StandardContextHeader>
         <StandardContextBody>
+          <SurveillanceAddSource>
+            <IconInput
+              placeholder="Stream Name"
+              type="text"
+              margin="5px 0"
+              onChange={(e) =>
+                setNewSource({
+                  ...newSource,
+                  name: e.target.value,
+                })
+              }
+              value={newSource.name}
+            />
+            <IconInput
+              placeholder="rtsp://example.com"
+              type="text"
+              margin="5px 5px"
+              onChange={(e) =>
+                setNewSource({
+                  ...newSource,
+                  url: e.target.value,
+                })
+              }
+              value={newSource.url}
+            />
+            <StandardButton text="Add" onClick={addSource} />
+          </SurveillanceAddSource>
+
           {streamData?.streams?.length > 0 &&
             streamData.streams.map((s) => (
-              <SurveillanceSource>
-                <BsFillPlayFill
-                  onClick={() => {
-                    socket.emit('startStream', s);
-                  }}
-                />
+              <SurveillanceSource
+                onClick={() => {
+                  socket.emit('startStream', s);
+                }}
+              >
+                <BsFillPlayFill />
                 <p>{s.name}</p>
               </SurveillanceSource>
             ))}
@@ -117,5 +169,3 @@ export default () => {
     </Context>
   );
 };
-
-// style={{ height: '480px', width: '640px' }}

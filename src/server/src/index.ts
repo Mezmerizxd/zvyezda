@@ -22,6 +22,6 @@ versionManager.start();
 serverManager.start(prisma);
 accessManager.start(prisma);
 accountsManager.start(prisma);
-surveillanceManager.start();
+surveillanceManager.start(prisma);
 
 seed.start(prisma);

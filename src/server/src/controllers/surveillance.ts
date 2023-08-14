@@ -53,8 +53,20 @@ export default (prisma: PrismaClient): void => {
       logger.debug('Surveillance: Successful connection to socket');
     });
 
-    s.on('leaveStream', () => {
-      surveillanceManager.onClientDisconnect(s.id);
+    s.on('leaveStream', async (data) => {
+      const account = await prisma.accounts.findFirst({
+        where: {
+          token: data.authorization,
+        },
+      });
+      if (!account) {
+        s.emit('socketError', {
+          error: 'Failed to get account',
+        });
+        return;
+      }
+
+      surveillanceManager.onClientDisconnect(s.id, account);
       updateClient();
       s.leave('stream');
 
@@ -67,6 +79,12 @@ export default (prisma: PrismaClient): void => {
 
     s.on('startStream', (data) => {
       surveillanceManager.startStream(data);
+      updateClient();
+    });
+
+    s.on('addSource', async (data) => {
+      logger.debug(data);
+      await surveillanceManager.addSource(data.name, data.url);
       updateClient();
     });
   });

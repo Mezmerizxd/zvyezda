@@ -8,9 +8,10 @@ declare namespace Zvyezda.Socket {
     sendDiscussionMessage: (data: { message: string; authorization: string; replyTo?: string }) => void;
 
     joinStream: (data: { authorization: string }) => void;
-    leaveStream: () => void;
+    leaveStream: (data: { authorization: string }) => void;
     getStreamData: () => void;
     startStream: (data: Zvyezda.Server.Managers.Surveillance.Stream) => void;
+    addSource: (data: { url: string; name: string }) => void;
   };
   type ServerToClient = {
     socketError: (data: { error: string }) => void;

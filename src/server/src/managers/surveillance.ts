@@ -1,7 +1,7 @@
 import { logger } from '../helpers/logger';
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 import { serverManager } from './server';
-import { Accounts } from '@prisma/client';
+import { Accounts, PrismaClient } from '@prisma/client';
 
 class SurveillanceManager {
   protected static instance: SurveillanceManager;
@@ -12,6 +12,8 @@ class SurveillanceManager {
     }
     return SurveillanceManager.instance;
   }
+
+  prisma: PrismaClient;
 
   streams: Zvyezda.Server.Managers.Surveillance.Stream[] | null;
 
@@ -34,28 +36,35 @@ class SurveillanceManager {
     this.currentStream = null;
   }
 
-  start() {
-    this.createStream('test', {
-      url: 'rtsp://192.168.0.127:8554/test',
-      ffmpegOptions: {
-        '-f': 'mpegts',
-        '-codec:v': 'mpeg1video',
-        '-b:v': '1000k',
-        '-stats': '',
-        '-r': 25,
-        '-s': '640x480',
-        '-bf': 0,
-        '-codec:a': 'mp2',
-        '-ar': 44100,
-        '-ac': 1,
-        '-b:a': '128k',
-      },
-    });
+  async start(prisma: PrismaClient): Promise<void> {
+    this.prisma = prisma;
+
+    const streams = await prisma.surveillance.findMany();
+    if (streams) {
+      streams.forEach((stream) => {
+        this.createStream(stream.name, {
+          url: stream.url,
+          ffmpegOptions: {
+            '-f': 'mpegts',
+            '-codec:v': 'mpeg1video',
+            '-b:v': '1000k',
+            '-stats': '',
+            '-r': 25,
+            '-s': '640x480',
+            '-bf': 0,
+            '-codec:a': 'mp2',
+            '-ar': 44100,
+            '-ac': 1,
+            '-b:a': '128k',
+          },
+        });
+      });
+    }
 
     this.handler();
   }
 
-  stop() {
+  stop(): void {
     clearInterval(this.streamProcessRuntime);
   }
 
@@ -101,7 +110,7 @@ class SurveillanceManager {
     }
   }
 
-  handler() {
+  handler(): void {
     this.streamProcessRuntime = setInterval(async () => {
       // If there are No Clients
       if (!this.clients) {
@@ -113,7 +122,9 @@ class SurveillanceManager {
       }
 
       logger.debug(
-        `Surveillance: Stream: ${this.stream ? 'true' : 'false'}, Running: ${this.running ? 'true' : 'false'}`,
+        `Surveillance: Stream: ${this.stream ? 'true' : 'false'}, Running: ${
+          this.running ? 'true' : 'false'
+        }, Clients: ${this.clients?.length}`,
       );
     }, 5000);
   }
@@ -198,11 +209,11 @@ class SurveillanceManager {
     }
   }
 
-  onClientDisconnect(socketId: string): void {
+  onClientDisconnect(socketId: string, account: Accounts): void {
     if (this.clients) {
       let newClients: { socketId: string; account: Accounts }[] = [];
       this.clients.forEach((client) => {
-        if (client.socketId !== socketId) {
+        if (client.account.id !== account.id) {
           newClients.push(client);
         }
       });
@@ -212,6 +223,24 @@ class SurveillanceManager {
         this.clients = null;
       }
     }
+  }
+
+  async addSource(name: string, url: string): Promise<void> {
+    const streamExists = await this.prisma.surveillance.findFirst({
+      where: {
+        url: url,
+      },
+    });
+    if (streamExists) return;
+
+    await this.prisma.surveillance.create({
+      data: {
+        name,
+        url,
+      },
+    });
+
+    this.createStream(name, { url });
   }
 }
 
