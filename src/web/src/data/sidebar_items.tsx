@@ -1,12 +1,13 @@
 import { FaXbox } from 'react-icons/fa';
-import { MdSpaceDashboard, MdChat } from 'react-icons/md';
+import { MdSpaceDashboard, MdChat, MdPhotoCamera } from 'react-icons/md';
 import { HiUsers } from 'react-icons/hi';
 
 export enum Contexts {
   Default,
   Discussion,
   Xbox_Hacking,
-  Users,
+  Surveillance = 3,
+  Users = 4,
 }
 
 export const sidebar_items: Zvyezda.Client.Models.SidebarItemProps[] = [
@@ -23,6 +24,11 @@ export const sidebar_items: Zvyezda.Client.Models.SidebarItemProps[] = [
         id: Contexts.Discussion,
         title: 'Discussion',
         icon: <MdChat />,
+      },
+      {
+        id: Contexts.Surveillance,
+        title: 'Surveillance',
+        icon: <MdPhotoCamera />,
       },
     ],
   },

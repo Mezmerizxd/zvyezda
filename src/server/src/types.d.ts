@@ -6,10 +6,22 @@ declare namespace Zvyezda.Socket {
     joinDiscussion: (data: { authorization: string }) => void;
     leaveDiscussion: () => void;
     sendDiscussionMessage: (data: { message: string; authorization: string; replyTo?: string }) => void;
+
+    joinStream: (data: { authorization: string }) => void;
+    leaveStream: (data: { authorization: string }) => void;
+    getStreamData: () => void;
+    startStream: (data: Zvyezda.Server.Managers.Surveillance.Stream) => void;
+    addSource: (data: { url: string; name: string }) => void;
   };
   type ServerToClient = {
     socketError: (data: { error: string }) => void;
     discussionMessage: (data: Zvyezda.Client.DiscussionMessage) => void;
+
+    receiveStreamData: (data: {
+      streams: Zvyezda.Server.Managers.Surveillance.Stream[] | null;
+      currentStream: Zvyezda.Server.Managers.Surveillance.Stream | null;
+      running: boolean;
+    }) => void;
   };
 }
 
@@ -46,6 +58,7 @@ declare namespace Zvyezda.Server {
     };
     ['/get-socket-details']: () => {
       socketUrl: string;
+      streamUrl: string;
     };
 
     /* ACCOUNT */
@@ -119,5 +132,18 @@ declare namespace Zvyezda.Server.Managers.Access {
     username: string;
     token: string;
     expires: Date;
+  };
+}
+
+declare namespace Zvyezda.Server.Managers.Surveillance {
+  type Stream = {
+    id: number;
+    name: string;
+    args: string[];
+  };
+
+  type Client = {
+    account: Zvyezda.Client.User;
+    socketId: any;
   };
 }

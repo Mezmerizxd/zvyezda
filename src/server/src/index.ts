@@ -4,9 +4,9 @@ import { PrismaClient } from '@prisma/client';
 import { serverManager } from './managers/server';
 import { accessManager } from './managers/access';
 import { versionManager } from './managers/version';
+import { surveillanceManager } from './managers/surveillance';
 import { seed } from './seed';
 import Controllers from './controllers';
-import * as console from 'console';
 import { accountsManager } from './managers/accounts';
 
 dotenv.config({ path: `${__dirname}/../../../../.env` });
@@ -22,5 +22,6 @@ versionManager.start();
 serverManager.start(prisma);
 accessManager.start(prisma);
 accountsManager.start(prisma);
+surveillanceManager.start(prisma);
 
 seed.start(prisma);

@@ -264,3 +264,86 @@ export const DiscussionMessageContent = styled.div`
     color: ${theme.text.primary.hex};
   }
 `;
+
+export const SurveillancePlayerControls = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  h1 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    margin: 5px 0;
+  }
+
+  div {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    margin: 5px 0;
+
+    svg {
+      width: 30px;
+      height: 30px;
+
+      margin: 0 10px;
+      background: ${theme.colors.background.hex};
+      border-radius: 3px;
+      color: ${theme.colors.accent.hex};
+      cursor: pointer;
+    }
+  }
+`;
+export const SurveillancePlayer = styled.div`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+export const SurveillanceSource = styled.div`
+  width: fit-content;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  background: ${theme.colors.accent.hex};
+  color: ${theme.text.secondary.hex};
+  border-radius: 3px;
+  padding: 5px;
+  margin: 5px 0;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  p {
+    margin: 0 5px;
+  }
+`;
+export const SurveillanceAddSource = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    width: fit-content;
+  }
+`;

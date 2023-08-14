@@ -6,6 +6,7 @@ import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import { logger } from '../helpers/logger';
+import * as WebSocket from 'ws';
 
 class ServerManager {
   protected static instance: ServerManager;
@@ -23,6 +24,7 @@ class ServerManager {
   _io: sckio.Server;
   express: express.Application;
   socket: sckio.Namespace<Zvyezda.Socket.ClientToServer & Zvyezda.Socket.ServerToClient>;
+  stream: WebSocket.Server;
 
   v1: express.Router;
 
@@ -43,6 +45,10 @@ class ServerManager {
     this.socket = this._io.of('/socket').use((socket: sckio.Socket, next: (err?: Error) => void) => {
       logger.incomingSocket(socket);
       next();
+    });
+    this.stream = new WebSocket.Server({
+      port: 3005,
+      path: '/stream',
     });
     this._port = Number(process.env.PORT);
   }

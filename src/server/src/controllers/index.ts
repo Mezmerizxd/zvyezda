@@ -7,6 +7,8 @@ import { logger } from '../helpers/logger';
 import AccountController from './account';
 import XboxHackingController from './xboxHacking';
 import Discussion from './discussion';
+import Surveillance from './surveillance';
+import * as process from 'process';
 
 export default (prisma: PrismaClient): void => {
   Endpoint(serverManager.v1, '/get-version', false, async (req) => {
@@ -22,6 +24,7 @@ export default (prisma: PrismaClient): void => {
     return {
       data: {
         socketUrl: process.env.SOCKET_HOST,
+        streamUrl: process.env.STREAM_HOST,
       },
     };
   });
@@ -30,4 +33,5 @@ export default (prisma: PrismaClient): void => {
   AccountController(prisma);
   XboxHackingController(prisma);
   Discussion(prisma);
+  Surveillance(prisma);
 };
