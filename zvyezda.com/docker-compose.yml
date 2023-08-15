@@ -1,0 +1,67 @@
+version: '3.3'
+
+services:
+  zvyezda:
+    image: 'zvyezda:latest'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    container_name: zvyezda
+    restart: always
+    ports:
+      - '4005:4005'
+    environment:
+      MODE: production
+      PORT: 4005
+      DB_HOST: postgresql://postgres:root@postgres:5432/zvyezda?schema=public
+      SOCKET_HOST: ws://zvyezda.com/socket
+      SERVER_HOST: http://zvyezda.com
+      STREAM_HOST: ws://stream.zvyezda.com
+    networks:
+      - net_zvyezda
+    depends_on:
+      - postgres
+
+  social_app_v2:
+    image: 'mezmerizxd/social-app-v2:latest'
+    container_name: social_app_v2
+    restart: always
+    ports:
+      - '3000:3000'
+      - '5000:5000'
+    environment:
+      USE_PRODUCTION: 1
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:root@postgres:5432/social_app_v2?schema=public
+      SERVER_SOCKET_CONNECTION: ws://sav2.zvyezda.com/socket
+      SERVER_API_CONNECTION: http://sav2.zvyezda.com
+      EMAIL_USER: example@gmail.com
+      EMAIL_PASS: pa55w0rd
+    networks:
+      - net_zvyezda 
+
+  portfolio:
+    image: 'mezmerizxd/tiny-portfolio:latest'
+    container_name: portfolio
+    restart: always 
+    ports:
+    - '4173:4173'
+
+  postgres:
+    image: 'postgres:13.2'
+    container_name: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: zvyezda
+    volumes:
+      - ../resources/postgres:/var/lib/postgresql/data
+    networks:
+      - net_zvyezda
+
+networks:
+  net_zvyezda:
+    driver: bridge

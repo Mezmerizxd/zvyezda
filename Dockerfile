@@ -1,4 +1,3 @@
-# ZVYEZDA
 FROM node:16.17.0
 
 WORKDIR /usr/src/zvyezda/
@@ -16,4 +15,3 @@ RUN yarn
 CMD ["yarn", "start:prod"]
 
 EXPOSE 4005
-# ##############################

@@ -6,19 +6,19 @@ if [ -d "zvyezda" ]; then
 fi
 
 # Stop the docker-compose services
-docker-compose -f docker-compose.prod.yml down
+docker-compose -f docker-compose.yml down
 
 # Pull the latest images
-docker-compose -f docker-compose.prod.yml pull
+docker-compose -f docker-compose.yml pull
 
 # Remove old images
 docker image prune -f
 
 # Start the docker-compose services
-docker-compose -f docker-compose.prod.yml up -d --build
+docker-compose -f docker-compose.yml up -d --build
 
 # Remove old images
 docker image prune -f
 
 # Show the logs
-docker-compose -f docker-compose.prod.yml logs -f
+docker-compose -f docker-compose.yml logs -f

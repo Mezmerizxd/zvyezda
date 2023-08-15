@@ -48,7 +48,6 @@ class ServerManager {
     });
     this.stream = new WebSocket.Server({
       port: 3005,
-      path: '/stream',
     });
     this._port = Number(process.env.PORT);
   }
