@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "cd ../../ && node src/server/build/index.js",
     "build": "webpack --mode development",
     "watch": "nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"ts-node src/index.ts\"",
     "prettier": "prettier src/**/*.{ts,tsx} --write"

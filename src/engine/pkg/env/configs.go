@@ -19,14 +19,19 @@ type envConfigs struct {
 }
 
 func loadEnvVariables() (config *envConfigs) {
-	viper.AddConfigPath("../../")
-
+	viper.AddConfigPath("./")
 	viper.SetConfigName(".env")
-
 	viper.SetConfigType("env")
 
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal("Configs: failed to load environment variables", err)
+		log.Println("Configs: failed to load environment variables, trying to switch path")
+
+	  viper.AddConfigPath("../../")
+    viper.SetConfigName(".env")
+    viper.SetConfigType("env")
+    if err := viper.ReadInConfig(); err != nil {
+    	log.Fatal("Configs: failed to load environment variables")
+    }
 	}
 
 	if err := viper.Unmarshal(&config); err != nil {

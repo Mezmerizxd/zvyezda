@@ -9,7 +9,7 @@
     "start:dev": "yarn migrate && yarn watch",
     "start:prod": "yarn migrate && yarn build && yarn start",
     "migrate": "yarn prisma migrate deploy",
-    "start": "node src/server/build/index.js",
+    "start": "lerna run start --stream --parallel",
     "watch": "lerna run watch --stream --parallel",
     "build": "lerna run build --stream --parallel",
     "prettier": "lerna run prettier --stream --parallel"

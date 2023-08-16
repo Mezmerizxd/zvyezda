@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "go run main.go",
     "watch": "nodemon --watch \"./**\" --ext \"go,json\" --exec \"go run main.go\""
   }
 }
