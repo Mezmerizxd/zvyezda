@@ -120,12 +120,6 @@ class SurveillanceManager {
           this.killStream();
         }
       }
-
-      logger.debug(
-        `Surveillance: Stream: ${this.stream ? 'true' : 'false'}, Running: ${
-          this.running ? 'true' : 'false'
-        }, Clients: ${this.clients?.length}`,
-      );
     }, 5000);
   }
 
@@ -245,71 +239,3 @@ class SurveillanceManager {
 }
 
 export const surveillanceManager = SurveillanceManager.getInstance();
-
-/*
-This handler function allows multiple streams to run at the same time,
-but it's useless for now as WebSocket does not have Namespaces,
-so you can't have multiple streams without having to use multiple
-ports and that's complicated
-
-handler() {
-  this.streamProcessRuntime = setInterval(async () => {
-    if (this.streams) {
-      this.streams.forEach((stream) => {
-        // If Clients are Connected
-        if (stream.clients && stream.clients.length > 0) {
-          // Make sure stream is running
-          if (!stream.running && !stream.stream) {
-            // Start the stream
-            this.startStream(stream);
-          }
-        }
-
-        // If there are No Clients
-        if (!stream?.clients || stream?.clients?.length < 0) {
-          // Make sure stream is not running
-          if (stream.running || stream.stream) {
-            // Kill the stream
-            this.killStream(stream);
-          }
-        }
-
-        logger.debug(
-          `Surveillance: Stream: ${stream.stream ? 'true' : 'false'}, Running: ${stream.running ? 'true' : 'false'}`,
-        );
-      });
-    }
-  }, 5000);
-
-  this.streamRuntime = setInterval(async () => {
-    if (this.streams) {
-      this.streams.forEach((stream) => {
-        if (this.streams[stream.id].running) {
-          if (this.streams[stream.id].stream?.stdout) {
-            this.streams[stream.id].stream?.stdout?.on('data', (data: any) => {
-              // @ts-ignore
-              for (let client of serverManager.stream.clients) {
-                if (client.readyState === 1) {
-                  client.send(data);
-                }
-              }
-              return;
-            });
-            this.streams[stream.id].stream?.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
-              if (code === 1) {
-                logger.warn(`Surveillance: ${stream.name} exited with error`);
-                return;
-              }
-            });
-          }
-        }
-
-        if (this.streams[stream.id].stream) {
-          clearTimeout(this.streamRuntime);
-        }
-      });
-    }
-  }, 1000);
-}
-
-*/

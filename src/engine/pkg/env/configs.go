@@ -2,6 +2,7 @@ package env
 
 import (
 	"log"
+	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -10,6 +11,7 @@ var EnvConfigs *envConfigs
 
 func InitEnvConfigs() {
 	EnvConfigs = loadEnvVariables()
+	fmt.Println("Loaded environment variables")
 }
 
 type envConfigs struct {

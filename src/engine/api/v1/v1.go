@@ -18,6 +18,6 @@ func New(handler *gin.Engine) {
 		test := test.New(&test.Config{})
 
 		// Routes
-		v1.POST("/test/login", test.Login)
+		v1.POST("/test/testing", test.TestingTesting)
 	}
 }
