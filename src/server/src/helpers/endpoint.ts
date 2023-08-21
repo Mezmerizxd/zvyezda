@@ -2,7 +2,7 @@ import * as express from 'express';
 import { logger } from './logger';
 import { inspect } from 'util';
 import { accessManager } from '../managers/access';
-import { Roles } from '@prisma/client';
+import { Accounts, Roles } from '@prisma/client';
 
 function Endpoint<T extends keyof Zvyezda.Server.Apis>(
   version: express.Router,
@@ -10,7 +10,7 @@ function Endpoint<T extends keyof Zvyezda.Server.Apis>(
   requireAuth: boolean,
   callback: (
     req: express.Request,
-    auth?: string,
+    account?: Accounts,
   ) => Promise<{
     server?: Zvyezda.Server.BaseResponse;
     data?: ReturnType<Zvyezda.Server.Apis[T]>;
@@ -43,8 +43,8 @@ function Endpoint<T extends keyof Zvyezda.Server.Apis>(
         return;
       }
 
-      const result = await callback(req, authorization);
-      if (!result.server || result.server.success !== false) {
+      const result = await callback(req, expired.account);
+      if (!result.server || result.server.success) {
         result.server = {
           success: true,
         };
@@ -55,7 +55,7 @@ function Endpoint<T extends keyof Zvyezda.Server.Apis>(
       return;
     }
     const result = await callback(req);
-    if (!result.server || result.server.success !== false) {
+    if (!result.server || result.server.success) {
       result.server = {
         success: true,
       };

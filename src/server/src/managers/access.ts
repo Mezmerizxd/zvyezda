@@ -58,7 +58,7 @@ class AccessManager {
     return token;
   }
 
-  async isAccessActive(token: string, level?: Roles): Promise<boolean> {
+  async isAccessActive(token: string, level?: Roles): Promise<{ active: boolean; account?: Accounts }> {
     const account = await this.prisma.accounts.findFirst({
       where: {
         token,
@@ -66,40 +66,40 @@ class AccessManager {
     });
 
     if (account === null) {
-      return false;
+      return { active: false };
     }
 
     if (account.tokenExp === null) {
-      return false;
+      return { active: false };
     }
 
     if (account.tokenExp < new Date()) {
-      return false;
+      return { active: false };
     }
 
     if (level !== undefined) {
       if (level === 'USER') {
         if (account.role === 'USER' || account.role === 'DEVELOPER' || account.role === 'ADMIN') {
-          return true;
+          return { active: true, account };
         } else {
-          return false;
+          return { active: false };
         }
       } else if (level === 'DEVELOPER') {
         if (account.role === 'DEVELOPER' || account.role === 'ADMIN') {
-          return true;
+          return { active: true, account };
         } else {
-          return false;
+          return { active: false };
         }
       } else if (level === 'ADMIN') {
         if (account.role === 'ADMIN') {
-          return true;
+          return { active: true, account };
         } else {
-          return false;
+          return { active: false };
         }
       }
     }
 
-    return true;
+    return { active: true, account };
   }
 
   async _generateToken(): Promise<string | null> {

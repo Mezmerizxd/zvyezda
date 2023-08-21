@@ -5,6 +5,7 @@ import { accessManager } from '../managers/access';
 import { logger } from '../helpers/logger';
 import { hashPassword } from '../helpers/utils';
 import { accountsManager } from '../managers/accounts';
+import { accounts } from '../seed/data';
 
 export default (prisma: PrismaClient): void => {
   Endpoint(serverManager.v1, '/account/login', false, async (req) => {
@@ -66,22 +67,23 @@ export default (prisma: PrismaClient): void => {
     }
 
     const valid = await accessManager.isAccessActive(token);
+    if (!valid) {
+      return {
+        data: {
+          valid: false,
+        },
+      };
+    }
 
     return {
       data: {
-        valid,
+        valid: valid.active,
       },
     };
   });
 
-  Endpoint(serverManager.v1, '/account/get-profile', true, async (req, authorization) => {
-    const account = await prisma.accounts.findFirst({
-      where: {
-        token: authorization,
-      },
-    });
-
-    if (account === null) {
+  Endpoint(serverManager.v1, '/account/get-profile', true, async (req, account) => {
+    if (!account) {
       return {
         server: {
           success: false,
@@ -184,7 +186,7 @@ export default (prisma: PrismaClient): void => {
     serverManager.v1,
     '/account/delete',
     true,
-    async (req, auth) => {
+    async (req, account) => {
       const { userId }: { userId: string } = req.body;
 
       if (!userId) {
@@ -211,19 +213,13 @@ export default (prisma: PrismaClient): void => {
         };
       }
 
-      if (tbdAccount?.token === auth) {
+      if (tbdAccount?.token === account?.token) {
         await prisma.accounts.delete({
           where: {
             id: userId,
           },
         });
       } else {
-        const account = await prisma.accounts.findFirst({
-          where: {
-            token: auth,
-          },
-        });
-
         if (!account) {
           return {
             server: {
@@ -265,7 +261,7 @@ export default (prisma: PrismaClient): void => {
     serverManager.v1,
     '/account/edit',
     true,
-    async (req, auth) => {
+    async (req, account) => {
       const {
         userId,
         data,
@@ -315,12 +311,7 @@ export default (prisma: PrismaClient): void => {
         };
       }
 
-      if (tbuAccount?.token !== auth) {
-        const account = await prisma.accounts.findFirst({
-          where: {
-            token: auth,
-          },
-        });
+      if (tbuAccount?.token !== account?.token) {
         if (!account) {
           return {
             server: {
