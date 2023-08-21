@@ -131,4 +131,5 @@ dist
 resources
 src/**/node_modules
 src/**/build
+src/**/dist
 logs
