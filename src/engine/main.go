@@ -10,7 +10,8 @@ import (
 
 	v1 "zvyezda/src/engine/api/v1"
 	"zvyezda/src/engine/features"
-	"zvyezda/src/engine/features/test"
+	"zvyezda/src/engine/features/account"
+	"zvyezda/src/engine/pkg/database"
 	env "zvyezda/src/engine/pkg/env"
 	"zvyezda/src/engine/pkg/rtsp"
 	"zvyezda/src/engine/pkg/server"
@@ -23,10 +24,12 @@ func main() {
 	env.InitEnvConfigs()
 	fmt.Println("Configs: ready")
 
+	go database.Start(env.EnvConfigs.DatabaseHost)
+
 	/* Features */
-	featTest := test.New(&test.Config{})
+	featAccount := account.New(&account.Config{})
 	f := features.New(&features.Config{
-		Test: featTest,
+		Account: featAccount,
 	})
 	fmt.Println("Features: ready")
 
@@ -67,6 +70,8 @@ func main() {
 	if err := srv.Stop(ctx); err != nil {
 		fmt.Println("Server: failed to stop server: " + err.Error())
 	}
+
+	database.Stop()
 
 	fmt.Println("Aborting...")
 }

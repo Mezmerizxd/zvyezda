@@ -34,7 +34,7 @@ func New(addr string, cfg *v1.Config) *Server {
 	handler.Use(gin.ErrorLogger())
 
 	// API Controllers
-	v1.New(handler)
+	v1.New(handler, cfg)
 
 	return &Server{
 		server: &http.Server{

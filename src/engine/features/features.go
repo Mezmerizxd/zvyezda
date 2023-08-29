@@ -1,19 +1,20 @@
 package features
 
 import (
-	"zvyezda/src/engine/features/test"
+	"zvyezda/src/engine/features/account"
 )
 
 type Config struct {
-	Test test.Test
+	Account account.Account
 }
 
 type Features struct {
-	TestFeatures test.Test
+	Account account.Account
 }
 
 func New(cfg *Config) Features {
 	return Features{
-		TestFeatures: cfg.Test,
+		Account: cfg.Account,
 	}
 }
+
