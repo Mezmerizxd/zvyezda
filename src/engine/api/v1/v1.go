@@ -5,6 +5,8 @@ import (
 
 	"zvyezda/src/engine/api/v1/account"
 	"zvyezda/src/engine/features"
+	"zvyezda/src/engine/pkg/database"
+	"zvyezda/src/engine/types"
 )
 
 type Config struct {
@@ -23,6 +25,45 @@ func New(handler *gin.Engine, cfg *Config) {
 
 		v1.POST("/account/login", account.Login)
 		v1.POST("/account/create", account.Create)
-		v1.GET("/account/profile", account.Profile)
+		v1.GET("/account/profile", UseAuthorization(account.Profile, cfg))
+	}
+}
+
+func UseAuthorization(handler gin.HandlerFunc, cfg *Config) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.GetHeader("Authorization")
+
+		account, err := database.GetAccountByToken(token)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"server": gin.H{
+					"success": false,
+					"error": err.Error(),
+				},
+				"data": nil,
+			})
+
+			c.Abort()
+			return
+		}
+
+		valid, err := cfg.Features.Account.ValidateToken(*account)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"server": gin.H{
+					"success": false,
+					"error": err.Error(),
+				},
+				"data": nil,
+			})
+
+			c.Abort()
+			return
+		}
+
+		if valid {
+			c.Set(types.AccountCtx, account)
+			handler(c)
+		}
 	}
 }

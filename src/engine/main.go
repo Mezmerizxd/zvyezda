@@ -13,7 +13,6 @@ import (
 	"zvyezda/src/engine/features/account"
 	"zvyezda/src/engine/pkg/database"
 	env "zvyezda/src/engine/pkg/env"
-	"zvyezda/src/engine/pkg/rtsp"
 	"zvyezda/src/engine/pkg/server"
 )
 
@@ -47,14 +46,6 @@ func main() {
 				return
 			default:
 				fmt.Println("Server: failed to start server: " + err.Error())
-			}
-		}
-	}()
-
-	go func() {
-		for k, v := range rtsp.Streams {
-			if !v.OnDemand {
-				go rtsp.RTSPWorkerLoop(k, v.URL, v.OnDemand)
 			}
 		}
 	}()

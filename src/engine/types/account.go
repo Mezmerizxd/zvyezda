@@ -24,6 +24,8 @@ var (
 	ErrorTokenHasExpired = errors.New("token has expired")
 )
 
+var AccountCtx string = "account"
+
 type TokenData struct {
 	Token     string    `json:"token"`
 	TokenExp  time.Time `json:"tokenExp"`

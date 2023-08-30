@@ -116,18 +116,17 @@ curl \
 -H "Authorization: token"
 */
 func (a *account) Profile(c *gin.Context) {
-	token := c.GetHeader("Authorization")
+	account := c.MustGet(types.AccountCtx).(*types.Account)
 
-	account, err := a.Features.Account.GetProfile(token)
-	if err != nil {
-		c.JSON(400, gin.H{
-			"server": gin.H{
-				"success": false,
-				"error": err.Error(),
-			},
-			"data": nil,
-		})
-		return
+	filteredAccount := &types.Profile{
+		ID: account.ID,
+		Email: account.Email,
+		Username: account.Username,
+		Role: account.Role,
+		Avatar: account.Avatar,
+		Biography: account.Biography,
+		CreatedAt: account.CreatedAt,
+		UpdatedAt: account.UpdatedAt,
 	}
 
 	c.JSON(200, gin.H{
@@ -135,6 +134,6 @@ func (a *account) Profile(c *gin.Context) {
 			"success": true,
 			"error": nil,
 		},
-		"data": account,
+		"data": filteredAccount,
 	})
 }
