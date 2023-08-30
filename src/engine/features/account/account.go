@@ -1,6 +1,7 @@
 package account
 
 import (
+	"errors"
 	"time"
 	"zvyezda/src/engine/pkg/database"
 	"zvyezda/src/engine/pkg/utils"
@@ -16,6 +17,7 @@ type Account interface {
 	Create(data types.CreateData) (*types.Account, error)
 	GenerateToken() (*types.TokenData, error)
 	ValidateToken(account types.Account) (bool, error)
+	HasAccess(account types.Account, role string) (bool, error)
 	GetProfile(token string) (*types.Profile, error)
 }
 
@@ -28,7 +30,6 @@ func New(cfg *Config) Account {
 func (a *account) Login(data types.LoginData) (*types.Account, error) {
 	account, err := database.GetAccountByUsername(data.Username)
 	if err != nil {
-		// return nil, types.ErrorAccountDoesNotExist
 		return nil, err
 	}
 
@@ -134,12 +135,33 @@ func (a *account) ValidateToken(account types.Account) (bool, error) {
 		return false, types.ErrorTokenExpIsNil
 	}
 
-	if account.TokenExp.After(time.Now()) {
+	if time.Now().After(*account.TokenExp) {
 		return false, types.ErrorTokenHasExpired
 	}
 
 	return true, nil
 }
+
+func (a *account) HasAccess(account types.Account, role string) (bool, error) {
+	var authorized bool
+	switch role {
+	case types.UserRole:
+		authorized = account.Role == types.UserRole || account.Role == types.DeveloperRole || account.Role == types.AdminRole
+	case types.DeveloperRole:
+		authorized = account.Role == types.DeveloperRole || account.Role == types.AdminRole
+	case types.AdminRole:
+		authorized = account.Role == types.AdminRole
+	default:
+		return false, errors.New("invalid role, " + role)
+	}
+
+	if !authorized {
+		return false, errors.New("account does not have the role, " + role)
+	}
+
+	return true, nil
+}
+
 
 func (a *account) GetProfile(token string) (*types.Profile, error) {
 	account, err := database.GetAccountByToken(token)

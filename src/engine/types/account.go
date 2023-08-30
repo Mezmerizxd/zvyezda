@@ -22,9 +22,14 @@ var (
 	ErrorTokenIsNil = errors.New("token is nil")
 	ErrorTokenExpIsNil = errors.New("token expiry date is nil")
 	ErrorTokenHasExpired = errors.New("token has expired")
+
+	ErrorUnauthorizedAccessAttempt = errors.New("you do not have authorization")
 )
 
 var AccountCtx string = "account"
+var UserRole string = "USER"
+var DeveloperRole string = "DEVELOPER"
+var AdminRole string = "ADMIN"
 
 type TokenData struct {
 	Token     string    `json:"token"`

@@ -16,7 +16,6 @@ var (
 )
 
 type AccountSearchParameter int
-
 const (
 	ID AccountSearchParameter = iota
 	Username
