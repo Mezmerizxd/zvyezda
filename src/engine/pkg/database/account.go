@@ -5,6 +5,34 @@ import (
 	"zvyezda/src/engine/types"
 )
 
+func GetAllAccounts() (*[]types.Account, error) {
+	if connection == nil {
+		return nil, types.ErrorFailedToConnectToDatabase
+	}
+
+	query := `SELECT id, email, username, password, role, token, "tokenExp", avatar, biography, "createdAt", "updatedAt" FROM public."Accounts"`
+	rows, err := connection.Query(query)
+	if err != nil {
+		return nil, types.ErrorFailedToQueryDatabase
+	}
+	defer rows.Close()
+
+	var accounts []types.Account
+
+	for rows.Next() {
+		var acc types.Account
+		err := rows.Scan(&acc.ID, &acc.Email, &acc.Username, &acc.Password, &acc.Role, &acc.Token, &acc.TokenExp, &acc.Avatar, &acc.Biography, &acc.CreatedAt, &acc.UpdatedAt)
+		if err != nil {
+			fmt.Println(err)
+			return nil, types.ErrorFailedToScanQueryResult
+		}
+
+		accounts = append(accounts, acc)
+	}
+
+	return &accounts, nil
+}
+
 func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Account, error) {
 	if connection == nil {
 		return nil, types.ErrorFailedToConnectToDatabase

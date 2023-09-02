@@ -2,6 +2,7 @@ package account
 
 import (
 	"zvyezda/src/engine/features"
+	"zvyezda/src/engine/pkg/database"
 	"zvyezda/src/engine/types"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,7 @@ type Account interface {
 	Login(c *gin.Context)
 	Create(c *gin.Context)
 	Profile(c *gin.Context)
+	Accounts(c *gin.Context)
 }
 
 type account struct {
@@ -136,4 +138,32 @@ func (a *account) Profile(c *gin.Context) {
 		},
 		"data": filteredAccount,
 	})
+}
+
+/*
+curl \
+-X GET http://localhost:4000/api/v1/account/accounts \
+-H "Content-Type: application/json" \
+-H "Authorization: token"
+*/
+func (a *account) Accounts(c *gin.Context) {
+	accounts, err := database.GetAllAccounts()
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+	}
+
+
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,
+			"error": nil,
+		},
+		"data": accounts,
+	}) 
 }
