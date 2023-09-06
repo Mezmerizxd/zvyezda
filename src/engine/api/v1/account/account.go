@@ -15,6 +15,7 @@ type Config struct {
 type Account interface {
 	Login(c *gin.Context)
 	Create(c *gin.Context)
+	Delete(c *gin.Context)
 	Profile(c *gin.Context)
 	Accounts(c *gin.Context)
 }
@@ -113,6 +114,47 @@ func (a *account) Create(c *gin.Context) {
 
 /*
 curl \
+-X POST http://localhost:4000/api/v1/account/delete \
+-H "Content-Type: application/json" \
+-d "{\"identifier\":\"token\", \"value\":\"test\"}" 
+*/
+func (a *account) Delete(c *gin.Context) {
+	var data types.DeleteData
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	err := a.Features.Account.Delete(data)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+	
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,
+			"error": nil,
+		},
+		"data": nil,
+	})
+}
+
+/*
+curl \
 -X GET http://localhost:4000/api/v1/account/profile \
 -H "Content-Type: application/json" \
 -H "Authorization: token"
@@ -157,7 +199,6 @@ func (a *account) Accounts(c *gin.Context) {
 			"data": nil,
 		})
 	}
-
 
 	c.JSON(200, gin.H{
 		"server": gin.H{

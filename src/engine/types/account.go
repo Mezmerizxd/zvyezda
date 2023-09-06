@@ -19,11 +19,13 @@ var (
 
 	ErrorFailedToCreateAccount = errors.New("failed to create account")
 	ErrorFailedToGenerateAccess = errors.New("failed to generate token")
+	
 	ErrorTokenIsNil = errors.New("token is nil")
 	ErrorTokenExpIsNil = errors.New("token expiry date is nil")
 	ErrorTokenHasExpired = errors.New("token has expired")
 
 	ErrorUnauthorizedAccessAttempt = errors.New("you do not have authorization")
+	ErrorInvalidIdentifier = errors.New("invalid identifier")
 )
 
 var AccountCtx string = "account"
@@ -45,4 +47,9 @@ type CreateData struct {
 	Email    string `json:"email"`
 	Username string `json:"username"`
 	Password string `json:"password"`
+}
+
+type DeleteData struct {
+	Identifier        string     `json:"Identifier"`
+	Value string `json:"value"`
 }

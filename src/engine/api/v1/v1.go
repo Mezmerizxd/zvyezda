@@ -28,6 +28,7 @@ func New(handler *gin.Engine, cfg *Config) {
 
 		v1.POST("/account/login", account.Login)
 		v1.POST("/account/create", account.Create)
+		v1.POST("/account/delete", UseAuthorization(cfg, account.Delete, &types.AdminRole))
 		v1.GET("/account/profile", UseAuthorization(cfg, account.Profile, &types.UserRole))
 		v1.GET("/account/accounts", UseAuthorization(cfg, account.Accounts, &types.AdminRole))
 	}

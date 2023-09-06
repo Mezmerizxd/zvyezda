@@ -15,6 +15,7 @@ type Config struct{}
 type Account interface {
 	Login(data types.LoginData) (*types.Account, error)
 	Create(data types.CreateData) (*types.Account, error)
+	Delete(data types.DeleteData) (error)
 	GenerateToken() (*types.TokenData, error)
 	ValidateToken(account types.Account) (bool, error)
 	HasAccess(account types.Account, role string) (bool, error)
@@ -96,6 +97,23 @@ func (a *account) Create(data types.CreateData) (*types.Account, error) {
 	}
 
 	return &newAccount, nil
+}
+
+func (a *account) Delete(data types.DeleteData) (error) {
+	switch data.Identifier {
+	case "id":
+		database.DeleteAccountByID(data.Value)
+	case "username":
+		database.DeleteAccountByUsername(data.Value)
+	case "email":
+		database.DeleteAccountByEmail(data.Value)
+	case "token":
+		database.DeleteAccountByToken(data.Value)
+	default:
+		return types.ErrorInvalidIdentifier
+	}
+
+	return nil
 }
 
 func (a *account) GenerateToken() (*types.TokenData, error) {

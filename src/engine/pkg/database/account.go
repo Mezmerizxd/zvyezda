@@ -102,3 +102,38 @@ func CreateAccount(account types.Account) error {
 	
 	return nil
 }
+
+func DeleteAccountBy(key types.AccountSearchParameter, value string) (error) {
+	if connection == nil {
+		return types.ErrorFailedToConnectToDatabase
+	}
+
+	query := `DELETE FRON public."Accounts" WHERE ` + key.String() + ` = $1`
+	rows, err := connection.Query(query, value)
+	if err != nil {
+		return types.ErrorFailedToQueryDatabase
+	}
+	defer rows.Close()
+
+	if rows.Err() != nil {
+		return rows.Err()
+	}
+
+	return nil
+}
+
+func DeleteAccountByID(id string) (error) {
+	return DeleteAccountBy(types.AccountSearchParameter(types.ID), id)
+}
+
+func DeleteAccountByUsername(username string) (error) {
+	return DeleteAccountBy(types.AccountSearchParameter(types.Username), username)
+}
+
+func DeleteAccountByEmail(email string) (error) {
+	return DeleteAccountBy(types.AccountSearchParameter(types.Email), email)
+}
+
+func DeleteAccountByToken(token string) (error) {
+	return DeleteAccountBy(types.AccountSearchParameter(types.Token), token)
+}
