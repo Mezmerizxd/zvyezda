@@ -18,6 +18,7 @@ type Account interface {
 	Delete(c *gin.Context)
 	Profile(c *gin.Context)
 	Accounts(c *gin.Context)
+	Authorize(c *gin.Context)
 }
 
 type account struct {
@@ -207,4 +208,20 @@ func (a *account) Accounts(c *gin.Context) {
 		},
 		"data": accounts,
 	}) 
+}
+
+/*
+curl \
+-X GET http://localhost:4000/api/v1/account/authorize \
+-H "Content-Type: application/json" \
+-H "Authorization: token"
+*/
+func (a *account) Authorize(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,
+			"error": nil,
+		},
+		"data": nil,
+	})
 }
