@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	v1 "zvyezda/src/engine/api/v1"
 	env "zvyezda/src/engine/pkg/env"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,6 +34,17 @@ func New(addr string, cfg *v1.Config) *Server {
 	handler.Use(gin.Recovery())
 	handler.Use(gin.Logger())
 	handler.Use(gin.ErrorLogger())
+	handler.Use(cors.New(cors.Config{
+    AllowOrigins:     []string{"*"},
+    AllowMethods:     []string{"*"},
+    AllowHeaders:     []string{"*"},
+    ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin"},
+    AllowCredentials: true,
+    AllowOriginFunc: func(origin string) bool {
+      return origin == "https://github.com"
+    },
+    MaxAge: 12 * time.Hour,
+  }))
 
 	// API Controllers
 	v1.New(handler, cfg)

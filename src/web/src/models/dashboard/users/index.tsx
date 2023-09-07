@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { emitter } from '../../../lib/emitter';
+import { engine } from '../../../lib/engine';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { setDashboardUsersRefresh, setDialogDeleteUser } from '../../../reducers/global';
 
@@ -29,9 +30,26 @@ export default () => {
   useEffect(() => {
     dispatch(setDashboardUsersRefresh(false));
     setTimeout(async () => {
-      const r = await emitter.api('/account/get-accounts', true, null);
-      if (r.server.success === true) {
-        setUsers(r.data.accounts);
+      if (engine.forceEngine) {
+        const accounts = await engine.GetAllAccounts();
+        if (accounts.data) {
+          let list: any[] = [];
+          accounts.data.forEach((account) => {
+            list.push({
+              id: account.id,
+              email: account.email,
+              username: account.username,
+              role: account.role,
+              createdAt: account.createdAt,
+            });
+          });
+          setUsers(list);
+        }
+      } else {
+        const r = await emitter.api('/account/get-accounts', true, null);
+        if (r.server.success === true) {
+          setUsers(r.data.accounts);
+        }
       }
     });
   }, [state.dashboard.users.refresh]);

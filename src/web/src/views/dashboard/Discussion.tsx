@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import * as socketIo from 'socket.io-client';
 import { emitter } from '../../lib/emitter';
 import { TimeAgo } from '../../lib/utils';
+import { engine } from '../../lib/engine';
 
 import {
   Context,
@@ -35,7 +36,7 @@ export default () => {
       }
 
       const s: socketIo.Socket<Zvyezda.Socket.ServerToClient & Zvyezda.Socket.ClientToServer> = socketIo.io(
-        emitter.socketUrl,
+        engine.forceEngine ? engine.socketUrl : emitter.socketUrl,
         {
           secure: false,
           rejectUnauthorized: false,
