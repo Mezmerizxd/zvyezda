@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import * as socketIo from 'socket.io-client';
 import { emitter } from '../../lib/emitter';
 import { TimeAgo } from '../../lib/utils';
+import { engine } from '../../lib/engine';
 
 import {
   Context,
@@ -33,6 +34,32 @@ export default () => {
       if (r.server.success === true) {
         setMessages(r.data.messages);
       }
+
+      const s: socketIo.Socket<Zvyezda.Socket.ServerToClient & Zvyezda.Socket.ClientToServer> = socketIo.io(
+        engine.forceEngine ? engine.socketUrl : emitter.socketUrl,
+        {
+          secure: false,
+          rejectUnauthorized: false,
+          reconnectionAttempts: 0,
+          autoConnect: false,
+        },
+      );
+
+      s.connect();
+
+      s.emit('joinDiscussion', {
+        authorization: localStorage.getItem('token'),
+      });
+
+      s.on('discussionMessage', (data) => {
+        setMessages((messages) => [...messages, data]);
+      });
+
+      setSocket(s);
+
+      return () => {
+        socket.disconnect();
+      };
     });
 
     const s: socketIo.Socket<Zvyezda.Socket.ServerToClient & Zvyezda.Socket.ClientToServer> = socketIo.io(

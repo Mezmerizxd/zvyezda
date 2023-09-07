@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { emitter } from '../../../lib/emitter';
+import { engine } from '../../../lib/engine';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { setDashboardUsersRefresh } from '../../../reducers/global';
 
@@ -48,11 +49,24 @@ export default () => {
       setError('Passwords Must match');
     }
 
-    const r = await emitter.api('/account/create', true, newUser);
-    if (r.server.success === true) {
-      dispatch(setDashboardUsersRefresh(true));
+    if (engine.forceEngine) {
+      const account = await engine.CreateAccount({
+        email: newUser.email,
+        username: newUser.username,
+        password: newUser.password,
+      });
+      if (account.data) {
+        dispatch(setDashboardUsersRefresh(true));
+      } else {
+        setError(account.server.error);
+      }
     } else {
-      setError(r.server.error);
+      const r = await emitter.api('/account/create', true, newUser);
+      if (r.server.success === true) {
+        dispatch(setDashboardUsersRefresh(true));
+      } else {
+        setError(r.server.error);
+      }
     }
   }
 

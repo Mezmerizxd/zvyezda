@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { emitter } from '../../lib/emitter';
+import { engine } from '../../lib/engine';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { setSession, setDashboardSidebar, setDashboardContext, setDashboardVersions } from '../../reducers/global';
 import { sidebar_items, Contexts } from '../../data/sidebar_items';
@@ -32,33 +33,60 @@ export default () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      const isTokenValid = await emitter.validateToken();
-      if (isTokenValid) {
-        const profile = await emitter.api('/account/get-profile', true, null);
-        if (profile.server.success === false) {
+      if (engine.forceEngine) {
+        const profile = await engine.GetProfile();
+        if (profile.data) {
+          dispatch(
+            setSession({
+              connected: true,
+              token: localStorage.getItem('token'),
+              id: profile.data.id,
+              username: profile.data.username,
+              email: profile.data.email,
+              avatar: profile.data.avatar,
+              role: profile.data.role,
+            }),
+          );
+        } else {
+          alert(profile.server.error);
+          window.location.href = '/';
+        }
+      } else {
+        const isTokenValid = await emitter.validateToken();
+        if (isTokenValid) {
+          const profile = await emitter.api('/account/get-profile', true, null);
+          if (profile.server.success === false) {
+            alert('Unauthorized Access!');
+            window.location.href = '/';
+          }
+
+          dispatch(
+            setSession({
+              connected: true,
+              token: localStorage.getItem('token'),
+              id: profile.data.id,
+              username: profile.data.username,
+              email: profile.data.email,
+              avatar: profile.data.avatar,
+              role: profile.data.role,
+            }),
+          );
+        } else {
           alert('Unauthorized Access!');
           window.location.href = '/';
         }
-
-        dispatch(
-          setSession({
-            connected: true,
-            token: localStorage.getItem('token'),
-            id: profile.data.id,
-            username: profile.data.username,
-            email: profile.data.email,
-            avatar: profile.data.avatar,
-            role: profile.data.role,
-          }),
-        );
-      } else {
-        alert('Unauthorized Access!');
-        window.location.href = '/';
       }
 
-      const versions = await emitter.api('/get-version', false, null);
-      if (versions.server.success !== false) {
-        dispatch(setDashboardVersions(versions.data));
+      if (engine.forceEngine) {
+        const versions = await engine.GetVersion();
+        if (versions.data) {
+          dispatch(setDashboardVersions(versions.data));
+        }
+      } else {
+        const versions = await emitter.api('/get-version', false, null);
+        if (versions.server.success !== false) {
+          dispatch(setDashboardVersions(versions.data));
+        }
       }
     });
   }, []);
