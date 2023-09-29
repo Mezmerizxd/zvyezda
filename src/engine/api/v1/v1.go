@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"zvyezda/src/engine/api/v1/account"
+	"zvyezda/src/engine/api/v1/xbox"
 	"zvyezda/src/engine/features"
 	"zvyezda/src/engine/pkg/database"
 	"zvyezda/src/engine/pkg/env"
@@ -21,17 +22,27 @@ func New(handler *gin.Engine, cfg *Config) {
 		account := account.New(&account.Config{
 			Features: *cfg.Features,
 		})
+		xbox := xbox.New(&xbox.Config{
+			Features: *cfg.Features,
+		})
 
 		// Routes
 		v1.GET("/get-version", GetVersion)
 		v1.GET("/get-socket-details", GetSocketDetails)
 
+		/* Account */
 		v1.POST("/account/login", account.Login)
 		v1.POST("/account/create", account.Create)
 		v1.POST("/account/delete", UseAuthorization(cfg, account.Delete, &types.AdminRole))
 		v1.GET("/account/profile", UseAuthorization(cfg, account.Profile, &types.UserRole))
 		v1.GET("/account/accounts", UseAuthorization(cfg, account.Accounts, &types.AdminRole))
 		v1.GET("/account/authorize", UseAuthorization(cfg, account.Authorize, &types.UserRole))
+
+		/* Xbox */
+		v1.POST("/xbox/create", UseAuthorization(cfg, xbox.Create, &types.UserRole))
+		v1.POST("/xbox/edit", UseAuthorization(cfg, xbox.Edit, &types.UserRole))
+		v1.POST("/xbox/delete", UseAuthorization(cfg, xbox.Delete, &types.UserRole))
+		v1.GET("/xbox/get-all", UseAuthorization(cfg, xbox.GetAll, &types.UserRole))
 	}
 }
 

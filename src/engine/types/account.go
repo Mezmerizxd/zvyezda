@@ -29,6 +29,7 @@ var (
 )
 
 var AccountCtx string = "account"
+
 var UserRole string = "USER"
 var DeveloperRole string = "DEVELOPER"
 var AdminRole string = "ADMIN"
@@ -38,18 +39,18 @@ type TokenData struct {
 	TokenExp  time.Time `json:"tokenExp"`
 }
 
-type LoginData struct {
+type LoginAccountData struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type CreateData struct {
+type CreateAccountData struct {
 	Email    string `json:"email"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type DeleteData struct {
+type DeleteAccountData struct {
 	Identifier        string     `json:"Identifier"`
 	Value string `json:"value"`
 }

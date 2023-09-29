@@ -63,7 +63,7 @@ class Engine {
   forceEngine: boolean = false;
 
   serverUrl: string;
-  socketUrl: string;
+  socketUrl: string | null;
 
   constructor() {
     this.serverUrl = this.getServerUrl();
@@ -193,14 +193,6 @@ class Engine {
       return `${protocol}//engine.${host}/api/v1`;
     }
   }
-
-  // async _getSocketUrl(): Promise<string> {
-  //   const r = await this.api('/get-socket-details', false, {});
-  //   if (r.server.success === false) {
-  //     return;
-  //   }
-  //   return r.data.socketUrl;
-  // }
 }
 
 export const engine = Engine.getInstance();

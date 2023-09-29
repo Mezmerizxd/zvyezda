@@ -38,7 +38,7 @@ curl \
 -d "{\"username\":\"test\",\"password\":\"test\"}" 
 */
 func (a *account) Login(c *gin.Context) {
-	var data types.LoginData
+	var data types.LoginAccountData
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(400, gin.H{
@@ -79,7 +79,7 @@ curl \
 -d "{\"email\":\"test@test\", \"username\":\"test\",\"password\":\"test\"}" 
 */
 func (a *account) Create(c *gin.Context) {
-	var data types.CreateData
+	var data types.CreateAccountData
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(400, gin.H{
@@ -120,7 +120,7 @@ curl \
 -d "{\"identifier\":\"token\", \"value\":\"test\"}" 
 */
 func (a *account) Delete(c *gin.Context) {
-	var data types.DeleteData
+	var data types.DeleteAccountData
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(400, gin.H{

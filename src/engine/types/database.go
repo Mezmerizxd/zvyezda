@@ -78,22 +78,22 @@ type Profile struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-type HackedXbox struct {
+type Xbox struct {
 	ID              string    `json:"id"`
 	Title           string    `json:"title"`
 	Description     string    `json:"description"`
-	XboxType        string    `json:"xbox_type"`
-	XboxColour      string    `json:"xbox_colour"`
-	MotherboardType string    `json:"motherboard_type"`
-	SerialNumber    string    `json:"serial_number"`
-	MfrDate         time.Time `json:"mfr_date"`
+	XboxType        string    `json:"xboxType"`
+	XboxColour      string    `json:"xboxColour"`
+	MotherboardType string    `json:"motherboardType"`
+	SerialNumber    string    `json:"serialNumber"`
+	MfrDate         time.Time `json:"mfrDate"`
 	Model           string    `json:"model"`
-	NandSize        string    `json:"nand_size"`
-	RghVersion      string    `json:"rgh_version"`
-	RghGlitchType   string    `json:"rgh_glitch_type"`
+	NandSize        string    `json:"nandSize"`
+	RghVersion      string    `json:"rghVersion"`
+	RghGlitchType   string    `json:"rghGlitchType"`
 	Images          []string  `json:"images"` // Urls
-	CreatedAt       time.Time `json:"created_at"`
-	UpdatedAt       time.Time `json:"updated_at"`
+	CreatedAt       time.Time `json:"createdAt"`
+	UpdatedAt       time.Time `json:"updatedAt"`
 }
 
 type DiscussionMessage struct {

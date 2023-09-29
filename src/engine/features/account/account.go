@@ -13,9 +13,9 @@ import (
 type Config struct{}
 
 type Account interface {
-	Login(data types.LoginData) (*types.Account, error)
-	Create(data types.CreateData) (*types.Account, error)
-	Delete(data types.DeleteData) (error)
+	Login(data types.LoginAccountData) (*types.Account, error)
+	Create(data types.CreateAccountData) (*types.Account, error)
+	Delete(data types.DeleteAccountData) (error)
 	GenerateToken() (*types.TokenData, error)
 	ValidateToken(account types.Account) (bool, error)
 	HasAccess(account types.Account, role string) (bool, error)
@@ -28,7 +28,7 @@ func New(cfg *Config) Account {
 	return &account{}
 }
 
-func (a *account) Login(data types.LoginData) (*types.Account, error) {
+func (a *account) Login(data types.LoginAccountData) (*types.Account, error) {
 	account, err := database.GetAccountByUsername(data.Username)
 	if err != nil {
 		return nil, err
@@ -55,7 +55,7 @@ func (a *account) Login(data types.LoginData) (*types.Account, error) {
 	return account, nil
 }
 
-func (a *account) Create(data types.CreateData) (*types.Account, error) {
+func (a *account) Create(data types.CreateAccountData) (*types.Account, error) {
 	if len(data.Email) < 1 {
 		return nil, types.ErrorEmailLength
 	} else if len(data.Username) < 1 {
@@ -99,7 +99,7 @@ func (a *account) Create(data types.CreateData) (*types.Account, error) {
 	return &newAccount, nil
 }
 
-func (a *account) Delete(data types.DeleteData) (error) {
+func (a *account) Delete(data types.DeleteAccountData) (error) {
 	switch data.Identifier {
 	case "id":
 		database.DeleteAccountByID(data.Value)
