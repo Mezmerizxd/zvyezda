@@ -102,13 +102,25 @@ func (a *account) Create(data types.CreateAccountData) (*types.Account, error) {
 func (a *account) Delete(data types.DeleteAccountData) (error) {
 	switch data.Identifier {
 	case "id":
-		database.DeleteAccountByID(data.Value)
+		err := database.DeleteAccountByID(data.Value)
+		if err != nil {
+			return err
+		}
 	case "username":
-		database.DeleteAccountByUsername(data.Value)
+		err := database.DeleteAccountByUsername(data.Value)
+		if err != nil {
+			return err
+		}
 	case "email":
-		database.DeleteAccountByEmail(data.Value)
+		err := database.DeleteAccountByEmail(data.Value)
+		if err != nil {
+			return err
+		}
 	case "token":
-		database.DeleteAccountByToken(data.Value)
+		err := database.DeleteAccountByToken(data.Value)
+		if err != nil {
+			return err
+		}
 	default:
 		return types.ErrorInvalidIdentifier
 	}

@@ -2,7 +2,7 @@ interface Profile {
   id: string;
   email: string;
   username: string;
-  role: string;
+  role: 'ADMIN' | 'DEVELOPER' | 'USER';
   avatar?: string | null;
   biography?: string | null;
   createdAt: Date;
@@ -77,6 +77,11 @@ type GetEvents = {
   '/account/profile': () => Profile;
   '/account/accounts': () => Account[];
   '/account/authorize': () => null;
+};
+
+type PatchEvents = {
+  /* ACCOUNT */
+  '/account/profile/update': () => Profile;
 };
 
 type BaseResponse = {

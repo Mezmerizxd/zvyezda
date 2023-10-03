@@ -17,6 +17,7 @@ type Account interface {
 	Create(c *gin.Context)
 	Delete(c *gin.Context)
 	Profile(c *gin.Context)
+	UpdateProfile(c *gin.Context)
 	Accounts(c *gin.Context)
 	Authorize(c *gin.Context)
 }
@@ -135,7 +136,7 @@ func (a *account) Delete(c *gin.Context) {
 
 	err := a.Features.Account.Delete(data)
 	if err != nil {
-		c.JSON(500, gin.H{
+		c.JSON(400, gin.H{
 			"server": gin.H{
 				"success": false,
 				"error": err.Error(),
@@ -180,6 +181,36 @@ func (a *account) Profile(c *gin.Context) {
 			"error": nil,
 		},
 		"data": filteredAccount,
+	})
+}
+
+/*
+curl \
+-X GET http://localhost:4000/api/v1/account/profile/update \
+-H "Content-Type: application/json" \
+-H "Authorization: token" \
+-d "{\"a\":\"a\", \"b\":\"b\"}" TODO: Setup curl data
+*/
+func (a *account) UpdateProfile(c *gin.Context) {
+	var data types.Profile
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,
+			"error": nil,
+		},
+		"data": data,
 	})
 }
 

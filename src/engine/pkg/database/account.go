@@ -108,7 +108,7 @@ func DeleteAccountBy(key types.AccountSearchParameter, value string) (error) {
 		return types.ErrorFailedToConnectToDatabase
 	}
 
-	query := `DELETE FRON public."Accounts" WHERE ` + key.String() + ` = $1`
+	query := `DELETE FROM public."Accounts" WHERE ` + key.String() + ` = $1`
 	rows, err := connection.Query(query, value)
 	if err != nil {
 		return types.ErrorFailedToQueryDatabase

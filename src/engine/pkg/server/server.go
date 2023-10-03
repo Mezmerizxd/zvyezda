@@ -10,6 +10,7 @@ import (
 	env "zvyezda/src/engine/pkg/env"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -45,6 +46,9 @@ func New(addr string, cfg *v1.Config) *Server {
     },
     MaxAge: 12 * time.Hour,
   }))
+
+	handler.Use(static.Serve("/", static.LocalFile("../app/build", true)))
+
 
 	// API Controllers
 	v1.New(handler, cfg)
