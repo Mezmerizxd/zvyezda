@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -20,8 +21,10 @@
     "types": ["@types/node"],
     "paths": {
       "@styled/*": ["./src/styled/*"],
-      "@clientLib/*": ["./src/lib/*"]
-    }
+      "@webLibs/*": ["./src/lib/*"]
+    },
+    "downlevelIteration": true,
+    "experimentalDecorators": true
   },
-  "include": ["./src", "../../types.d.ts", "../**/src/types.d.ts", "./src/types.d.ts"]
+  "include": ["./", "./src", "../../types.d.ts", "../types.d.ts", "../**/src/types.d.ts", "./src/types.d.ts"]
 }

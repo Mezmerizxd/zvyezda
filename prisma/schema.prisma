@@ -57,7 +57,7 @@ model Discussion {
 }
 
 model Surveillance {
-  id        String   @id @default(uuid())
-  url       String
-  name      String
+  id   String @id @default(uuid())
+  url  String
+  name String
 }
