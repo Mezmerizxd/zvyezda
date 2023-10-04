@@ -18,7 +18,7 @@ const Entry = ({ label, value }: EntryProps) => (
 export const Profile = () => {
   const { user } = useAuth();
 
-  if (!user) return null;
+  if (!user.profile) return null;
 
   return (
     <ContentLayout title="Profile">
@@ -32,10 +32,10 @@ export const Profile = () => {
         </div>
         <div className="border-t border-background-light px-4 py-5 sm:p-0">
           <dl className="sm:divide-y sm:divide-background-light">
-            <Entry label="Username" value={user.username} />
-            <Entry label="Email Address" value={user.email} />
-            <Entry label="Role" value={user.role} />
-            <Entry label="Biography" value={user.biography || 'None'} />
+            <Entry label="Username" value={user.profile.username} />
+            <Entry label="Email Address" value={user.profile.email} />
+            <Entry label="Role" value={user.profile.role} />
+            <Entry label="Biography" value={user.profile.biography || 'None'} />
           </dl>
         </div>
       </div>

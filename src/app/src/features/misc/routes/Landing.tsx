@@ -18,22 +18,18 @@ export const Landing = () => {
           </h2>
           <p className="text-gray-200">Login to Zvyezda Client or Request Access</p>
           <div className="mt-5 flex justify-center">
-            {!user ? (
+            {!user.profile ? (
               <>
-                <Button
-                  type="button"
-                  className="bg-zvyezda-dark text-black mx-1"
-                  onClick={() => navigate('/auth/login')}
-                >
+                <Button type="button" variant="inverse" className="mx-1" onClick={() => navigate('/auth/login')}>
                   Login
                 </Button>
-                <Button type="button" className="bg-zvyezda-dark text-black mx-1" onClick={() => {}}>
+                <Button type="button" variant="inverse" className="mx-1" onClick={() => {}}>
                   Request Access
                 </Button>
               </>
             ) : (
               <>
-                <Button type="button" className="bg-zvyezda-dark text-black mx-1" onClick={() => navigate('/app')}>
+                <Button type="button" variant="inverse" className="mx-1" onClick={() => navigate('/app')}>
                   Dashboard
                 </Button>
               </>

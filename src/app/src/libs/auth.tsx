@@ -14,27 +14,57 @@ interface RegisterCredentials {
   password: string;
 }
 
-async function loadUser() {
+interface AuthConfig {
+  profile: Profile | null;
+  error: string | null;
+}
+
+async function loadUser(): Promise<AuthConfig> {
   if (engine.profile !== null) {
-    return engine.profile;
+    return {
+      profile: engine.profile,
+      error: null,
+    };
   } else if (storage.getToken() !== null) {
-    return (await engine.GetProfile()).data;
+    const profile = await engine.GetProfile();
+    if (profile.data) {
+      return {
+        profile: profile.data,
+        error: null,
+      };
+    } else {
+      return {
+        profile: null,
+        error: profile.server.error,
+      };
+    }
   }
   return null;
 }
 
-async function loginFn(data: LoginCredentials) {
-  // const response = await loginWithEmailAndPassword(data);
-  // const user = await handleUserResponse(response);
-  // return user;
-  return null;
+async function loginFn(data: LoginCredentials): Promise<AuthConfig> {
+  const account = await engine.LoginAccount(data);
+  if (!account.data) {
+    return {
+      profile: null,
+      error: account.server.error,
+    };
+  }
+  storage.setToken(account.data.token);
+  return {
+    profile: account.data,
+    error: null,
+  };
 }
 
-async function registerFn(data: RegisterCredentials) {
+async function registerFn(data: RegisterCredentials): Promise<AuthConfig> {
   // const response = await loginWithEmailAndPassword(data);
   // const user = await handleUserResponse(response);
   // return user;
-  return null;
+  return {
+    profile: null,
+    error: null,
+  };
 }
 
 async function logoutFn() {
@@ -53,7 +83,7 @@ const authConfig = {
 };
 
 export const { AuthProvider, useAuth } = rqa.initReactQueryAuth<
-  Profile | null,
+  AuthConfig,
   unknown,
   LoginCredentials,
   RegisterCredentials

@@ -46,7 +46,13 @@ class Engine {
     server: BaseResponse;
     data: ReturnType<PostEvents['/account/login']> | null;
   }> {
-    return await this.Post('/account/login', false, data);
+    const account = await this.Post('/account/login', false, data);
+    if (account.data) {
+      this.profile = {
+        ...account.data,
+      };
+    }
+    return account;
   }
 
   public async CreateAccount(data: { email: string; username: string; password: string }): Promise<{

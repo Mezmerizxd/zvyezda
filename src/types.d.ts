@@ -16,7 +16,7 @@ interface Account {
   password: string;
   token?: string | null;
   tokenExp?: Date | null;
-  role: string;
+  role: 'ADMIN' | 'DEVELOPER' | 'USER';
   avatar?: string | null;
   biography?: string | null;
   createdAt: Date;
