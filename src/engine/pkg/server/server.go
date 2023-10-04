@@ -49,7 +49,6 @@ func New(addr string, cfg *v1.Config) *Server {
 
 	handler.Use(static.Serve("/", static.LocalFile("../app/build", true)))
 
-
 	// API Controllers
 	v1.New(handler, cfg)
 

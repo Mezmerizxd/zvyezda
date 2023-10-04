@@ -181,7 +181,7 @@ class Engine {
     if (port === '8081') {
       return 'http://localhost:4000/api/v1';
     } else {
-      return `${protocol}//engine.${host}/api/v1`;
+      return `${protocol}//${host}/api/v1`;
     }
   }
 }
