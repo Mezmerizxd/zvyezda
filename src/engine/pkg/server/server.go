@@ -47,10 +47,16 @@ func New(addr string, cfg *v1.Config) *Server {
     MaxAge: 12 * time.Hour,
   }))
 
-	handler.Use(static.Serve("/", static.LocalFile("../app/build", true)))
-
 	// API Controllers
 	v1.New(handler, cfg)
+
+	handler.Use(static.Serve("/", static.LocalFile("../app/build", true)))
+
+	handler.NoRoute(func(c *gin.Context) {
+		if c.Request.URL.Path != "/api" {
+			c.File("../app/build/index.html")
+		}
+	})
 
 	return &Server{
 		server: &http.Server{
