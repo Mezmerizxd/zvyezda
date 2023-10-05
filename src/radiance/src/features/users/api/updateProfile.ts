@@ -43,7 +43,8 @@ export const useUpdateProfile = ({ config }: UseUpdateProfileOptions = {}) => {
     onError: (error, __, context: any) => {
       addNotification({
         type: 'error',
-        title: error.message,
+        title: 'Failed to Update Profile',
+        message: error.message,
       });
       refetchUser();
     },

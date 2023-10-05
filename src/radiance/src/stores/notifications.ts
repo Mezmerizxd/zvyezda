@@ -14,12 +14,14 @@ type NotificationsStore = {
   dismissNotification: (id: string) => void;
 };
 
-export const useNotificationStore = create<NotificationsStore>((set) => ({
+export const useNotificationStore = create<NotificationsStore>((set, get) => ({
   notifications: [],
-  addNotification: (notification) =>
+  addNotification: (notification) => {
+    const id = nanoid();
     set((state) => ({
-      notifications: [...state.notifications, { id: nanoid(), ...notification }],
-    })),
+      notifications: [...state.notifications, { id, ...notification }],
+    }));
+  },
   dismissNotification: (id) =>
     set((state) => ({
       notifications: state.notifications.filter((notification) => notification.id !== id),

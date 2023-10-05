@@ -8,15 +8,15 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { queryClient } from '../libs/react-query';
 import { AuthProvider } from '../libs/auth';
 import { Notifications } from '../components/Notifications';
-import { Spinner } from '../components/Elements';
+import { Button, Spinner } from '../components/Elements';
 
 const ErrorFallback = () => {
   return (
     <div className="text-red-500 w-screen h-screen flex flex-col justify-center items-center" role="alert">
       <h2 className="text-lg font-semibold">Ooops, something went wrong</h2>
-      <button className="mt-4" onClick={() => window.location.assign(window.location.origin)}>
+      <Button className="mt-4" onClick={() => window.location.assign(window.location.origin)}>
         Refresh
-      </button>
+      </Button>
     </div>
   );
 };

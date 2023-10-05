@@ -41,7 +41,8 @@ export const useDeleteUser = ({ config }: UseDeleteUserOptions = {}) => {
       }
       addNotification({
         type: 'error',
-        title: error.message,
+        title: 'Failed to Delete User',
+        message: error.message,
       });
     },
     onSuccess: () => {

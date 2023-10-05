@@ -1,7 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { CheckCircleIcon, ExclamationCircleIcon, XCircleIcon, InformationCircleIcon } from '@heroicons/react/outline';
 import { XIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 const icons = {
   info: <InformationCircleIcon className="h-6 w-6 text-blue-500" aria-hidden="true" />,
@@ -21,6 +21,25 @@ export type NotificationProps = {
 };
 
 export const Notification = ({ notification: { id, type, title, message }, onDismiss }: NotificationProps) => {
+  const [remainingTime, setRemainingTime] = useState(4000);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onDismiss(id);
+    }, remainingTime);
+
+    const interval = setInterval(() => {
+      setRemainingTime((prevTime) => prevTime - 10); // Update every 100ms for a smoother progress bar
+    }, 10);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  }, [id, onDismiss, remainingTime, 4000]);
+
+  const widthPercentage = (remainingTime / 4000) * 100;
+
   return (
     <div className="w-full flex flex-col items-center space-y-4 sm:items-end">
       <Transition
@@ -54,6 +73,7 @@ export const Notification = ({ notification: { id, type, title, message }, onDis
               </div>
             </div>
           </div>
+          <div className="bg-radiance-light" style={{ width: `${widthPercentage}%`, height: '2px' }} />
         </div>
       </Transition>
     </div>
