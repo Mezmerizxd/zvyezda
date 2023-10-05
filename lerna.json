@@ -1,5 +1,5 @@
 {
-  "packages": ["src/server", "src/web", "src/engine", "src/app"],
+  "packages": ["src/server", "src/web", "src/engine", "src/radiance"],
   "npmClient": "yarn",
   "version": "0.0.0"
 }

@@ -50,11 +50,11 @@ func New(addr string, cfg *v1.Config) *Server {
 	// API Controllers
 	v1.New(handler, cfg)
 
-	handler.Use(static.Serve("/", static.LocalFile("../app/build", true)))
+	handler.Use(static.Serve("/", static.LocalFile("../radiance/build", true)))
 
 	handler.NoRoute(func(c *gin.Context) {
 		if c.Request.URL.Path != "/api" {
-			c.File("../app/build/index.html")
+			c.File("../radiance/build/index.html")
 		}
 	})
 
