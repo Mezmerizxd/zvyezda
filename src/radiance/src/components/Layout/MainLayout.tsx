@@ -13,7 +13,7 @@ type SideNavigationItem = {
   icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
 };
 
-const SideNavigation = () => {
+const SideNavigation = ({ onSelect }: { onSelect?: () => void }) => {
   const { checkAccess } = useAuthorization();
 
   const navigation = [
@@ -29,6 +29,7 @@ const SideNavigation = () => {
     <>
       {navigation.map((item, index) => (
         <NavLink
+          onClick={() => onSelect()}
           end={index === 0}
           key={item.name}
           to={item.to}
@@ -176,7 +177,7 @@ const MobileSidebar = ({ sidebarOpen, setSidebarOpen }: MobileSidebarProps) => {
             </div>
             <div className="mt-5 flex-1 h-0 overflow-y-auto">
               <nav className="px-2 space-y-1">
-                <SideNavigation />
+                <SideNavigation onSelect={() => setSidebarOpen(false)} />
               </nav>
             </div>
           </div>
