@@ -4,6 +4,7 @@ import { MainLayout } from '../components/Layout';
 
 import { lazyImport } from '../libs/lazyImport';
 import { Users } from '../features/users';
+import { Spinner } from '../components/Elements';
 
 // const { DiscussionsRoutes } = lazyImport(() => import('../features/discussions'), 'DiscussionsRoutes');
 const { Dashboard } = lazyImport(() => import('../features/misc'), 'Dashboard');
@@ -14,7 +15,11 @@ const App = () => {
   return (
     <MainLayout>
       <Suspense
-        fallback={<div className="h-full w-full flex items-center justify-center">{/* <Spinner size="xl" /> */}</div>}
+        fallback={
+          <div className="h-full w-full flex items-center justify-center">
+            <Spinner size="xl" />
+          </div>
+        }
       >
         <Outlet />
       </Suspense>

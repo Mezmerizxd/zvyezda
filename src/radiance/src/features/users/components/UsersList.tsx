@@ -1,4 +1,4 @@
-import { Table } from '../../../components/Elements';
+import { Spinner, Table } from '../../../components/Elements';
 
 import { useUsers } from '../api/getUsers';
 
@@ -8,7 +8,11 @@ export const UsersList = () => {
   const usersQuery = useUsers();
 
   if (usersQuery.isLoading) {
-    return <div className="w-full h-48 flex justify-center items-center">{/* <Spinner size="lg" /> */}</div>;
+    return (
+      <div className="w-full h-48 flex justify-center items-center">
+        <Spinner size="lg" />
+      </div>
+    );
   }
 
   if (!usersQuery.data) return null;

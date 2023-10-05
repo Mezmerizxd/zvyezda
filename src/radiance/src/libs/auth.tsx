@@ -2,6 +2,7 @@ import * as rqa from 'react-query-auth';
 
 import { engine } from './engine';
 import storage from './storage';
+import { Spinner } from '../components/Elements';
 
 interface LoginCredentials {
   username: string;
@@ -78,7 +79,11 @@ const authConfig = {
   registerFn,
   logoutFn,
   LoaderComponent() {
-    return <div className="w-screen h-screen flex justify-center items-center">{/* <Spinner size="xl" /> */}</div>;
+    return (
+      <div className="w-screen h-screen flex justify-center items-center">
+        <Spinner size="xl" />
+      </div>
+    );
   },
 };
 

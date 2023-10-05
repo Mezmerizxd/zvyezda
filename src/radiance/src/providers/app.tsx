@@ -8,6 +8,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { queryClient } from '../libs/react-query';
 import { AuthProvider } from '../libs/auth';
 import { Notifications } from '../components/Notifications';
+import { Spinner } from '../components/Elements';
 
 const ErrorFallback = () => {
   return (
@@ -27,7 +28,11 @@ type AppProviderProps = {
 export const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <React.Suspense
-      fallback={<div className="flex items-center justify-center w-screen h-screen">{/* <Spinner size="xl" /> */}</div>}
+      fallback={
+        <div className="flex items-center justify-center w-screen h-screen">
+          <Spinner size="xl" />
+        </div>
+      }
     >
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <HelmetProvider>
