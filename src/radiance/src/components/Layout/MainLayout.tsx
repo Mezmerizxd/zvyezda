@@ -29,7 +29,9 @@ const SideNavigation = ({ onSelect }: { onSelect?: () => void }) => {
     <>
       {navigation.map((item, index) => (
         <NavLink
-          onClick={() => onSelect()}
+          onClick={() => {
+            onSelect && onSelect();
+          }}
           end={index === 0}
           key={item.name}
           to={item.to}
