@@ -205,12 +205,25 @@ func (a *account) UpdateProfile(c *gin.Context) {
 		return
 	}
 
+	account := c.MustGet(types.AccountCtx).(*types.Account)
+
+	updatedProfile, err := a.Features.Account.UpdateProfile(account, &data)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+	}
+
 	c.JSON(200, gin.H{
 		"server": gin.H{
 			"success": true,
 			"error": nil,
 		},
-		"data": data,
+		"data": updatedProfile,
 	})
 }
 

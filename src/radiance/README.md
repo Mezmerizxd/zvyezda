@@ -1,5 +1,7 @@
 # Documentation and Development Updates for Radiance
 
+[API Management](../../docs/API.md)
+
 ### Descriptions / Mottos / About
 
 #### Descriptions
@@ -37,3 +39,5 @@
 #### Job System
 
 - People can opt to join as a "Proffessional Cleaner" and choose jobs they want to do
+
+[Homepage](../../README.md)

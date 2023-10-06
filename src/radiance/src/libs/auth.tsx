@@ -59,11 +59,16 @@ async function loginFn(data: LoginCredentials): Promise<AuthConfig> {
 }
 
 async function registerFn(data: RegisterCredentials): Promise<AuthConfig> {
-  // const response = await loginWithEmailAndPassword(data);
-  // const user = await handleUserResponse(response);
-  // return user;
+  const account = await engine.CreateAccount(data);
+  if (!account.data) {
+    return {
+      profile: null,
+      error: account.server.error,
+    };
+  }
+  storage.setToken(account.data.token);
   return {
-    profile: null,
+    profile: account.data,
     error: null,
   };
 }

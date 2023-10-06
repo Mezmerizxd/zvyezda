@@ -2,4 +2,4 @@
 
 ## Documentation
 
-[Radiance](src/radiance/docs/DOCS.md)
+[Radiance](src/radiance/README.md)

@@ -20,6 +20,7 @@ type Account interface {
 	ValidateToken(account types.Account) (bool, error)
 	HasAccess(account types.Account, role string) (bool, error)
 	GetProfile(token string) (*types.Profile, error)
+	UpdateProfile(account *types.Account, data *types.Profile) (*types.Profile, error)
 }
 
 type account struct{}
@@ -208,5 +209,37 @@ func (a *account) GetProfile(token string) (*types.Profile, error) {
 		Biography: account.Biography,
 		CreatedAt: account.CreatedAt,
 		UpdatedAt: account.UpdatedAt,
+	}, nil
+}
+
+func (a *account) UpdateProfile(account *types.Account, data *types.Profile) (*types.Profile, error) {
+	newAccount := types.Account{
+		ID: account.ID,
+		Email: data.Email,
+		Username: data.Username,
+		Password: account.Password,
+		Token: account.Token,
+		TokenExp: account.TokenExp,
+		Role: account.Role,
+		Avatar: data.Avatar,
+		Biography: data.Biography,
+		CreatedAt: account.CreatedAt,
+		UpdatedAt: account.UpdatedAt,
+	}
+
+	err := database.UpdateAccount(newAccount)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.Profile{
+		ID: newAccount.ID,
+		Email: newAccount.Email,
+		Username: newAccount.Username,
+		Role: newAccount.Role,
+		Avatar: newAccount.Avatar,
+		Biography: newAccount.Biography,
+		CreatedAt: newAccount.CreatedAt,
+		UpdatedAt: newAccount.UpdatedAt,
 	}, nil
 }

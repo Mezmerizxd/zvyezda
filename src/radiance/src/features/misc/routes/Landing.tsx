@@ -23,15 +23,15 @@ export const Landing = () => {
           <h2 className="text-3xl font-extrabold tracking-tight text-radiance-light sm:text-4xl p-5">
             <span className="block">Radiance</span>
           </h2>
-          <p className="text-gray-200">Login to Radiance or Request Access</p>
+          <p className="text-gray-200">Login or Register to Radiance</p>
           <div className="mt-5 flex justify-center">
             {!user.profile ? (
               <>
                 <Button type="button" variant="inverse" className="mx-1" onClick={() => navigate('/auth/login')}>
                   Login
                 </Button>
-                <Button type="button" variant="inverse" className="mx-1" onClick={() => {}}>
-                  Request Access
+                <Button type="button" variant="inverse" className="mx-1" onClick={() => navigate('/auth/register')}>
+                  Register
                 </Button>
               </>
             ) : (

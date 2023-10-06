@@ -9,7 +9,7 @@ const sizes = {
 
 const variants = {
   light: 'text-white',
-  primary: 'text-blue-600',
+  primary: 'text-radiance-light',
 };
 
 export type SpinnerProps = {
@@ -28,14 +28,7 @@ export const Spinner = ({ size = 'md', variant = 'primary', className = '' }: Sp
         viewBox="0 0 24 24"
         data-testid="loading"
       >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
         <path
           className="opacity-75"
           fill="currentColor"
