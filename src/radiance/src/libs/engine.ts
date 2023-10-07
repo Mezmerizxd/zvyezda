@@ -101,6 +101,48 @@ class Engine {
     return await this.Get('/account/authorize', true);
   }
 
+  public async GetAllBookings(): Promise<{
+    server: BaseResponse;
+    data: ReturnType<GetEvents['/bookings/get-all']> | null;
+  }> {
+    return await this.Get('/bookings/get-all', true);
+  }
+
+  public async GetBooking(data: { id: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<GetEvents['/bookings/get']> | null;
+  }> {
+    return await this.Get('/bookings/get', true);
+  }
+
+  public async CancelBooking(data: { id: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PostEvents['/bookings/cancel']> | null;
+  }> {
+    return await this.Post('/bookings/cancel', true, data);
+  }
+
+  public async IsDateBooked(data: { date: Date }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PostEvents['/bookings/is-date-booked']> | null;
+  }> {
+    return await this.Post('/bookings/is-date-booked', true, data);
+  }
+
+  public async ConfirmBooking(data: { id: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PatchEvents['/bookings/confirm']> | null;
+  }> {
+    return await this.Patch('/bookings/confirm', true, data);
+  }
+
+  public async ConfirmBookingPayment(data: { id: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PatchEvents['/bookings/confirm-payment']> | null;
+  }> {
+    return await this.Patch('/bookings/confirm-payment', true, data);
+  }
+
   private async Patch<T extends keyof PatchEvents>(
     event: T,
     authorization: boolean,

@@ -49,7 +49,7 @@ func (a *account) Login(data types.LoginAccountData) (*types.Account, error) {
 	account.TokenExp = &access.TokenExp
 
 	err3 := database.UpdateAccount(*account)
-	if err2 != nil {
+	if err3 != nil {
 		return nil, err3
 	}
 

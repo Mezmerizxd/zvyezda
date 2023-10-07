@@ -61,3 +61,13 @@ model Surveillance {
   url  String
   name String
 }
+
+model ServiceBookings {
+  id        String   @id @default(uuid())
+  accountId String
+  date      DateTime
+  price     Int
+  paid      Boolean  @default(false)
+  confirmed Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

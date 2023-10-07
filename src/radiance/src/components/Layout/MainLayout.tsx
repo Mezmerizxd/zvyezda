@@ -1,5 +1,5 @@
 import { Dialog, Menu, Transition } from '@headlessui/react';
-import { UserIcon, FolderIcon, HomeIcon, MenuAlt2Icon, UsersIcon, XIcon } from '@heroicons/react/outline';
+import { HomeIcon, MenuAlt2Icon, UsersIcon, XIcon, ArchiveIcon, BookOpenIcon } from '@heroicons/react/outline';
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { clsx } from 'clsx';
@@ -18,6 +18,16 @@ const SideNavigation = ({ onSelect }: { onSelect?: () => void }) => {
 
   const navigation = [
     { name: 'Dashboard', to: '.', icon: HomeIcon },
+    checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
+      name: 'Active Bookings',
+      to: './booking/active',
+      icon: BookOpenIcon,
+    },
+    checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
+      name: 'Booking Requests',
+      to: './booking/requests',
+      icon: ArchiveIcon,
+    },
     checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
       name: 'Users',
       to: './users',

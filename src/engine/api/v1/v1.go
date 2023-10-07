@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"zvyezda/src/engine/api/v1/account"
+	"zvyezda/src/engine/api/v1/booking"
 	"zvyezda/src/engine/api/v1/xbox"
 	"zvyezda/src/engine/features"
 	"zvyezda/src/engine/pkg/database"
@@ -25,6 +26,9 @@ func New(handler *gin.Engine, cfg *Config) {
 		xbox := xbox.New(&xbox.Config{
 			Features: *cfg.Features,
 		})
+		booking := booking.New(&booking.Config{
+			Features: *cfg.Features,
+		})
 
 		// Routes
 		v1.GET("/get-version", GetVersion)
@@ -44,6 +48,15 @@ func New(handler *gin.Engine, cfg *Config) {
 		v1.POST("/xbox/edit", UseAuthorization(cfg, xbox.Edit, &types.UserRole))
 		v1.POST("/xbox/delete", UseAuthorization(cfg, xbox.Delete, &types.UserRole))
 		v1.GET("/xbox/get-all", UseAuthorization(cfg, xbox.GetAll, &types.UserRole))
+
+		/* Bookings */
+		v1.GET("/bookings/get-all", UseAuthorization(cfg, booking.GetAllBookings, &types.UserRole))
+		v1.GET("/bookings/get", UseAuthorization(cfg, booking.GetAllBookingsByAccountID, &types.UserRole))
+		v1.POST("/bookings/create", UseAuthorization(cfg, booking.Create, &types.UserRole))
+		v1.POST("/bookings/cancel", UseAuthorization(cfg, booking.Cancel, &types.UserRole))
+		v1.POST("/bookings/is-date-booked", UseAuthorization(cfg, booking.IsDateBooked, &types.UserRole))
+		v1.PATCH("/bookings/confirm", UseAuthorization(cfg, booking.ConfirmBooking, &types.AdminRole))
+		v1.PATCH("/bookings/confirm-payment", UseAuthorization(cfg, booking.ConfirmBookingPayment, &types.AdminRole))
 	}
 }
 

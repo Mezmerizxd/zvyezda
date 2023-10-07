@@ -3,8 +3,6 @@ package types
 import (
 	"errors"
 	"time"
-
-	"github.com/gin-gonic/gin"
 )
 
 var (
@@ -52,21 +50,6 @@ type Account struct {
 	UpdatedAt time.Time  `json:"updatedAt"`
 }
 
-// Create implements account.Account.
-func (*Account) Create(c *gin.Context) {
-	panic("unimplemented")
-}
-
-// Login implements account.Account.
-func (*Account) Login(c *gin.Context) {
-	panic("unimplemented")
-}
-
-// Profile implements account.Account.
-func (*Account) Profile(c *gin.Context) {
-	panic("unimplemented")
-}
-
 type Profile struct {
 	ID        string    `json:"id"`
 	Email     string    `json:"email"`
@@ -110,4 +93,14 @@ type RtspStream struct {
 	ID   string `json:"id"`
 	URL  string `json:"url"` // rtsp://
 	Name string `json:"name"`
+}
+
+type ServiceBooking struct {
+	ID        string     `json:"id"`
+	AccountID        string     `json:"accountId"`
+	Date time.Time  `json:"date"`
+	Price	  int 		 	 `json:"price"`
+	Paid bool `json:"paid"`
+	Confirmed bool `json:"confirmed"`
+	CreatedAt time.Time  `json:"createdAt"`
 }

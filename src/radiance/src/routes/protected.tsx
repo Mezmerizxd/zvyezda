@@ -3,13 +3,14 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { MainLayout } from '../components/Layout';
 
 import { lazyImport } from '../libs/lazyImport';
-import { Users } from '../features/users';
 import { Spinner } from '../components/Elements';
 
 // const { DiscussionsRoutes } = lazyImport(() => import('../features/discussions'), 'DiscussionsRoutes');
 const { Dashboard } = lazyImport(() => import('../features/misc'), 'Dashboard');
 const { Profile } = lazyImport(() => import('../features/users'), 'Profile');
-// const { Users } = lazyImport(() => import('@/features/users'), 'Users');
+const { Users } = lazyImport(() => import('../features/users'), 'Users');
+const { Requests } = lazyImport(() => import('../features/booking'), 'Requests');
+const { Active } = lazyImport(() => import('../features/booking'), 'Active');
 
 const App = () => {
   return (
@@ -32,6 +33,8 @@ export const protectedRoutes = [
     path: '/app',
     element: <App />,
     children: [
+      { path: 'booking/requests', element: <Requests /> },
+      { path: 'booking/active', element: <Active /> },
       { path: 'users', element: <Users /> },
       { path: 'profile', element: <Profile /> },
       { index: true, element: <Dashboard /> },

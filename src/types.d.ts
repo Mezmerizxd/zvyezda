@@ -57,11 +57,25 @@ interface Surveillance {
   name: string;
 }
 
+interface Booking {
+  id: string;
+  accountId: string;
+  date: Date;
+  price: number;
+  paid: boolean;
+  confirmed: boolean;
+  createdAt: Date;
+}
+
 type PostEvents = {
   /* ACCOUNT */
   '/account/login': () => Account;
   '/account/create': () => Account;
   '/account/delete': () => null;
+
+  /* BOOKING */
+  '/bookings/cancel': () => null;
+  '/bookings/is-date-booked': () => boolean;
 };
 
 type GetEvents = {
@@ -77,11 +91,19 @@ type GetEvents = {
   '/account/profile': () => Profile;
   '/account/accounts': () => Account[];
   '/account/authorize': () => null;
+
+  /* BOOKING */
+  '/bookings/get-all': () => Booking[];
+  '/bookings/get': () => Booking;
 };
 
 type PatchEvents = {
   /* ACCOUNT */
   '/account/profile/update': () => Profile;
+
+  /* BOOKING */
+  '/bookings/confirm': () => Booking;
+  '/bookings/confirm-payment': () => Booking;
 };
 
 type BaseResponse = {
