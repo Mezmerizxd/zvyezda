@@ -21,6 +21,8 @@ type Booking interface {
 	IsDateBooked(c *gin.Context)
 	ConfirmBooking(c *gin.Context)
 	ConfirmBookingPayment(c *gin.Context)
+	RescheduleConfirmedBooking(c *gin.Context)
+	RescheduleBooking(c *gin.Context)
 }
 
 type booking struct {
@@ -440,6 +442,166 @@ func (b *booking) ConfirmBookingPayment(c *gin.Context) {
 			"server": gin.H{
 				"success": false,
 				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	fullBooking = types.FullBooking{
+		ID:          booking.ID,
+		Date:        booking.Date,
+		Price:       booking.Price,
+		ServiceType: booking.ServiceType,
+		Paid:        booking.Paid,
+		Confirmed:   booking.Confirmed,
+		Address:     *address,
+		Account:     *account,
+		CreatedAt:   booking.CreatedAt,
+	}
+
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,
+			"error":   nil,
+		},
+		"data": fullBooking,
+	})
+}
+
+/*
+curl \
+-X PATCH http://localhost:4000/api/v1/bookings/reschedule-confirmed \
+-H "Content-Type: application/json" \
+-H "Authorization: token" \
+-d '{ "bookingId": "id", "date": "2021-01-01T00:00:00.000Z" }'
+*/
+func (b *booking) RescheduleConfirmedBooking(c *gin.Context) {
+	var data types.RescheduleConfirmedBooking
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error":   err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	booking, err := b.Features.Booking.RescheduleConfirmedBooking(data.BookingID, data.Date)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error":   err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	var fullBooking types.FullBooking
+
+	address, err := database.GetAddressByID(booking.AddressID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error":   err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	account, err := database.GetAccountByID(booking.AccountID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error":   err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	fullBooking = types.FullBooking{
+		ID:          booking.ID,
+		Date:        booking.Date,
+		Price:       booking.Price,
+		ServiceType: booking.ServiceType,
+		Paid:        booking.Paid,
+		Confirmed:   booking.Confirmed,
+		Address:     *address,
+		Account:     *account,
+		CreatedAt:   booking.CreatedAt,
+	}
+
+	c.JSON(200, gin.H{
+		"server": gin.H{
+			"success": true,
+			"error":   nil,
+		},
+		"data": fullBooking,
+	})
+}
+
+/*
+curl \
+-X PATCH http://localhost:4000/api/v1/bookings/reschedule \
+-H "Content-Type: application/json" \
+-H "Authorization: token" \
+-d '{ "bookingId": "id", "date": "2021-01-01T00:00:00.000Z" }'
+*/
+func (b *booking) RescheduleBooking(c *gin.Context) {
+	var data types.RescheduleConfirmedBooking
+
+	if err := c.ShouldBindJSON(&data); err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error":   err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	booking, err := b.Features.Booking.RescheduleBooking(data.BookingID, data.Date)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error":   err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	var fullBooking types.FullBooking
+
+	address, err := database.GetAddressByID(booking.AddressID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error":   err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	account, err := database.GetAccountByID(booking.AccountID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error":   err.Error(),
 			},
 			"data": nil,
 		})

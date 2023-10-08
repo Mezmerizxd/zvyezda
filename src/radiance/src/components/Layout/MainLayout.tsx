@@ -1,5 +1,13 @@
 import { Dialog, Menu, Transition } from '@headlessui/react';
-import { HomeIcon, MenuAlt2Icon, UsersIcon, XIcon, ArchiveIcon, BookOpenIcon } from '@heroicons/react/outline';
+import {
+  HomeIcon,
+  MenuAlt2Icon,
+  UsersIcon,
+  XIcon,
+  ArchiveIcon,
+  BookOpenIcon,
+  BellIcon,
+} from '@heroicons/react/outline';
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { clsx } from 'clsx';
@@ -18,17 +26,22 @@ const SideNavigation = ({ onSelect }: { onSelect?: () => void }) => {
 
   const navigation = [
     { name: 'Dashboard', to: '.', icon: HomeIcon },
-    checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
+    checkAccess({ allowedRoles: [ROLES.USER, ROLES.DEVELOPER, ROLES.ADMIN] }) && {
+      name: 'Order',
+      to: './booking/order',
+      icon: BellIcon,
+    },
+    checkAccess({ allowedRoles: [ROLES.ADMIN, ROLES.DEVELOPER] }) && {
       name: 'Active Bookings',
       to: './booking/active',
       icon: BookOpenIcon,
     },
-    checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
+    checkAccess({ allowedRoles: [ROLES.ADMIN, ROLES.DEVELOPER] }) && {
       name: 'Booking Requests',
       to: './booking/requests',
       icon: ArchiveIcon,
     },
-    checkAccess({ allowedRoles: [ROLES.ADMIN] }) && {
+    checkAccess({ allowedRoles: [ROLES.ADMIN, ROLES.DEVELOPER] }) && {
       name: 'Users',
       to: './users',
       icon: UsersIcon,

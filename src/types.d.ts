@@ -120,6 +120,8 @@ type PatchEvents = {
   /* BOOKING */
   '/bookings/confirm': () => Booking;
   '/bookings/confirm-payment': () => Booking;
+  '/bookings/reschedule': () => Booking;
+  '/bookings/reschedule-confirmed': () => Booking;
 };
 
 type BaseResponse = {

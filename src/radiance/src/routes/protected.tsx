@@ -11,6 +11,7 @@ const { Profile } = lazyImport(() => import('../features/users'), 'Profile');
 const { Users } = lazyImport(() => import('../features/users'), 'Users');
 const { Requests } = lazyImport(() => import('../features/booking'), 'Requests');
 const { Active } = lazyImport(() => import('../features/booking'), 'Active');
+const { Order } = lazyImport(() => import('../features/booking'), 'Order');
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ export const protectedRoutes = [
     path: '/app',
     element: <App />,
     children: [
+      { path: 'booking/order', element: <Order /> },
       { path: 'booking/requests', element: <Requests /> },
       { path: 'booking/active', element: <Active /> },
       { path: 'users', element: <Users /> },

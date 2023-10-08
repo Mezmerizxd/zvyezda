@@ -7,7 +7,10 @@ export const Requests = () => {
   return (
     <ContentLayout title="Booking Requests">
       <div className="mt-4">
-        <Authorization forbiddenFallback={<div>Only admin can view this.</div>} allowedRoles={[ROLES.ADMIN]}>
+        <Authorization
+          forbiddenFallback={<div>Only admin can view this.</div>}
+          allowedRoles={[ROLES.ADMIN, ROLES.DEVELOPER]}
+        >
           <RequestList />
         </Authorization>
       </div>

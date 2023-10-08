@@ -61,6 +61,8 @@ func New(handler *gin.Engine, cfg *Config) {
 		v1.POST("/bookings/is-date-booked", UseAuthorization(cfg, booking.IsDateBooked, &types.UserRole))
 		v1.PATCH("/bookings/confirm", UseAuthorization(cfg, booking.ConfirmBooking, &types.AdminRole))
 		v1.PATCH("/bookings/confirm-payment", UseAuthorization(cfg, booking.ConfirmBookingPayment, &types.AdminRole))
+		v1.PATCH("/bookings/reschedule", UseAuthorization(cfg, booking.RescheduleBooking, &types.UserRole))
+		v1.PATCH("/bookings/reschedule-confirmed", UseAuthorization(cfg, booking.RescheduleConfirmedBooking, &types.AdminRole))
 	}
 }
 

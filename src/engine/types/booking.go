@@ -34,6 +34,11 @@ type IsDateBooked struct {
 	Date time.Time `json:"date"`
 }
 
+type RescheduleConfirmedBooking struct {
+	BookingID string    `json:"bookingId"`
+	Date      time.Time `json:"date"`
+}
+
 type FullBooking struct {
 	ID          string    `json:"id"`
 	Date        time.Time `json:"date"`

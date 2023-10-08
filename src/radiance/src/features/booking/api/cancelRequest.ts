@@ -4,45 +4,41 @@ import { MutationConfig, queryClient } from '../../../libs/react-query';
 import { useNotificationStore } from '../../../stores/notifications';
 import { engine } from '../../../libs/engine';
 
-export type ConfirmRequestDTO = {
+export type CancelRequestDTO = {
   bookingId: string;
 };
 
-export const confirmRequest = async ({ bookingId }: ConfirmRequestDTO) => {
-  const response = await engine.ConfirmBooking({ bookingId: bookingId });
+export const cancelRequest = async ({ bookingId }: CancelRequestDTO) => {
+  const response = await engine.CancelBooking({ bookingId: bookingId });
   if (!response.server.success) {
     throw new Error(response.server.error);
   }
   return response.data;
 };
 
-type UseConfirmRequestOptions = {
-  config?: MutationConfig<typeof confirmRequest>;
+type UseCancelRequestOptions = {
+  config?: MutationConfig<typeof cancelRequest>;
 };
 
-export const useConfirmRequest = ({ config }: UseConfirmRequestOptions = {}) => {
+export const useCancelRequest = ({ config }: UseCancelRequestOptions = {}) => {
   const { addNotification } = useNotificationStore();
 
   return useMutation({
-    onMutate: async (confirmRequest) => {
+    onMutate: async (cancelRequest) => {
+      // Delete booking from cache
       await queryClient.cancelQueries('bookings');
 
       const previousBookings = queryClient.getQueryData<Booking[]>('bookings');
 
       queryClient.setQueryData(
         'bookings',
-        previousBookings?.map((booking) => {
-          if (booking.id === confirmRequest.bookingId) {
-            return { ...booking, status: 'confirmed' };
-          }
-          return booking;
-        }),
+        previousBookings?.filter((booking) => booking.id !== cancelRequest.bookingId),
       );
 
       return { previousBookings };
     },
     onError: (error, __, context: any) => {
-      if (context?.previousBookings) {
+      if (context?.previousUsers) {
         queryClient.setQueryData('bookings', context.previousBookings);
       }
       addNotification({
@@ -59,6 +55,6 @@ export const useConfirmRequest = ({ config }: UseConfirmRequestOptions = {}) => 
       });
     },
     ...config,
-    mutationFn: confirmRequest,
+    mutationFn: cancelRequest,
   });
 };

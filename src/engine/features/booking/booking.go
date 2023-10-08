@@ -15,6 +15,8 @@ type Booking interface {
 	IsDateBooked(date time.Time) (bool, error)
 	ConfirmBooking(bookingID string) (*types.Booking, error)
 	ConfirmBookingPayment(bookingID string) (*types.Booking, error)
+	RescheduleConfirmedBooking(bookingID string, date time.Time) (*types.Booking, error)
+	RescheduleBooking(bookingID string, date time.Time) (*types.Booking, error)
 }
 
 type booking struct{}
@@ -127,6 +129,57 @@ func (b *booking) ConfirmBookingPayment(bookingID string) (*types.Booking, error
 	}
 
 	booking.Paid = true
+
+	err = database.UpdateBooking(*booking)
+	if err != nil {
+		return nil, err
+	}
+
+	return booking, nil
+}
+
+func (b *booking) RescheduleConfirmedBooking(bookingID string, date time.Time) (*types.Booking, error) {
+	booked, err := b.IsDateBooked(date)
+	if err != nil {
+		return nil, err
+	}
+
+	if booked {
+		return nil, types.ErrorDateAlreadyBooked
+	}
+
+	booking, err := database.GetBookingByID(bookingID)
+	if err != nil {
+		return nil, err
+	}
+
+	booking.Date = date
+
+	err = database.UpdateBooking(*booking)
+	if err != nil {
+		return nil, err
+	}
+
+	return booking, nil
+}
+
+func (b *booking) RescheduleBooking(bookingID string, date time.Time) (*types.Booking, error) {
+	booked, err := b.IsDateBooked(date)
+	if err != nil {
+		return nil, err
+	}
+
+	if booked {
+		return nil, types.ErrorDateAlreadyBooked
+	}
+
+	booking, err := database.GetBookingByID(bookingID)
+	if err != nil {
+		return nil, err
+	}
+
+	booking.Date = date
+	booking.Confirmed = false
 
 	err = database.UpdateBooking(*booking)
 	if err != nil {

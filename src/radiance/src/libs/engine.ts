@@ -171,6 +171,20 @@ class Engine {
     return await this.Post('/account/addresses/create', true, data);
   }
 
+  public async RescheduleBooking(data: { bookingId: string; date: Date }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PatchEvents['/bookings/reschedule']> | null;
+  }> {
+    return await this.Patch('/bookings/reschedule', true, data);
+  }
+
+  public async RescheduleConfirmedBooking(data: { bookingId: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PatchEvents['/bookings/reschedule-confirmed']> | null;
+  }> {
+    return await this.Patch('/bookings/reschedule-confirmed', true, data);
+  }
+
   private async Patch<T extends keyof PatchEvents>(
     event: T,
     authorization: boolean,

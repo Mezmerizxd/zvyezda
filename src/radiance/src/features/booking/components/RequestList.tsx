@@ -3,6 +3,7 @@ import { Spinner, Table } from '../../../components/Elements';
 import { useBookings } from '../api/getBookings';
 
 import { ConfirmRequest } from './ConfirmRequest';
+import { CancelRequest } from './CancelRequest';
 
 export const RequestList = () => {
   const bookingsQuery = useBookings();
@@ -51,17 +52,17 @@ export const RequestList = () => {
           },
         },
         {
-          title: 'Created At',
-          field: 'createdAt',
-          Cell({ entry: { createdAt } }) {
-            return <span>{new Date(createdAt.toString()).toLocaleString()}</span>;
+          title: '',
+          field: 'id',
+          Cell({ entry: { id } }) {
+            return <ConfirmRequest bookingId={id} />;
           },
         },
         {
           title: '',
           field: 'id',
           Cell({ entry: { id } }) {
-            return <ConfirmRequest bookingId={id} />;
+            return <CancelRequest bookingId={id} />;
           },
         },
       ]}

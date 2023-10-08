@@ -5,6 +5,34 @@ import (
 	"zvyezda/src/engine/types"
 )
 
+func GetAllAddresses() (*[]types.Address, error) {
+	if connection == nil {
+		return nil, types.ErrorFailedToConnectToDatabase
+	}
+
+	query := `SELECT id, street, city, state, country, "postalCode", "accountId" FROM public."Address"`
+	rows, err := connection.Query(query)
+	if err != nil {
+		return nil, types.ErrorFailedToQueryDatabase
+	}
+	defer rows.Close()
+
+	var addresses []types.Address
+
+	for rows.Next() {
+		var address types.Address
+		err := rows.Scan(&address.ID, &address.Street, &address.City, &address.State, &address.Country, &address.PostalCode, &address.AccountID)
+		if err != nil {
+			fmt.Println("GetAllAddresses:", err)
+			return nil, types.ErrorFailedToScanQueryResult
+		}
+
+		addresses = append(addresses, address)
+	}
+
+	return &addresses, nil
+}
+
 func GetAllAddressesByAccountID(accountID string) (*[]types.Address, error) {
 	if connection == nil {
 		return nil, types.ErrorFailedToConnectToDatabase
@@ -39,16 +67,25 @@ func GetAddressByID(addressID string) (*types.Address, error) {
 	}
 
 	query := `SELECT id, street, city, state, country, "postalCode", "accountId" FROM public."Address" WHERE id = $1`
-	row := connection.QueryRow(query, addressID)
-
-	var address types.Address
-	err := row.Scan(&address.ID, &address.Street, &address.City, &address.State, &address.Country, &address.PostalCode, &address.AccountID)
+	rows, err := connection.Query(query, addressID)
 	if err != nil {
 		fmt.Println("GetAddressByID:", err)
-		return nil, types.ErrorFailedToScanQueryResult
+		return nil, types.ErrorFailedToQueryDatabase
 	}
+	defer rows.Close()
 
-	return &address, nil
+	if rows.Next() {
+		var address types.Address
+		err := rows.Scan(&address.ID, &address.Street, &address.City, &address.State, &address.Country, &address.PostalCode, &address.AccountID)
+		if err != nil {
+			fmt.Println("GetAddressByID:", err)
+			return nil, types.ErrorFailedToScanQueryResult
+		}
+
+		return &address, nil
+	} else {
+		return nil, types.ErrorAddressDoesNotExist
+	}
 }
 
 func CreateAddress(address *types.Address) error {
