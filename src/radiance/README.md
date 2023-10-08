@@ -1,6 +1,6 @@
 # Documentation and Development Updates for Radiance
 
-[API Management](../../docs/API.md)
+[API Management](./docs/API.md)
 
 ### Descriptions / Mottos / About
 
@@ -21,23 +21,5 @@
 - “Radiance - Clean Homes, Clear Minds!”
 - “Radiance - Simplifying Home Cleaning!”
 - “Radiance - A Cleaner Home is Just a Tap Away!”
-
-### Features
-
-- Points system
-- Management system
-- Job system
-
-#### Points System
-
-- Purchasable points as its easier for testing and I don't want to deal with subscriptions
-
-#### Management System
-
-- Configurable dates and times with options to what you want the cleaning to be like
-
-#### Job System
-
-- People can opt to join as a "Proffessional Cleaner" and choose jobs they want to do
 
 [Homepage](../../README.md)
