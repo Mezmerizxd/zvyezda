@@ -3,25 +3,19 @@ import { useMutation } from 'react-query';
 import { MutationConfig, queryClient } from '../../../libs/react-query';
 import { useNotificationStore } from '../../../stores/notifications';
 import { engine } from '../../../libs/engine';
-import { useAddresses } from './getAddresses';
+import { useAddresses } from '../../users/api/getAddresses';
 
-export type CreateAddressDTO = {
-  street: string;
-  city: string;
-  state: string;
-  country: string;
-  postalCode: string;
+export type CreateOrderDTO = {
+  date: Date;
+  serviceType: string;
+  addressId: string;
 };
 
-export const createAddress = async (data: CreateAddressDTO) => {
-  const response = await engine.CreateAddress({
-    id: '0',
-    street: data.street,
-    city: data.city,
-    state: data.state,
-    country: data.country,
-    postalCode: data.postalCode,
-    accountId: '0',
+export const CreateOrder = async (data: CreateOrderDTO) => {
+  const response = await engine.CreateBooking({
+    date: data.date,
+    serviceType: data.serviceType,
+    addressId: data.addressId,
   });
   if (!response.server.success) {
     throw new Error(response.server.error);
@@ -29,11 +23,11 @@ export const createAddress = async (data: CreateAddressDTO) => {
   return response.data;
 };
 
-type UseCreateAddressOptions = {
-  config?: MutationConfig<typeof createAddress>;
+type UseCreateOrderOptions = {
+  config?: MutationConfig<typeof CreateOrder>;
 };
 
-export const useCreateAddress = ({ config }: UseCreateAddressOptions = {}) => {
+export const useCreateOrder = ({ config }: UseCreateOrderOptions = {}) => {
   const { addNotification } = useNotificationStore();
   const addressesQuery = useAddresses();
 
@@ -53,6 +47,6 @@ export const useCreateAddress = ({ config }: UseCreateAddressOptions = {}) => {
       addressesQuery.refetch();
     },
     ...config,
-    mutationFn: createAddress,
+    mutationFn: CreateOrder,
   });
 };

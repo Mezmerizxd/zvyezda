@@ -90,6 +90,7 @@ type PostEvents = {
   /* BOOKING */
   '/bookings/cancel': () => null;
   '/bookings/is-date-booked': () => boolean;
+  '/bookings/create': () => Booking;
 };
 
 type GetEvents = {

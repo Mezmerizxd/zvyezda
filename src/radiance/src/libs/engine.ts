@@ -185,6 +185,13 @@ class Engine {
     return await this.Patch('/bookings/reschedule-confirmed', true, data);
   }
 
+  public async CreateBooking(data: { date: Date; serviceType: string; addressId: string }): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PostEvents['/bookings/create']> | null;
+  }> {
+    return await this.Post('/bookings/create', true, data);
+  }
+
   private async Patch<T extends keyof PatchEvents>(
     event: T,
     authorization: boolean,

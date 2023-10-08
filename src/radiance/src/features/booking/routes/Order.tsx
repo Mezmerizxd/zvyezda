@@ -3,6 +3,7 @@ import Calendar from '../../../components/Elements/Calendar/Calendar';
 import { ContentLayout } from '../../../components/Layout';
 import { Authorization, ROLES } from '../../../libs/authorization';
 import { useBookings } from '../api/getBookings';
+import { CreateOrder } from '../components/CreateOrder';
 
 export const Order = () => {
   const bookingsQuery = useBookings();
@@ -33,6 +34,8 @@ export const Order = () => {
               </div>
             )}
           />
+
+          <CreateOrder date={new Date()} />
         </Authorization>
       </div>
     </ContentLayout>

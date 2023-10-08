@@ -13,7 +13,7 @@ const schema = z.object({
   postalCode: z.string(),
 });
 
-export const CreateAddress = ({ onSuccess }: { onSuccess: () => void }) => {
+export const CreateAddress = () => {
   const createAddressMutation = useCreateAddress();
 
   return (
@@ -34,10 +34,7 @@ export const CreateAddress = ({ onSuccess }: { onSuccess: () => void }) => {
       <Form<CreateAddressDTO, typeof schema>
         id="create-address"
         onSubmit={async (values) => {
-          await createAddressMutation.mutateAsync(values).catch(() => {
-            onSuccess();
-            return;
-          });
+          await createAddressMutation.mutateAsync(values);
         }}
         schema={schema}
       >

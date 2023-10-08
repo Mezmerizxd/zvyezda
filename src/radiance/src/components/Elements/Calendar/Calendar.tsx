@@ -6,8 +6,8 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 
 type CalendarProps<Entry> = {
   entries: Entry[];
-  dateField: keyof Entry; // The field in the entry object that represents the date
-  renderCell(entry: Entry): React.ReactNode; // A function to render the cell content
+  dateField: keyof Entry;
+  renderCell(entry: Entry): React.ReactNode;
 };
 
 const Calendar = <Entry extends { id: string }>({ entries, dateField, renderCell }: CalendarProps<Entry>) => {
@@ -30,25 +30,14 @@ const Calendar = <Entry extends { id: string }>({ entries, dateField, renderCell
       <div className="grid grid-cols-6 gap-2 p-2">
         {daysInMonth.map((day, index) => {
           const entriesForDay = entries.filter((entry) => {
-            const entryDate = new Date(entry[dateField] as string); // Parse the date string into a Date object
+            const entryDate = new Date(entry[dateField] as string);
             if (!isNaN(entryDate.getTime())) {
-              // Check if the parsed date is valid
-              return (
-                format(entryDate, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd') // Compare formatted dates
-              );
+              return format(entryDate, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd');
             }
             return false;
           });
 
           return (
-            // <div key={index} className="p-1 border flex justify-center h-16">
-            //   <div className="flex">
-            //     <div className="font-semibold">{format(day, 'dd')}</div>
-            //     {entriesForDay.map((entry) => (
-            //       <div key={entry.id}>{renderCell(entry)}</div>
-            //     ))}
-            //   </div>
-            // </div>
             <div
               key={index}
               className="p-1 flex justify-center h-20 group hover:bg-background rounded-lg duration-75 cursor-pointer"
