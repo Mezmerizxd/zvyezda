@@ -2,10 +2,10 @@ import { Button, ConfirmationDialog } from '../../../components/Elements';
 import { useConfirmRequest } from '../api/confirmRequest';
 
 type ConfirmRequestProps = {
-  id: string;
+  bookingId: string;
 };
 
-export const ConfirmRequest = ({ id }: ConfirmRequestProps) => {
+export const ConfirmRequest = ({ bookingId }: ConfirmRequestProps) => {
   const confirmRequestMutation = useConfirmRequest();
 
   return (
@@ -19,7 +19,7 @@ export const ConfirmRequest = ({ id }: ConfirmRequestProps) => {
           isLoading={confirmRequestMutation.isLoading}
           type="button"
           className="bg-radiance-dark"
-          onClick={() => confirmRequestMutation.mutate({ bookingId: id })}
+          onClick={() => confirmRequestMutation.mutate({ bookingId: bookingId })}
         >
           Confirm Request
         </Button>

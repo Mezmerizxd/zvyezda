@@ -21,6 +21,9 @@ type Account interface {
 	HasAccess(account types.Account, role string) (bool, error)
 	GetProfile(token string) (*types.Profile, error)
 	UpdateProfile(account *types.Account, data *types.Profile) (*types.Profile, error)
+	GetAddresses(account types.Account) ([]types.Address, error)
+	UpdateAddress(account types.Account, data types.Address) (*types.Address, error)
+	CreateAddress(account types.Account, data types.Address) (*types.Address, error)
 }
 
 type account struct{}
@@ -241,5 +244,68 @@ func (a *account) UpdateProfile(account *types.Account, data *types.Profile) (*t
 		Biography: newAccount.Biography,
 		CreatedAt: newAccount.CreatedAt,
 		UpdatedAt: newAccount.UpdatedAt,
+	}, nil
+}
+
+func (a *account) GetAddresses(account types.Account) ([]types.Address, error) {
+	addresses, err := database.GetAllAddressesByAccountID(account.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return *addresses, nil
+}
+
+func (a *account) UpdateAddress(account types.Account, data types.Address) (*types.Address, error) {
+	address := types.Address{
+		ID: data.ID,
+		Street: data.Street,
+		City: data.City,
+		State: data.State,
+		Country: data.Country,
+		PostalCode: data.PostalCode,
+		AccountID: account.ID,
+	}
+
+	err := database.UpdateAddress(&address)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.Address{
+		ID: address.ID,
+		Street: address.Street,
+		City: address.City,
+		State: address.State,
+		Country: address.Country,
+		PostalCode: address.PostalCode,
+		AccountID: address.AccountID,
+	}, nil
+}
+
+func (a *account) CreateAddress(account types.Account, data types.Address) (*types.Address, error) {
+	address := types.Address{
+		ID: uuid.New().String(),
+		Street: data.Street,
+		City: data.City,
+		State: data.State,
+		Country: data.Country,
+		PostalCode: data.PostalCode,
+		AccountID: account.ID,
+	}
+
+	err := database.CreateAddress(&address)
+	if err != nil {
+		return nil, err
+	}
+
+	return &types.Address{
+		ID: address.ID,
+		Street: address.Street,
+		City: address.City,
+		State: address.State,
+		Country: address.Country,
+		PostalCode: address.PostalCode,
+		AccountID: address.AccountID,
 	}, nil
 }

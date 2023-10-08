@@ -12,28 +12,36 @@ var (
 	ErrorThisBookingIsConfirmed = errors.New("this booking is confirmed")
 )
 
-// Prices
-var Quick int = 1
-var Normal int = 2
-var Extra int = 3
-
 type CreateBooking struct {
-	Date  time.Time `json:"date"`
-	Type int       `json:"type"`
+	Date        time.Time `json:"date"`
+	ServiceType string    `json:"serviceType"`
+	AddressID   string    `json:"addressId"`
 }
 
 type CancelBooking struct {
-	ID string `json:"id"`
+	BookingID string `json:"bookingId"`
 }
 
 type ConfirmBooking struct {
-	ID string `json:"id"`
+	BookingID string `json:"bookingId"`
 }
 
 type ConfirmBookingPayment struct {
-	ID string `json:"id"`
+	BookingID string `json:"bookingId"`
 }
 
 type IsDateBooked struct {
 	Date time.Time `json:"date"`
+}
+
+type FullBooking struct {
+	ID          string    `json:"id"`
+	Date        time.Time `json:"date"`
+	Price       int       `json:"price"`
+	ServiceType string    `json:"serviceType"`
+	Paid        bool      `json:"paid"`
+	Confirmed   bool      `json:"confirmed"`
+	Address   Address    `json:"address"`
+	Account   Account    `json:"account"`
+	CreatedAt   time.Time `json:"createdAt"`
 }

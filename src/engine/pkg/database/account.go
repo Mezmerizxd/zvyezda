@@ -23,7 +23,7 @@ func GetAllAccounts() (*[]types.Account, error) {
 		var acc types.Account
 		err := rows.Scan(&acc.ID, &acc.Email, &acc.Username, &acc.Password, &acc.Role, &acc.Token, &acc.TokenExp, &acc.Avatar, &acc.Biography, &acc.CreatedAt, &acc.UpdatedAt)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Database:", err)
 			return nil, types.ErrorFailedToScanQueryResult
 		}
 
@@ -49,7 +49,7 @@ func GetAccountBy(key types.AccountSearchParameter, value string) (*types.Accoun
 		var acc types.Account
 		err := rows.Scan(&acc.ID, &acc.Email, &acc.Username, &acc.Password, &acc.Role, &acc.Token, &acc.TokenExp, &acc.Avatar, &acc.Biography, &acc.CreatedAt, &acc.UpdatedAt)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Database:", err)
 			return nil, types.ErrorFailedToScanQueryResult
 		}
 

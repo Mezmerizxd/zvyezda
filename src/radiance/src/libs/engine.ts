@@ -108,14 +108,14 @@ class Engine {
     return await this.Get('/bookings/get-all', true);
   }
 
-  public async GetBooking(data: { id: string }): Promise<{
+  public async GetBooking(data: { bookingId: string }): Promise<{
     server: BaseResponse;
     data: ReturnType<GetEvents['/bookings/get']> | null;
   }> {
     return await this.Get('/bookings/get', true);
   }
 
-  public async CancelBooking(data: { id: string }): Promise<{
+  public async CancelBooking(data: { bookingId: string }): Promise<{
     server: BaseResponse;
     data: ReturnType<PostEvents['/bookings/cancel']> | null;
   }> {
@@ -129,18 +129,46 @@ class Engine {
     return await this.Post('/bookings/is-date-booked', true, data);
   }
 
-  public async ConfirmBooking(data: { id: string }): Promise<{
+  public async ConfirmBooking(data: { bookingId: string }): Promise<{
     server: BaseResponse;
     data: ReturnType<PatchEvents['/bookings/confirm']> | null;
   }> {
     return await this.Patch('/bookings/confirm', true, data);
   }
 
-  public async ConfirmBookingPayment(data: { id: string }): Promise<{
+  public async ConfirmBookingPayment(data: { bookingId: string }): Promise<{
     server: BaseResponse;
     data: ReturnType<PatchEvents['/bookings/confirm-payment']> | null;
   }> {
     return await this.Patch('/bookings/confirm-payment', true, data);
+  }
+
+  public async GetAddresses(): Promise<{
+    server: BaseResponse;
+    data: ReturnType<GetEvents['/account/addresses']> | null;
+  }> {
+    return await this.Get('/account/addresses', true);
+  }
+
+  public async UpdateAddress(data: Address): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PatchEvents['/account/addresses/update']> | null;
+  }> {
+    return await this.Patch('/account/addresses/update', true, data);
+  }
+
+  public async DeleteAddress(data: Address): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PostEvents['/account/addresses/delete']> | null;
+  }> {
+    return await this.Post('/account/addresses/delete', true, data);
+  }
+
+  public async CreateAddress(data: Address): Promise<{
+    server: BaseResponse;
+    data: ReturnType<PostEvents['/account/addresses/create']> | null;
+  }> {
+    return await this.Post('/account/addresses/create', true, data);
   }
 
   private async Patch<T extends keyof PatchEvents>(

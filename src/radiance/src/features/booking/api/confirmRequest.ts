@@ -9,7 +9,7 @@ export type ConfirmRequestDTO = {
 };
 
 export const confirmRequest = async ({ bookingId }: ConfirmRequestDTO) => {
-  const response = await engine.ConfirmBooking({ id: bookingId });
+  const response = await engine.ConfirmBooking({ bookingId: bookingId });
   if (!response.server.success) {
     throw new Error(response.server.error);
   }

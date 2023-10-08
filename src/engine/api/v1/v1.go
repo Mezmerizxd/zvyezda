@@ -42,6 +42,10 @@ func New(handler *gin.Engine, cfg *Config) {
 		v1.PATCH("/account/profile/update", UseAuthorization(cfg, account.UpdateProfile, &types.UserRole))
 		v1.GET("/account/accounts", UseAuthorization(cfg, account.Accounts, &types.AdminRole))
 		v1.GET("/account/authorize", UseAuthorization(cfg, account.Authorize, &types.UserRole))
+		v1.GET("/account/addresses", UseAuthorization(cfg, account.Addresses, &types.UserRole))
+		v1.PATCH("/account/addresses/update", UseAuthorization(cfg, account.UpdateAddress, &types.UserRole))
+		v1.POST("/account/addresses/delete", UseAuthorization(cfg, account.DeleteAddress, &types.UserRole))
+		v1.POST("/account/addresses/create", UseAuthorization(cfg, account.CreateAddress, &types.UserRole))
 
 		/* Xbox */
 		v1.POST("/xbox/create", UseAuthorization(cfg, xbox.Create, &types.UserRole))

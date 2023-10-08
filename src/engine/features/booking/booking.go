@@ -1,6 +1,7 @@
 package booking
 
 import (
+	"fmt"
 	"time"
 	"zvyezda/src/engine/pkg/database"
 	"zvyezda/src/engine/types"
@@ -9,11 +10,11 @@ import (
 type Config struct{}
 
 type Booking interface {
-	Create(data types.CreateBooking, accountId string) (*types.ServiceBooking, error)
-	Cancel(id string, accountId string) (error)
+	Create(data types.CreateBooking, account types.Account) (*types.Booking, error)
+	Cancel(bookingID string, account types.Account) (error)
 	IsDateBooked(date time.Time) (bool, error)
-	ConfirmBooking(id string) (*types.ServiceBooking, error)
-	ConfirmBookingPayment(id string) (*types.ServiceBooking, error)
+	ConfirmBooking(bookingID string) (*types.Booking, error)
+	ConfirmBookingPayment(bookingID string) (*types.Booking, error)
 }
 
 type booking struct{}
@@ -22,7 +23,7 @@ func New(cfg *Config) Booking {
 	return &booking{}
 }
 
-func (b *booking) Create(data types.CreateBooking, accountId string) (*types.ServiceBooking, error) {
+func (b *booking) Create(data types.CreateBooking, account types.Account) (*types.Booking, error) {
 	booked, err := b.IsDateBooked(data.Date)
 	if err != nil {
 		return nil, err
@@ -33,19 +34,23 @@ func (b *booking) Create(data types.CreateBooking, accountId string) (*types.Ser
 	}
 
 	var price = 0
-	switch data.Type {
-	case types.Quick:
+	switch data.ServiceType {
+	case "QUICK":
 		price = 5
-	case types.Normal:
+	case "NORMAL":
 		price = 10
-	case types.Extra:
+	case "EXTRA":
 		price = 15
 	}
 
-	booking := types.ServiceBooking{
-		AccountID: accountId,
+	booking := types.Booking{
 		Date:      data.Date,
 		Price:     price,
+		ServiceType: data.ServiceType,
+		Paid: 		false,
+		Confirmed: false,
+		AddressID: data.AddressID,
+		AccountID: account.ID,
 		CreatedAt: time.Now(),
 	}
 
@@ -57,13 +62,13 @@ func (b *booking) Create(data types.CreateBooking, accountId string) (*types.Ser
 	return &booking, nil
 }
 
-func (b *booking) Cancel(id string, accountId string) (error) {
-	booking, err := database.GetBookingByID(id)
+func (b *booking) Cancel(bookingID string, account types.Account) (error) {
+	booking, err := database.GetBookingByID(bookingID)
 	if err != nil {
 		return err
 	}
 
-	if booking.AccountID != accountId {
+	if booking.AccountID != account.ID {
 		return types.ErrorYouDoNotOwnThisBooking
 	}
 
@@ -71,7 +76,7 @@ func (b *booking) Cancel(id string, accountId string) (error) {
 		return types.ErrorThisBookingIsConfirmed
 	}
 
-	err = database.DeleteBookingByID(id)
+	err = database.DeleteBookingByID(bookingID)
 	if err != nil {
 		return err
 	}
@@ -98,30 +103,32 @@ func (b *booking) IsDateBooked(date time.Time) (bool, error) {
 	return false, nil
 }
 
-func (b *booking) ConfirmBooking(id string) (*types.ServiceBooking, error) {
-	booking, err := database.GetBookingByID(id)
+func (b *booking) ConfirmBooking(bookingID string) (*types.Booking, error) {
+	booking, err := database.GetBookingByID(bookingID)
 	if err != nil {
 		return nil, err
 	}
 
 	booking.Confirmed = true
-	err = database.UpdateBooking(booking) // dereference the pointer to get a value of type types.ServiceBooking
+
+	err = database.UpdateBooking(*booking)
 	if err != nil {
+		fmt.Println("Features:", err)
 		return nil, err
 	}
 
 	return booking, nil
 }
 
-func (b *booking) ConfirmBookingPayment(id string) (*types.ServiceBooking, error) {
-	booking, err := database.GetBookingByID(id)
+func (b *booking) ConfirmBookingPayment(bookingID string) (*types.Booking, error) {
+	booking, err := database.GetBookingByID(bookingID)
 	if err != nil {
 		return nil, err
 	}
 
 	booking.Paid = true
 
-	err = database.UpdateBooking(booking)
+	err = database.UpdateBooking(*booking)
 	if err != nil {
 		return nil, err
 	}

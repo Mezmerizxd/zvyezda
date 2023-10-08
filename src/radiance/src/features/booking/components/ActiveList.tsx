@@ -24,26 +24,26 @@ export const ActiveList = () => {
           field: 'id',
         },
         {
-          title: 'Type',
-          field: 'price',
-          Cell({ entry: { price } }) {
-            let priceText;
-            switch (price) {
-              case 1:
-                priceText = 'Quick';
-                break;
-              case 2:
-                priceText = 'Normal';
-                break;
-              case 3:
-                priceText = 'Extra';
-                break;
-              default:
-                priceText = '';
-                break;
-            }
-            return <span>{priceText}</span>;
+          title: 'Username',
+          field: 'account',
+          Cell({ entry: { account } }) {
+            return <span>{account.username}</span>;
           },
+        },
+        {
+          title: 'Address',
+          field: 'address',
+          Cell({ entry: { address } }) {
+            return (
+              <span>
+                {address.street}, {address.city}, {address.postalCode}
+              </span>
+            );
+          },
+        },
+        {
+          title: 'Type',
+          field: 'serviceType',
         },
         {
           title: 'Date',
@@ -53,10 +53,14 @@ export const ActiveList = () => {
           },
         },
         {
-          title: 'Created At',
-          field: 'createdAt',
-          Cell({ entry: { createdAt } }) {
-            return <span>{new Date(createdAt.toString()).toLocaleString()}</span>;
+          title: 'Paid',
+          field: 'paid',
+          Cell({ entry: { paid } }) {
+            return paid ? (
+              <span className="text-green-600 font-bold">Yes</span>
+            ) : (
+              <span className="text-red-600 font-bold">No</span>
+            );
           },
         },
       ]}

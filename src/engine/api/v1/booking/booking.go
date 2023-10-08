@@ -1,6 +1,7 @@
 package booking
 
 import (
+	"fmt"
 	"zvyezda/src/engine/features"
 	"zvyezda/src/engine/pkg/database"
 	"zvyezda/src/engine/types"
@@ -40,6 +41,7 @@ curl \
 */
 func (b *booking) GetAllBookings(c *gin.Context) {
 	bookings, err := database.GetAllBookings()
+	
 	if err != nil {
 		c.JSON(400, gin.H{
 			"server": gin.H{
@@ -50,13 +52,56 @@ func (b *booking) GetAllBookings(c *gin.Context) {
 		})
 		return
 	}
+
+	var fullBookings []types.FullBooking
+
+	for _, booking := range *bookings {
+		fmt.Println("Booking Address ID", booking.AddressID)
+		address, err := database.GetAddressByID(booking.AddressID)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"server": gin.H{
+					"success": false,
+					"error": err.Error(),
+				},
+				"data": nil,
+			})
+			return
+		}
+
+		account, err := database.GetAccountByID(booking.AccountID)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"server": gin.H{
+					"success": false,
+					"error": err.Error(),
+				},
+				"data": nil,
+			})
+			return
+		}
+
+		fullBooking := types.FullBooking{
+			ID:          booking.ID,
+			Date:        booking.Date,
+			Price:       booking.Price,
+			ServiceType: booking.ServiceType,
+			Paid:        booking.Paid,
+			Confirmed:   booking.Confirmed,
+			Address:     *address,
+			Account:     *account,
+			CreatedAt:   booking.CreatedAt,
+		}
+
+		fullBookings = append(fullBookings, fullBooking)
+	}
 	
 	c.JSON(200, gin.H{
 		"server": gin.H{
 			"success": true,
 			"error":   nil,
 		},
-		"data": bookings,
+		"data": fullBookings,
 	})
 }
 
@@ -80,13 +125,55 @@ func (b *booking) GetAllBookingsByAccountID(c *gin.Context) {
 		})
 		return
 	}
+
+	var fullBookings []types.FullBooking
+
+	for _, booking := range *bookings {
+		address, err := database.GetAddressByID(booking.AddressID)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"server": gin.H{
+					"success": false,
+					"error": err.Error(),
+				},
+				"data": nil,
+			})
+			return
+		}
+
+		account, err := database.GetAccountByID(booking.AccountID)
+		if err != nil {
+			c.JSON(400, gin.H{
+				"server": gin.H{
+					"success": false,
+					"error": err.Error(),
+				},
+				"data": nil,
+			})
+			return
+		}
+
+		fullBooking := types.FullBooking{
+			ID:          booking.ID,
+			Date:        booking.Date,
+			Price:       booking.Price,
+			ServiceType: booking.ServiceType,
+			Paid:        booking.Paid,
+			Confirmed:   booking.Confirmed,
+			Address:     *address,
+			Account:     *account,
+			CreatedAt:   booking.CreatedAt,
+		}
+
+		fullBookings = append(fullBookings, fullBooking)
+	}
 	
 	c.JSON(200, gin.H{
 		"server": gin.H{
 			"success": true,
 			"error":   nil,
 		},
-		"data": bookings,
+		"data": fullBookings,
 	})
 }
 
@@ -113,7 +200,7 @@ func (b *booking) Create(c *gin.Context) {
 
 	account := c.MustGet(types.AccountCtx).(*types.Account)
 
-	booking, err := b.Features.Booking.Create(data, account.ID)
+	booking, err := b.Features.Booking.Create(data, *account)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"server": gin.H{
@@ -157,7 +244,7 @@ func (b *booking) Cancel(c *gin.Context) {
 
 	account := c.MustGet(types.AccountCtx).(*types.Account)
 
-	err := b.Features.Booking.Cancel(data.ID, account.ID)
+	err := b.Features.Booking.Cancel(data.BookingID, *account)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"server": gin.H{
@@ -241,7 +328,7 @@ func (b *booking) ConfirmBooking(c *gin.Context) {
 		return
 	}
 
-	booking, err := b.Features.Booking.ConfirmBooking(data.ID)
+	booking, err := b.Features.Booking.ConfirmBooking(data.BookingID)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"server": gin.H{
@@ -253,12 +340,50 @@ func (b *booking) ConfirmBooking(c *gin.Context) {
 		return
 	}
 
+	var fullBooking types.FullBooking
+
+	address, err := database.GetAddressByID(booking.AddressID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	account, err := database.GetAccountByID(booking.AccountID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	fullBooking = types.FullBooking{
+		ID:          booking.ID,
+		Date:        booking.Date,
+		Price:       booking.Price,
+		ServiceType: booking.ServiceType,
+		Paid:        booking.Paid,
+		Confirmed:   booking.Confirmed,
+		Address:     *address,
+		Account:     *account,
+		CreatedAt:   booking.CreatedAt,
+	}
+
 	c.JSON(200, gin.H{
 		"server": gin.H{
 			"success": true,
 			"error":   nil,
 		},
-		"data": booking,
+		"data": fullBooking,
 	})
 } 
 
@@ -283,7 +408,7 @@ func (b *booking) ConfirmBookingPayment(c *gin.Context) {
 		return
 	}
 
-	booking, err := b.Features.Booking.ConfirmBookingPayment(data.ID)
+	booking, err := b.Features.Booking.ConfirmBookingPayment(data.BookingID)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"server": gin.H{
@@ -295,11 +420,49 @@ func (b *booking) ConfirmBookingPayment(c *gin.Context) {
 		return
 	}
 
+	var fullBooking types.FullBooking
+
+	address, err := database.GetAddressByID(booking.AddressID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	account, err := database.GetAccountByID(booking.AccountID)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"server": gin.H{
+				"success": false,
+				"error": err.Error(),
+			},
+			"data": nil,
+		})
+		return
+	}
+
+	fullBooking = types.FullBooking{
+		ID:          booking.ID,
+		Date:        booking.Date,
+		Price:       booking.Price,
+		ServiceType: booking.ServiceType,
+		Paid:        booking.Paid,
+		Confirmed:   booking.Confirmed,
+		Address:     *address,
+		Account:     *account,
+		CreatedAt:   booking.CreatedAt,
+	}
+
 	c.JSON(200, gin.H{
 		"server": gin.H{
 			"success": true,
 			"error":   nil,
 		},
-		"data": booking,
+		"data": fullBooking,
 	})
 }

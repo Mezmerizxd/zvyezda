@@ -26,26 +26,22 @@ export const RequestList = () => {
           field: 'id',
         },
         {
-          title: 'Type',
-          field: 'price',
-          Cell({ entry: { price } }) {
-            let priceText;
-            switch (price) {
-              case 1:
-                priceText = 'Quick';
-                break;
-              case 2:
-                priceText = 'Normal';
-                break;
-              case 3:
-                priceText = 'Extra';
-                break;
-              default:
-                priceText = '';
-                break;
-            }
-            return <span>{priceText}</span>;
+          title: 'Username',
+          field: 'account',
+          Cell({ entry: { account } }) {
+            return <span>{account.username}</span>;
           },
+        },
+        {
+          title: 'Address',
+          field: 'address',
+          Cell({ entry: { address } }) {
+            return <span>{`${address.street} | ${address.city} | ${address.postalCode}`}</span>;
+          },
+        },
+        {
+          title: 'Type',
+          field: 'serviceType',
         },
         {
           title: 'Date',
@@ -65,7 +61,7 @@ export const RequestList = () => {
           title: '',
           field: 'id',
           Cell({ entry: { id } }) {
-            return <ConfirmRequest id={id} />;
+            return <ConfirmRequest bookingId={id} />;
           },
         },
       ]}
