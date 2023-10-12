@@ -1,5 +1,15 @@
-# What i like
+- Doesnt like the blue
 
-# What i don't like
+- Calendar needs to show more information
 
-# what i need to learn
+  - Start - End date
+  - Location
+  - User who booked
+
+- Active Bookings
+
+  - Reschedule
+  - Cancel
+
+- Dashboard
+  - Show upcoming jobs

@@ -5,6 +5,8 @@ import (
 	"time"
 	"zvyezda/src/engine/pkg/database"
 	"zvyezda/src/engine/types"
+
+	"github.com/google/uuid"
 )
 
 type Config struct{}
@@ -46,6 +48,7 @@ func (b *booking) Create(data types.CreateBooking, account types.Account) (*type
 	}
 
 	booking := types.Booking{
+		ID:        uuid.New().String(),
 		Date:      data.Date,
 		Price:     price,
 		ServiceType: data.ServiceType,

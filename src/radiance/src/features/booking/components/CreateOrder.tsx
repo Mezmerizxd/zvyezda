@@ -14,11 +14,14 @@ const schema = z.object({
 export const CreateOrder = ({ date }: { date: Date }) => {
   const createOrderMutation = useCreateOrder();
   const addressesQuery = useAddresses();
-
   return (
     <FormDrawer
       isDone={createOrderMutation.isSuccess}
-      triggerButton={<button>Open</button>}
+      triggerButton={
+        <div className="w-fit border p-1 rounded-md border-green-500/50 bg-green-500/10 text-green-500 text-xs">
+          <p>Book</p>
+        </div>
+      }
       title="Create Order"
       submitButton={
         <Button form="create-order" type="submit" size="sm" isLoading={createOrderMutation.isLoading}>
@@ -43,9 +46,9 @@ export const CreateOrder = ({ date }: { date: Date }) => {
               error={formState.errors['serviceType']}
               registration={register('serviceType')}
               options={[
-                { label: 'Quick', value: 'quick' },
-                { label: 'Normal', value: 'normal' },
-                { label: 'Extra', value: 'extra' },
+                { label: 'Quick', value: 'Quick' },
+                { label: 'Normal', value: 'Normal' },
+                { label: 'Extra', value: 'Extra' },
               ]}
             />
             <SelectField

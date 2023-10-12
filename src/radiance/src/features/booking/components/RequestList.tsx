@@ -23,10 +23,6 @@ export const RequestList = () => {
       data={bookingsQuery.data.filter((booking) => !booking.confirmed)}
       columns={[
         {
-          title: 'ID',
-          field: 'id',
-        },
-        {
           title: 'Username',
           field: 'account',
           Cell({ entry: { account } }) {

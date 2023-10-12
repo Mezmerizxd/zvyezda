@@ -18,6 +18,10 @@
 
 <img src="./images/BOOKING_SYSTEM_IMAGE_01.png" alt="alt text" width="800"/>
 
+### Calendar 2
+
+<img src="./images/BOOKING_SYSTEM_IMAGE_04.png" alt="alt text" width="800"/>
+
 ### Active Bookings
 
 <img src="./images/BOOKING_SYSTEM_IMAGE_02.png" alt="alt text" width="800"/>

@@ -96,6 +96,7 @@ func CreateBooking(booking types.Booking) error {
 	query := `INSERT INTO public."Bookings" (id, date, price, "serviceType", paid, confirmed, "accountId", "addressId", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now())`
 	_, err := connection.Exec(query, booking.ID, booking.Date, booking.Price, booking.ServiceType, booking.Paid, booking.Confirmed, booking.AccountID, booking.AddressID,)
 	if err != nil {
+		fmt.Println("CreateBooking:", err)
 		return types.ErrorFailedToInsertDatabase
 	}
 	

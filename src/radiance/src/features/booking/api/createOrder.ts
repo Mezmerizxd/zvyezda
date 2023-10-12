@@ -1,9 +1,9 @@
 import { useMutation } from 'react-query';
 
-import { MutationConfig, queryClient } from '../../../libs/react-query';
+import { MutationConfig } from '../../../libs/react-query';
 import { useNotificationStore } from '../../../stores/notifications';
 import { engine } from '../../../libs/engine';
-import { useAddresses } from '../../users/api/getAddresses';
+import { useBookings } from './getBookings';
 
 export type CreateOrderDTO = {
   date: Date;
@@ -29,22 +29,22 @@ type UseCreateOrderOptions = {
 
 export const useCreateOrder = ({ config }: UseCreateOrderOptions = {}) => {
   const { addNotification } = useNotificationStore();
-  const addressesQuery = useAddresses();
+  const bookingsQuery = useBookings();
 
   return useMutation({
     onError: (error, __, context: any) => {
       addNotification({
         type: 'error',
-        title: 'Failed to Create Address',
+        title: 'Failed to Create Order',
         message: error.message,
       });
     },
     onSuccess: () => {
       addNotification({
         type: 'success',
-        title: 'Create Address',
+        title: 'Created Order',
       });
-      addressesQuery.refetch();
+      bookingsQuery.refetch();
     },
     ...config,
     mutationFn: CreateOrder,

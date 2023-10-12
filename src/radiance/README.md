@@ -12,28 +12,6 @@
 
 ### How the App Works
 
-<!-- - How the Project is Setup
-  - The main app is called Zvyezda, it contains 4 more projects within it, `Engine`, `Radiance`, `Server`, `Web`.
-  - `Engine` and `Server` are pretty much the same its just `Engine` is written in Go and `Server` is written in TypeScript.
-  - `Radiance` and `Web` are the two different clients that are both written in TypeScript and React.
-  - `Radiance` is the client for the cleaners website and `Web` is the client for my personal website.
-  - `Radiance` and `Web` both use the same `Server` and `Engine` projects as their backends but `Radiance` only uses `Engine` as its more updated
-- How the Server runs the Project
-  - The Server is just a mini desktop computer that runs Ubuntu 20.04 LTS, It has 8GB of RAM and 4 CPU cores and 120GB of Storage.
-  - The Server runs the project using `pm2` which is a process manager for Node.js applications.
-  - `pm2` runs the project using `yarn start:prod` which runs the `start:prod` script in the `package.json` file.
-  - The `start:prod` script runs the `migrate`, `build`, and `start` scripts in the `package.json` file.
-  - The `migrate` script runs the `prisma migrate deploy` command which migrates the database.
-  - The `build` script runs the `yarn build` command which builds the source files (`Engine`, `Radiance`, `Server`, `Web`).
-  - The `start` script runs the `yarn start` command which starts the app.
-- How the Server is Hooked up to the Domain
-  - My home Router is configured to Port-Forward all traffic on port 80 to the Server's Local IP Address.
-  - The Server is running a program called `nginx` which is a web server that handles all the traffic coming in on port 80.
-  - `nginx` is configured to forward all traffic on port 80 to the `Server` project which is running on port 3000.
-  - `Engine` runs on a different port, maybe port 4000 and so does `Radiance` as `Engine` also serves the `Radiance` client.
-  - `nginx` is configured to host `Engine` on a subdomain called `engine.zvyezda.com` instead of `zvyezda.com` as that is for my personal website.
-  - I use `NameCheap` to manage my domain and use their DNS servers to point `zvyezda.com` to my Server's Public IP Address so that nginx can handle the traffic allowing me to host my website and the app on the same server. -->
-
 - The app is called Zvyezda, and it is a web application that helps cleaners find and manage their jobs.
 - The app has four main parts: `Engine`, `Radiance`, `Server`, and `Web`.
   - `Engine` is the core of the app, it handles the logic and data of the app. It is written in Go, which is a programming language that is fast and reliable.

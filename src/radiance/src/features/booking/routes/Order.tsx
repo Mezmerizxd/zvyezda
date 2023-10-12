@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { Spinner } from '../../../components/Elements';
 import Calendar from '../../../components/Elements/Calendar/Calendar';
 import { ContentLayout } from '../../../components/Layout';
@@ -28,16 +29,44 @@ export const Order = () => {
           <Calendar<Booking>
             entries={bookingsQuery.data.filter((booking) => booking.confirmed)}
             dateField="date"
-            renderCell={(entry) => (
-              <div className="border p-1 mt-1 rounded-md border-radiance-light/50 bg-radiance-dark/10 text-radiance-light text-sm">
-                <p>Booked</p>
-              </div>
-            )}
-          />
+            renderCell={(day) => {
+              let isBooked = false;
+              for (let i = 0; i < bookingsQuery.data.length; i++) {
+                const booking = bookingsQuery.data[i];
+                const bookingDate = new Date(booking.date);
+                if (format(bookingDate, 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')) {
+                  isBooked = true;
+                  return (
+                    <>
+                      <div className="w-fit border p-1 rounded-md border-red-600/50 bg-red-600/10 text-red-600 text-xs">
+                        <p>Booked</p>
+                      </div>
+                      <div className="pt-1">
+                        {booking.confirmed ? (
+                          <div className="w-fit border p-1 rounded-md border-green-500/50 bg-green-500/10 text-green-500 text-xs">
+                            <p>Confirmed</p>
+                          </div>
+                        ) : (
+                          <div className="w-fit border p-1 rounded-md border-red-600/50 bg-red-600/10 text-red-600 text-xs">
+                            <p>Not Confirmed</p>
+                          </div>
+                        )}
+                      </div>
+                    </>
+                  );
+                }
+              }
 
-          <CreateOrder date={new Date()} />
+              if (!isBooked) {
+                if (day.getTime() > new Date().getTime()) {
+                  return <CreateOrder date={day} />;
+                }
+              }
+            }}
+          />
         </Authorization>
       </div>
     </ContentLayout>
   );
 };
+// format(new Date(entry.date), 'yyyy-MM-dd') === format(day, 'yyyy-MM-dd')
