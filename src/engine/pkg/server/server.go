@@ -12,10 +12,12 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 )
 
 type Server struct {
 	server *http.Server
+	upgrader websocket.Upgrader
 }
 
 func New(addr string, cfg *v1.Config) *Server {
@@ -30,6 +32,14 @@ func New(addr string, cfg *v1.Config) *Server {
 	}
 
 	handler := gin.Default()
+
+	upgrader := websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+	}
 
 	// Middleware
 	handler.Use(gin.Recovery())
@@ -48,7 +58,7 @@ func New(addr string, cfg *v1.Config) *Server {
   }))
 
 	// API Controllers
-	v1.New(handler, cfg)
+	v1.New(handler, &upgrader, cfg)
 
 	handler.Use(static.Serve("/", static.LocalFile("../radiance/build", true)))
 
@@ -63,6 +73,7 @@ func New(addr string, cfg *v1.Config) *Server {
 			Addr:    addr,
 			Handler: handler,
 		},
+		upgrader: upgrader,
 	}
 }
 

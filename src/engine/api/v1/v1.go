@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 
 	"zvyezda/src/engine/api/v1/account"
 	"zvyezda/src/engine/api/v1/booking"
@@ -16,7 +17,7 @@ type Config struct {
 	Features *features.Features
 }
 
-func New(handler *gin.Engine, cfg *Config) {
+func New(handler *gin.Engine, upgrader *websocket.Upgrader, cfg *Config) {
 	v1 := handler.Group("/api/v1")
 	{
 		// Controllers
@@ -64,7 +65,61 @@ func New(handler *gin.Engine, cfg *Config) {
 		v1.PATCH("/bookings/reschedule", UseAuthorization(cfg, booking.RescheduleBooking, &types.UserRole))
 		v1.PATCH("/bookings/reschedule-confirmed", UseAuthorization(cfg, booking.RescheduleConfirmedBooking, &types.AdminRole))
 	}
+
+	ws := handler.Group("/ws") 
+	{
+		ws.GET("/connect", func(c *gin.Context) {
+			conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"server": gin.H{
+						"success": false,
+						"error": err.Error(),
+					},
+					"data": nil,
+				})
+				return
+			}
+
+			// Handle WebSocket connection
+			go ServeWebSocket(c, conn, cfg)
+		})
+	}
 }
+
+func ServeWebSocket(c *gin.Context, conn *websocket.Conn, cfg *Config) {
+	defer conn.Close()
+
+	token := c.GetHeader("Authorization")
+
+	for {
+		account, err := database.GetAccountByToken(token)
+		if err != nil {
+			conn.WriteMessage(websocket.TextMessage, []byte(err.Error()))
+			return
+		}
+
+		valid, err := cfg.Features.Account.ValidateToken(*account)
+		if err != nil && !valid {
+			conn.WriteMessage(websocket.TextMessage, []byte(err.Error()))
+			return
+		}
+
+		messageType, p, err := conn.ReadMessage()
+		if err != nil {
+			return
+		}
+
+		
+
+		_ = messageType
+		_ = p
+		if string(p) == "ping" {
+			conn.WriteMessage(messageType, []byte(token))
+		}
+	}
+}
+
 
 /*
 curl \

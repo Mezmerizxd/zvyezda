@@ -3,7 +3,7 @@ package features
 import (
 	"zvyezda/src/engine/features/account"
 	"zvyezda/src/engine/features/booking"
-	"zvyezda/src/engine/features/stripe"
+	"zvyezda/src/engine/features/payment"
 	"zvyezda/src/engine/features/xbox"
 )
 
@@ -11,14 +11,14 @@ type Config struct {
 	Account account.Account
 	Xbox xbox.Xbox
 	Booking booking.Booking
-	Stripe stripe.Stripe
+	Payment payment.Payment
 }
 
 type Features struct {
 	Account account.Account
 	Xbox xbox.Xbox
 	Booking booking.Booking
-	Stripe stripe.Stripe
+	Payment payment.Payment
 }
 
 func New(cfg *Config) Features {
@@ -26,7 +26,7 @@ func New(cfg *Config) Features {
 		Account: cfg.Account,
 		Xbox: cfg.Xbox,
 		Booking: cfg.Booking,
-		Stripe: cfg.Stripe,
+		Payment: cfg.Payment,
 	}
 }
 

@@ -1,13 +1,23 @@
-package stripe
+package payment
+
+import (
+	"fmt"
+	env "zvyezda/src/engine/pkg/env"
+
+	"github.com/stripe/stripe-go"
+	"github.com/stripe/stripe-go/product"
+)
 
 type Config struct{}
 
-type Stripe interface{}
+type Payment interface{
+	Test()
+}
 
-type stripe struct{}
+type payment struct{}
 
-func New(cfg *Config) Stripe {
-	return &stripe{}
+func New(cfg *Config) Payment {
+	return &payment{}
 }
 
 // EXAMPLE CODE
@@ -32,3 +42,19 @@ func New(cfg *Config) Stripe {
 // 	fmt.Println("Success! Here is your starter subscription product id: " + starter_product.ID)
 // 	fmt.Println("Success! Here is your starter subscription price id: " + starter_price.ID)
 // }
+
+func (p *payment) Test() {
+	stripe.Key = env.EnvConfigs.StripeKey
+	product_params := &stripe.ProductParams{
+		Params: stripe.Params{},
+		Name:        stripe.String("Starter Subscription"),
+		Description: stripe.String("$12/Month subscription"),
+	}
+	starter_product, err := product.New(product_params)
+	if err != nil {
+		fmt.Println("Payment: Error creating product:", err)
+		return
+	}
+
+	fmt.Println("Payment: Success! Here is your starter subscription product id:", starter_product.ID)
+}

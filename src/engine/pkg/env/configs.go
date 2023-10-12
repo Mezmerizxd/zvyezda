@@ -26,6 +26,7 @@ type EnvironmentConfig struct {
 	SocketHost string `mapstructure:"SOCKET_HOST"`
 	ServerHost string `mapstructure:"SERVER_HOST"`
 	StreamHost string `mapstructure:"STREAM_HOST"`
+	StripeKey string `mapstructure:"STRIPE_KEY"`
 }
 
 type PackageConfig struct {
