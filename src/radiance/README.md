@@ -10,9 +10,8 @@
 - [Financial Management](./docs/FINANCIAL_MANAGEMENT.md)
 - [Admin Panel](./docs/ADMIN_PANEL.md)
 
-#### Client Review
-
-[View Here](./docs/CLIENT_OPINIONS.md)
+[Client Review](./docs/CLIENT_OPINIONS.md)
+[Alternative Design](./docs/ALTERNATIVE_DESIGN.md)
 
 ### How the App Works
 
