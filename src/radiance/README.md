@@ -1,4 +1,4 @@
-# Documentation and Development Updates for Radiance
+# Project Documentation
 
 ### Project Scope
 
@@ -9,6 +9,10 @@
 - [Service History and Reviews](./docs/SERVICE_HISTORY_REVIEWS.md)
 - [Financial Management](./docs/FINANCIAL_MANAGEMENT.md)
 - [Admin Panel](./docs/ADMIN_PANEL.md)
+
+#### Client Review
+
+[View Here](./docs/CLIENT_OPINIONS.md)
 
 ### How the App Works
 
