@@ -189,10 +189,10 @@ func Stripe(c *gin.Context) {
       if event.Data.Object["metadata"] != nil {
         fmt.Println("Event Data Object Metadata is not nil")
 
-        if event.Data.Object["metadata"].(map[string]interface{})["bookingID"] != nil {
+        if event.Data.Object["metadata"].(map[string]interface{})["bookingId"] != nil {
           fmt.Println("Event Data Object Metadata BookingID is not nil")
 
-          bookingID := event.Data.Object["metadata"].(map[string]interface{})["bookingID"].(string)
+          bookingID := event.Data.Object["metadata"].(map[string]interface{})["bookingId"].(string)
           fmt.Println("BookingID: ", bookingID)
         }
       }
