@@ -27,6 +27,7 @@ type EnvironmentConfig struct {
 	ServerHost string `mapstructure:"SERVER_HOST"`
 	StreamHost string `mapstructure:"STREAM_HOST"`
 	StripeKey string `mapstructure:"STRIPE_KEY"`
+	StripeWebhookKey string `mapstructure:"STRIPE_WEBHOOK_KEY"`
 }
 
 type PackageConfig struct {

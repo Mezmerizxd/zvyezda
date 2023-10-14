@@ -65,16 +65,17 @@ model Surveillance {
 }
 
 model Bookings {
-  id          String   @id @default(uuid())
-  date        DateTime
-  price       Int
-  serviceType String
-  paid        Boolean  @default(false)
-  confirmed   Boolean  @default(false)
-  addressId   String
-  accountId   String
-  account     Accounts @relation(fields: [accountId], references: [id])
-  createdAt   DateTime @default(now())
+  id              String   @id @default(uuid())
+  date            DateTime
+  price           Int
+  serviceType     String
+  paid            Boolean  @default(false)
+  confirmed       Boolean  @default(false)
+  paymentIntentId String?
+  addressId       String
+  accountId       String
+  account         Accounts @relation(fields: [accountId], references: [id])
+  createdAt       DateTime @default(now())
 }
 
 model Address {

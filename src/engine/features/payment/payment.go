@@ -1,17 +1,18 @@
 package payment
 
 import (
-	"fmt"
+	"errors"
 	env "zvyezda/src/engine/pkg/env"
 
-	"github.com/stripe/stripe-go"
-	"github.com/stripe/stripe-go/product"
+	stripe "github.com/stripe/stripe-go/v75"
+	"github.com/stripe/stripe-go/v75/checkout/session"
 )
 
 type Config struct{}
 
 type Payment interface{
-	Test()
+	// TestCreateProduct()
+	TestCreatePaymentLink() (*stripe.CheckoutSession, error)
 }
 
 type payment struct{}
@@ -43,18 +44,46 @@ func New(cfg *Config) Payment {
 // 	fmt.Println("Success! Here is your starter subscription price id: " + starter_price.ID)
 // }
 
-func (p *payment) Test() {
+// func (p *payment) TestCreateProduct() {
+// 	stripe.Key = env.EnvConfigs.StripeKey
+// 	product_params := &stripe.ProductParams{
+// 		Params: stripe.Params{},
+// 		Name:        stripe.String("Starter Subscription"),
+// 		Description: stripe.String("$12/Month subscription"),
+// 	}
+// 	starter_product, err := stripe.New(product_params)
+	
+// 	if err != nil {
+// 		fmt.Println("Payment: Error creating product:", err)
+// 		return
+// 	}
+
+// 	fmt.Println("Payment: Success! Here is your starter subscription product id:", starter_product.ID)
+// }
+
+func (p *payment) TestCreatePaymentLink() (*stripe.CheckoutSession, error) {
 	stripe.Key = env.EnvConfigs.StripeKey
-	product_params := &stripe.ProductParams{
-		Params: stripe.Params{},
-		Name:        stripe.String("Starter Subscription"),
-		Description: stripe.String("$12/Month subscription"),
-	}
-	starter_product, err := product.New(product_params)
-	if err != nil {
-		fmt.Println("Payment: Error creating product:", err)
-		return
+
+	params := &stripe.CheckoutSessionParams{
+		PaymentMethodTypes: stripe.StringSlice([]string{
+			"card",
+		}),
+		LineItems: []*stripe.CheckoutSessionLineItemParams{
+			{
+				Price:    stripe.String("price_1O15XXKepyV1QE691Iv16a6a"),				
+				Quantity: stripe.Int64(1),
+			},
+		},
+		Mode:       stripe.String("payment"),
+		Metadata:  map[string]string{"bookingId": "76de738a-4c0f-45ba-b0d5-d0bb6e868d34"},
+		SuccessURL: stripe.String("https://example.com/success"),
+		CancelURL:  stripe.String("https://example.com/cancel"),
 	}
 
-	fmt.Println("Payment: Success! Here is your starter subscription product id:", starter_product.ID)
+	session, err := session.New(params)
+	if err != nil {
+		return nil, errors.New("Payment: Error creating payment link: " + err.Error())
+	}
+
+	return session, nil
 }
