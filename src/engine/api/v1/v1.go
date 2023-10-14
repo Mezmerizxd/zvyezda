@@ -182,9 +182,7 @@ func Stripe(c *gin.Context) {
 
 	switch event.Type {
 	case "payment_intent.succeeded":
-		paymentIntent := event.Data.Object
-		bookingID := paymentIntent["metadata"].(map[string]interface{})["bookingId"].(string)
-		fmt.Println("PaymentIntent was successful! Booking ID: " + bookingID)
+    fmt.Println("PaymentIntent was successful! Booking ID: " + event.Data.Object["metadata"].(string))
 		// Use bookingID here
 		c.JSON(http.StatusOK, gin.H{"status": "success"})
 	case "account.updated":
