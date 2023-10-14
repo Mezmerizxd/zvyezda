@@ -180,9 +180,27 @@ func Stripe(c *gin.Context) {
 		return
 	}
 
+  if event.Data != nil {
+    fmt.Println("Event Data is not nil")
+
+    if event.Data.Object != nil {
+      fmt.Println("Event Data Object is not nil")
+
+      if event.Data.Object["metadata"] != nil {
+        fmt.Println("Event Data Object Metadata is not nil")
+
+        if event.Data.Object["metadata"].(map[string]interface{})["bookingID"] != nil {
+          fmt.Println("Event Data Object Metadata BookingID is not nil")
+
+          bookingID := event.Data.Object["metadata"].(map[string]interface{})["bookingID"].(string)
+          fmt.Println("BookingID: ", bookingID)
+        }
+      }
+    }
+  }
+
 	switch event.Type {
 	case "payment_intent.succeeded":
-    fmt.Println("PaymentIntent was successful! Booking ID: " + event.Data.Object["metadata"].(string))
 		// Use bookingID here
 		c.JSON(http.StatusOK, gin.H{"status": "success"})
 	default:
