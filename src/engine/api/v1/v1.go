@@ -167,7 +167,7 @@ func GetSocketDetails(c *gin.Context) {
 func Stripe(c *gin.Context) {
 	payload, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		c.JSON(503, gin.H{"error": "Error reading request body"})
+		c.JSON(503, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -176,7 +176,7 @@ func Stripe(c *gin.Context) {
 	event, err := webhook.ConstructEvent(payload, c.GetHeader("Stripe-Signature"), endpointSecret)
 
 	if err != nil {
-		c.JSON(400, gin.H{"error": "Invalid signature"})
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
