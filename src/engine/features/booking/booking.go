@@ -39,12 +39,12 @@ func (b *booking) Create(data types.CreateBooking, account types.Account) (*type
 
 	var price = 0
 	switch data.ServiceType {
-	case "QUICK":
-		price = 5
-	case "NORMAL":
-		price = 10
-	case "EXTRA":
-		price = 15
+	case 0:
+		price = 30
+	case 1:
+		price = 45
+	case 2:
+		price = 60
 	}
 
 	booking := types.Booking{
@@ -54,6 +54,8 @@ func (b *booking) Create(data types.CreateBooking, account types.Account) (*type
 		ServiceType: data.ServiceType,
 		Paid: 		false,
 		Confirmed: false,
+		TimeSlot: data.TimeSlot,
+		AdditionalNotes: data.AdditionalNotes,
 		AddressID: data.AddressID,
 		AccountID: account.ID,
 		CreatedAt: time.Now(),

@@ -14,36 +14,6 @@ const Calendar = <Entry extends { id: string }>({ entries, dateField, renderCell
   const daysInMonth = getDaysInMonth(currentMonth.getFullYear(), currentMonth.getMonth());
 
   return (
-    // <div className="max-w-2xl bg-background-dark overflow-hidden border-b border-background-dark shadow sm:rounded-lg">
-    //   <div className="min-w-max p-2 flex justify-center items-center">
-    //     <div className="flex w-full mx-2 justify-center items-center">
-    //       <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}>
-    //         <AiOutlineArrowLeft size={20} />
-    //       </button>
-    //       <h2 className="w-full text-center text-xl font-semibold">{format(currentMonth, 'MMMM yyyy')}</h2>
-    //       <button onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}>
-    //         <AiOutlineArrowRight size={20} />
-    //       </button>
-    //     </div>
-    //   </div>
-    //   <div className="grid grid-cols-6 gap-2 p-2">
-    //     {daysInMonth.map((day, index) => {
-    //       return (
-    //         <div
-    //           key={index}
-    //           className="p-1 flex justify-center h-20 group hover:bg-background rounded-lg duration-75 cursor-pointer"
-    //         >
-    //           <div className="flex flex-col items-center">
-    //             <div className="rounded-full bg-background group-hover:bg-background-dark text-radiance-light w-9 h-9 flex items-center justify-center font-semibold">
-    //               {format(day, 'dd')}
-    //             </div>
-    //             <div key={index}>{renderCell(day, entries[index] ?? null)}</div>
-    //           </div>
-    //         </div>
-    //       );
-    //     })}
-    //   </div>
-    // </div>
     <div className="max-w-2xl p-2 bg-background-dark overflow-hidden border-b border-background-dark shadow sm:rounded-lg">
       <div className="min-w-max p-2 flex justify-center items-center">
         <div className="flex w-full mx-2 justify-center items-center">

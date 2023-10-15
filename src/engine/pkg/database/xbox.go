@@ -13,6 +13,7 @@ func GetAllXboxs() (*[]types.Xbox, error) {
 	query := `SELECT id, title, description, xboxType, xboxColour, motherboardType, serialNumber, "mfrDate", model, nandSize, rghVersion, rghGlitchType, images "createdAt", "updatedAt" FROM public."HackedXboxs"`
 	rows, err := connection.Query(query)
 	if err != nil {
+		fmt.Println("Database, GetAllXboxs:", err)
 		return nil, types.ErrorFailedToQueryDatabase
 	}
 	defer rows.Close()
@@ -23,7 +24,7 @@ func GetAllXboxs() (*[]types.Xbox, error) {
 		var xbox types.Xbox
 		err := rows.Scan(&xbox.ID, &xbox.Title, &xbox.Description, &xbox.XboxType, &xbox.XboxColour, &xbox.MotherboardType, &xbox.SerialNumber, &xbox.MfrDate, &xbox.Model, &xbox.NandSize, &xbox.RghVersion, &xbox.RghGlitchType, &xbox.Images, &xbox.CreatedAt, &xbox.UpdatedAt)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Database, GetAllXboxs:", err)
 			return nil, types.ErrorFailedToScanQueryResult
 		}
 

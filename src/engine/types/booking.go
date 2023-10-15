@@ -14,8 +14,10 @@ var (
 
 type CreateBooking struct {
 	Date        time.Time `json:"date"`
-	ServiceType string    `json:"serviceType"`
+	ServiceType int    `json:"serviceType"`
 	AddressID   string    `json:"addressId"`
+	TimeSlot    int 		 `json:"timeSlot"`
+	AdditionalNotes string `json:"additionalNotes"`
 }
 
 type CancelBooking struct {
@@ -36,14 +38,21 @@ type IsDateBooked struct {
 
 type RescheduleConfirmedBooking struct {
 	BookingID string    `json:"bookingId"`
-	Date      time.Time `json:"date"`
+	Date        time.Time `json:"date"`
+	ServiceType int    `json:"serviceType"`
+	AddressID   string    `json:"addressId"`
+	TimeSlot    int 		 `json:"timeSlot"`
+	AdditionalNotes string `json:"additionalNotes"`
 }
 
 type FullBooking struct {
 	ID          string    `json:"id"`
 	Date        time.Time `json:"date"`
 	Price       int       `json:"price"`
-	ServiceType string    `json:"serviceType"`
+	ServiceType int    `json:"serviceType"`
+	TimeSlot    int 		 `json:"timeSlot"`
+	AdditionalNotes string `json:"additionalNotes"`
+	PaymentIntentID *string `json:"paymentIntentId,omitempty"`
 	Paid        bool      `json:"paid"`
 	Confirmed   bool      `json:"confirmed"`
 	Address   Address    `json:"address"`

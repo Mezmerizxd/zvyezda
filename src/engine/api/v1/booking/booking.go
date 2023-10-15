@@ -1,7 +1,6 @@
 package booking
 
 import (
-	"fmt"
 	"zvyezda/src/engine/features"
 	"zvyezda/src/engine/pkg/database"
 	"zvyezda/src/engine/types"
@@ -58,7 +57,6 @@ func (b *booking) GetAllBookings(c *gin.Context) {
 	var fullBookings []types.FullBooking
 
 	for _, booking := range *bookings {
-		fmt.Println("Booking Address ID", booking.AddressID)
 		address, err := database.GetAddressByID(booking.AddressID)
 		if err != nil {
 			c.JSON(400, gin.H{
@@ -116,7 +114,7 @@ curl \
 func (b *booking) GetAllBookingsByAccountID(c *gin.Context) {
 	account := c.MustGet(types.AccountCtx).(*types.Account)
 
-	bookings, err := database.GetAllBookingsByAccoundID(account.ID)
+	bookings, err := database.GetAllBookingsByAccountID(account.ID)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"server": gin.H{

@@ -99,7 +99,10 @@ type Booking struct {
 	ID          string    `json:"id"`
 	Date        time.Time `json:"date"`
 	Price       int       `json:"price"`
-	ServiceType string    `json:"serviceType"`
+	ServiceType int    `json:"serviceType"`
+	TimeSlot    int 		 `json:"timeSlot"`
+	AdditionalNotes string `json:"additionalNotes"`
+	PaymentIntentID *string `json:"paymentIntentId,omitempty"`
 	Paid        bool      `json:"paid"`
 	Confirmed   bool      `json:"confirmed"`
 	AddressID   string    `json:"addressId"`

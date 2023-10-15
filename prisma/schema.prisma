@@ -68,7 +68,9 @@ model Bookings {
   id              String   @id @default(uuid())
   date            DateTime
   price           Int
-  serviceType     String
+  serviceType     Int      @default(0)
+  timeSlot        Int      @default(0)
+  additionalNotes String   @default("")
   paid            Boolean  @default(false)
   confirmed       Boolean  @default(false)
   paymentIntentId String?

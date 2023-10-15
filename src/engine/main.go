@@ -39,13 +39,6 @@ func main() {
 		Payment: featPayment,
 	})
 
-	link, err := featPayment.TestCreatePaymentLink()
-	if err != nil {
-		fmt.Println("Error creating payment link:", err)
-	} else {
-		fmt.Println("Payment link:", link.URL)
-	}
-
 	srv := server.New(env.EnvConfigs.Port, &v1.Config{
 		Features: &f,
 	})

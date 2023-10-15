@@ -13,6 +13,7 @@ func GetAllAddresses() (*[]types.Address, error) {
 	query := `SELECT id, street, city, state, country, "postalCode", "accountId" FROM public."Address"`
 	rows, err := connection.Query(query)
 	if err != nil {
+		fmt.Println("Database, GetAllAddresses:", err)
 		return nil, types.ErrorFailedToQueryDatabase
 	}
 	defer rows.Close()
@@ -23,7 +24,7 @@ func GetAllAddresses() (*[]types.Address, error) {
 		var address types.Address
 		err := rows.Scan(&address.ID, &address.Street, &address.City, &address.State, &address.Country, &address.PostalCode, &address.AccountID)
 		if err != nil {
-			fmt.Println("GetAllAddresses:", err)
+			fmt.Println("Database, GetAllAddresses:", err)
 			return nil, types.ErrorFailedToScanQueryResult
 		}
 
@@ -41,6 +42,7 @@ func GetAllAddressesByAccountID(accountID string) (*[]types.Address, error) {
 	query := `SELECT id, street, city, state, country, "postalCode", "accountId" FROM public."Address" WHERE "accountId" = $1`
 	rows, err := connection.Query(query, accountID)
 	if err != nil {
+		fmt.Println("Database, GetAllAddressesByAccountID:", err)
 		return nil, types.ErrorFailedToQueryDatabase
 	}
 	defer rows.Close()
@@ -51,7 +53,7 @@ func GetAllAddressesByAccountID(accountID string) (*[]types.Address, error) {
 		var address types.Address
 		err := rows.Scan(&address.ID, &address.Street, &address.City, &address.State, &address.Country, &address.PostalCode, &address.AccountID)
 		if err != nil {
-			fmt.Println("GetAllAddressesByAccountID:", err)
+			fmt.Println("Database, GetAllAddressesByAccountID:", err)
 			return nil, types.ErrorFailedToScanQueryResult
 		}
 
@@ -69,7 +71,7 @@ func GetAddressByID(addressID string) (*types.Address, error) {
 	query := `SELECT id, street, city, state, country, "postalCode", "accountId" FROM public."Address" WHERE id = $1`
 	rows, err := connection.Query(query, addressID)
 	if err != nil {
-		fmt.Println("GetAddressByID:", err)
+		fmt.Println("Database, GetAddressByID:", err)
 		return nil, types.ErrorFailedToQueryDatabase
 	}
 	defer rows.Close()
@@ -78,7 +80,7 @@ func GetAddressByID(addressID string) (*types.Address, error) {
 		var address types.Address
 		err := rows.Scan(&address.ID, &address.Street, &address.City, &address.State, &address.Country, &address.PostalCode, &address.AccountID)
 		if err != nil {
-			fmt.Println("GetAddressByID:", err)
+			fmt.Println("Database, GetAddressByID:", err)
 			return nil, types.ErrorFailedToScanQueryResult
 		}
 
@@ -96,7 +98,7 @@ func CreateAddress(address *types.Address) error {
 	query := `INSERT INTO public."Address" (id, street, city, state, country, "postalCode", "accountId") VALUES ($1, $2, $3, $4, $5, $6, $7)`
 	_, err := connection.Exec(query, address.ID, address.Street, address.City, address.State, address.Country, address.PostalCode, address.AccountID)
 	if err != nil {
-		fmt.Println("CreateAddress:", err)
+		fmt.Println("Database, CreateAddress:", err)
 		return types.ErrorFailedToQueryDatabase
 	}
 
@@ -111,6 +113,7 @@ func DeleteAddress(addressID string) error {
 	query := `DELETE FROM public."Address" WHERE id=$1`
 	_, err := connection.Exec(query, addressID)
 	if err != nil {
+		fmt.Println("Database, DeleteAddress:", err)
 		return types.ErrorFailedToQueryDatabase
 	}
 
@@ -125,6 +128,7 @@ func UpdateAddress(address *types.Address) error {
 	query := `UPDATE public."Address" SET street=$1, city=$2, state=$3, country=$4, "postalCode"=$5 WHERE id=$6`
 	_, err := connection.Exec(query, address.Street, address.City, address.State, address.Country, address.PostalCode, address.ID)
 	if err != nil {
+		fmt.Println("Database, UpdateAddress:", err)
 		return types.ErrorFailedToQueryDatabase
 	}
 

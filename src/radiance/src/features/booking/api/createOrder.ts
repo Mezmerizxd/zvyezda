@@ -7,15 +7,19 @@ import { useBookings } from './getBookings';
 
 export type CreateOrderDTO = {
   date: Date;
-  serviceType: string;
+  serviceType: number;
   addressId: string;
+  timeSlot: number;
+  additionalNotes?: string;
 };
 
 export const CreateOrder = async (data: CreateOrderDTO) => {
   const response = await engine.CreateBooking({
     date: data.date,
-    serviceType: data.serviceType,
+    serviceType: Number(data.serviceType),
     addressId: data.addressId,
+    timeSlot: Number(data.timeSlot),
+    additionalNotes: data.additionalNotes || null,
   });
   if (!response.server.success) {
     throw new Error(response.server.error);

@@ -61,8 +61,11 @@ interface Booking {
   id: string;
   date: Date;
   price: number;
-  serviceType: string;
+  serviceType: number;
   paid: boolean;
+  timeSlot: number;
+  additionalNotes: string | null;
+  paymentIntentId: string | null;
   confirmed: boolean;
   address: Address;
   account: Account;
