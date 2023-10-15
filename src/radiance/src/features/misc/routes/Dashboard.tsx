@@ -37,13 +37,13 @@ export const Dashboard = () => {
               onClick={() => navigate('/app/profile')}
             >
               Profile
-            </span>{' '}
+            </span>
             to add it.
           </h3>
         </div>
       )}
 
-      {upaidAndConfirmedNearExpired?.length && (
+      {upaidAndConfirmedNearExpired?.length > 0 && (
         <div className="border p-2 my-2 rounded-md border-red-600/50 bg-red-600/10 text-red-600">
           <h3>
             Warning, You have {upaidAndConfirmedNearExpired.length} Unpaid Booking/s that will expire in 24 hours!
@@ -51,35 +51,37 @@ export const Dashboard = () => {
         </div>
       )}
 
-      {unpaidAndConfirmed?.length && (
+      {unpaidAndConfirmed?.length > 0 && (
         <div className="border p-2 my-2 rounded-md border-radiance-light/50 bg-radiance-light/10 text-radiance-light">
           <h3>You have {unpaidAndConfirmed.length} Unpaid Booking/s!</h3>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-        {unpaidAndConfirmed?.length > 0 && (
-          <NumberWidget
-            number={unpaidAndConfirmed.length.toString()}
-            title="Unpaid"
-            description={`You have ${unpaidAndConfirmed.length.toString()} booking/s that haven't been paid.`}
-          />
-        )}
-        {confirmed?.length > 0 && (
-          <NumberWidget
-            number={confirmed.length.toString()}
-            title="Confirmed"
-            description={`You have ${confirmed.length.toString()} booking/s on your schedule.`}
-          />
-        )}
-        {confirmed?.length > 0 && (
-          <NumberWidget
-            number={requests.length.toString()}
-            title="Requests"
-            description={`You have ${requests.length.toString()} request/s that are pending confirmation.`}
-          />
-        )}
-      </div>
+      {bookingsQuery?.data?.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+          {unpaidAndConfirmed?.length > 0 && (
+            <NumberWidget
+              number={unpaidAndConfirmed.length.toString()}
+              title="Unpaid"
+              description={`You have ${unpaidAndConfirmed.length.toString()} booking/s that haven't been paid.`}
+            />
+          )}
+          {confirmed?.length > 0 && (
+            <NumberWidget
+              number={confirmed.length.toString()}
+              title="Confirmed"
+              description={`You have ${confirmed.length.toString()} booking/s on your schedule.`}
+            />
+          )}
+          {requests?.length > 0 && (
+            <NumberWidget
+              number={requests.length.toString()}
+              title="Requests"
+              description={`You have ${requests.length.toString()} request/s that are pending confirmation.`}
+            />
+          )}
+        </div>
+      )}
     </ContentLayout>
   );
 };
