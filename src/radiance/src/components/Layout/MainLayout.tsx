@@ -22,6 +22,7 @@ type SideNavigationItem = {
 };
 
 const SideNavigation = ({ onSelect }: { onSelect?: () => void }) => {
+  const [selectedNavigation, setSelectedNavigation] = React.useState<string | null>(null);
   const { checkAccess } = useAuthorization();
 
   const navigation = [
@@ -53,18 +54,24 @@ const SideNavigation = ({ onSelect }: { onSelect?: () => void }) => {
       {navigation.map((item, index) => (
         <NavLink
           onClick={() => {
+            setSelectedNavigation(item.name);
             onSelect && onSelect();
           }}
           end={index === 0}
           key={item.name}
           to={item.to}
           className={clsx(
-            'text-gray-300 hover:bg-background-light hover:text-white',
+            'text-gray-300 hover:bg-background-light hover:text-radiance-light',
             'group flex items-center px-2 py-2 text-base font-medium rounded-md',
+            selectedNavigation === item.name ? 'text-radiance-light' : '',
           )}
         >
           <item.icon
-            className={clsx('text-gray-400 group-hover:text-gray-300', 'mr-4 flex-shrink-0 h-6 w-6')}
+            className={clsx(
+              'text-gray-400 group-hover:text-radiance-light',
+              'mr-4 flex-shrink-0 h-6 w-6',
+              selectedNavigation === item.name ? 'text-radiance-light' : '',
+            )}
             aria-hidden="true"
           />
           {item.name}
