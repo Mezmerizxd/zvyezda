@@ -2,16 +2,62 @@
 
 ### Project Scope
 
-- [User Registration and Profiles](./docs/USER_REGISTRATION_PROFILES.md)
-- [Booking System](./docs/BOOKING_SYSTEM.md)
-- [Messaging and Communication](./docs/MESSAGING_COMMUNICATION.md)
-- [Payment Processing](./docs/PAYMENT_PROCESSING.md)
-- [Service History and Reviews](./docs/SERVICE_HISTORY_REVIEWS.md)
-- [Financial Management](./docs/FINANCIAL_MANAGEMENT.md)
-- [Admin Panel](./docs/ADMIN_PANEL.md)
+- [User Registration and Profiles](./docs/ProjectScope/USER_REGISTRATION_PROFILES.md)
+- [Booking System](./docs/ProjectScope/BOOKING_SYSTEM.md)
+- [Messaging and Communication](./docs/ProjectScope/MESSAGING_COMMUNICATION.md)
+- [Payment Processing](./docs/ProjectScope/PAYMENT_PROCESSING.md)
+- [Service History and Reviews](./docs/ProjectScope/SERVICE_HISTORY_REVIEWS.md)
+- [Financial Management](./docs/ProjectScope/FINANCIAL_MANAGEMENT.md)
+- [Admin Panel](./docs/ProjectScope/ADMIN_PANEL.md)
 
-[Client Review](./docs/CLIENT_OPINIONS.md)
-[Alternative Design](./docs/ALTERNATIVE_DESIGN.md)
+### Project Design
+
+- [Client Review](./docs/CLIENT_OPINIONS.md)
+- [Alternative Design](./docs/ALTERNATIVE_DESIGN.md)
+
+### Features (Soon Each Feature Will Have Its Own Page With More Details)
+
+- Account & Profile System
+  - [x] Login & Register
+  - [x] Edit Profile
+  - [x] Create Address
+  - [ ] Edit Address
+  - [x] Token Authentication w/ 24hrs Expiry
+  - [x] Encrypted Passwords
+  - [ ] Change Password
+  - [ ] Email Verification
+  - [ ] 2 Factor Authentication
+  - [ ] Forgot Password
+  - [ ] Delete Account
+- Booking System
+  - [x] Create Booking
+  - [ ] Edit Booking <span style="color:yellow">(In Progress)</span>.
+  - [x] Cancel Booking
+  - [x] View Bookings (Calendar)
+  - [x] View Bookings (List)
+  - [ ] Reschedule Booking
+  - [ ] Booking Email Notifications
+- Payment System <span style="color:orange">(Testing)</span>.
+  - [x] Create Payment Intent
+  - [x] Confirm Payment Intent
+  - [ ] Cancel Payment Intent
+  - [ ] View Payment History
+  - [ ] View Payment Details
+  - [ ] View Payment Receipt
+  - [ ] Payment Email Notifications
+
+### Platforms
+
+- Web Browser
+  - Easiest to develop for and most accessible.
+  - Can be used on any device with a web browser.
+- Android & IOS
+  - Designing for mobile is a little more difficult.
+  - Expensive to publish on the app store.
+  - Requires a lot of testing on different devices.
+- Desktop
+  - All it takes is a few lines of code to make the app work on desktop.
+  - Downside is that its memory intensive and requires a lot of storage.
 
 ### How the App Works
 

@@ -6,6 +6,7 @@ import { Authorization, ROLES } from '../../../libs/authorization';
 import { useBookings } from '../api/getBookings';
 import { CreateOrder } from '../components/CreateOrder';
 import { useAuth } from '../../../libs/auth';
+import { EditOrder } from '../components/EditOrder';
 
 export const Order = () => {
   const { user } = useAuth();
@@ -38,9 +39,10 @@ export const Order = () => {
                   isBooked = true;
                   return (
                     <>
-                      <div className="w-fit border p-1 rounded-md border-red-600/50 bg-red-600/10 text-red-600 text-xs">
+                      {/* <div className="w-fit border p-1 rounded-md border-red-600/50 bg-red-600/10 text-red-600 text-xs">
                         <p>Booked</p>
-                      </div>
+                      </div> */}
+                      <EditOrder booking={booking} />
                       <div className="pt-1">
                         {booking.account.id === user.profile.id &&
                           (booking.confirmed ? (
