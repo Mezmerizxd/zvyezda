@@ -18,7 +18,7 @@
 ### Features (Soon Each Feature Will Have Its Own Page With More Details)
 
 - Account & Profile System
-  - [x] Login & Register
+  - [x] [Login & Register](./docs/Features/LOGIN_REGISTER.md)
   - [x] Edit Profile
   - [x] Create Address
   - [ ] Edit Address
