@@ -52,9 +52,9 @@ type FullBooking struct {
 	ServiceType int    `json:"serviceType"`
 	TimeSlot    int 		 `json:"timeSlot"`
 	AdditionalNotes string `json:"additionalNotes"`
-	PaymentIntentID *string `json:"paymentIntentId,omitempty"`
 	Paid        bool      `json:"paid"`
 	Confirmed   bool      `json:"confirmed"`
+	PaymentIntentID *string `json:"paymentIntentId,omitempty"`
 	Address   Address    `json:"address"`
 	Account   Account    `json:"account"`
 	CreatedAt   time.Time `json:"createdAt"`
