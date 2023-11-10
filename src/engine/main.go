@@ -11,8 +11,6 @@ import (
 	v1 "zvyezda/src/engine/api/v1"
 	"zvyezda/src/engine/features"
 	"zvyezda/src/engine/features/account"
-	"zvyezda/src/engine/features/booking"
-	"zvyezda/src/engine/features/payment"
 	"zvyezda/src/engine/features/xbox"
 	"zvyezda/src/engine/pkg/database"
 	env "zvyezda/src/engine/pkg/env"
@@ -30,13 +28,9 @@ func main() {
 	/* Features */
 	featAccount := account.New(&account.Config{})
 	featXbox := xbox.New(&xbox.Config{})
-	featBooking := booking.New(&booking.Config{})
-	featPayment := payment.New(&payment.Config{})
 	f := features.New(&features.Config{
 		Account: featAccount,
 		Xbox: featXbox,
-		Booking: featBooking,
-		Payment: featPayment,
 	})
 
 	srv := server.New(env.EnvConfigs.Port, &v1.Config{

@@ -10,7 +10,6 @@ import (
 	env "zvyezda/src/engine/pkg/env"
 
 	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
@@ -59,14 +58,6 @@ func New(addr string, cfg *v1.Config) *Server {
 
 	// API Controllers
 	v1.New(handler, &upgrader, cfg)
-
-	handler.Use(static.Serve("/", static.LocalFile("../radiance/build", true)))
-
-	handler.NoRoute(func(c *gin.Context) {
-		if c.Request.URL.Path != "/api" {
-			c.File("../radiance/build/index.html")
-		}
-	})
 
 	return &Server{
 		server: &http.Server{
